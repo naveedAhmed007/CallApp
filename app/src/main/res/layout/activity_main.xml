@@ -1,18 +1,196 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8" ?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-    <TextView
+    android:background="@drawable/login_background"
+    tools:context=".Activities.MainActivity">
+    <!-- Vertical center guideline -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <!-- New Container with White Background and Border Radius -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/input_container_bg"
+        android:orientation="vertical"
+        android:paddingTop="36dp"
+        android:paddingBottom="36dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <!-- Heading, Subheading, and Input fields container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp"
+            tools:ignore="MissingConstraints">
+
+            <!-- Heading, Subheading, and Input fields container -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/loginHeadingTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login into your account"
+                    android:fontFamily="@font/inter"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="8dp"
+                    />
+
+                <TextView
+                    android:id="@+id/welcomeBackTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome Back"
+                    android:textColor="#9C9C9C"
+                    android:fontFamily="@font/inter"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="44dp"
+                    />
+
+                <!-- Input fields go here -->
+
+
+                <!--          Customize username field start -->
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <!-- Username Input -->
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Username"
+                        android:background="@null"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        />
+
+                    <!-- Postfix icon -->
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_email_24"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="12dp"
+                        />
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#9C9C9C"
+                    android:layout_marginBottom="24px"
+
+                    />
+                <!--          Customize username field End -->
+
+
+
+                <!--          Customize Password field End -->
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
+
+                    <!-- Password Input -->
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Password"
+                        android:paddingStart="12dp"
+                        android:background="@null"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:inputType="textPassword"
+                        />
+
+                    <!-- Postfix icon -->
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/icon_key"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="12dp"
+                        />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#9C9C9C"
+                    android:layout_marginBottom="18px"
+
+                    />
+                <!--          Customize password field End -->
+
+
+                <!-- Subheading "Contact Administrator" -->
+                <TextView
+                    android:id="@+id/contactAdminTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contact Administrator"
+                    android:textColor="#9C9C9C"
+                    android:fontFamily="@font/inter"
+                    android:textSize="14sp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="56dp"
+                    android:layout_gravity="start"
+
+                    />
+
+                <Button
+                    android:id="@+id/loginButton"
+                    android:layout_width="151dp"
+                    android:layout_height="43dp"
+                    android:text="Login"
+                    android:background="@drawable/login_button_background"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/inter"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
