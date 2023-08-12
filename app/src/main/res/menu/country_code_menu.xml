@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/country_us"
+        android:title="(+1)" />
+    <item
+        android:id="@+id/country_ca"
+        android:title="Canada (+1)" />
+    <!-- Add more country codes as needed -->
+</menu>
