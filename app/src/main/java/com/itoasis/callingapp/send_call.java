@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.itoasis.callingapp.Fragments.History;
 import com.itoasis.callingapp.Fragments.Home;
 import com.itoasis.callingapp.Fragments.Search;
 import com.itoasis.callingapp.R;
@@ -43,8 +44,10 @@ BottomNavigationView bottomNavigationView;
                         selectedFragment = new Search();
                         break;
                     case R.id.Profile:
-                        selectedFragment = new Home();
+                        selectedFragment = new History();
                         break;
+                    default:
+                        return false;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.f1,
                         selectedFragment).commit();
