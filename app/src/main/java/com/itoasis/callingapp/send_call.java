@@ -45,6 +45,8 @@ BottomNavigationView bottomNavigationView;
                     case R.id.Profile:
                         selectedFragment = new Home();
                         break;
+                    default:
+                        return false;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.f1,
                         selectedFragment).commit();
