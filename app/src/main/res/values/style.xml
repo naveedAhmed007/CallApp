@@ -13,6 +13,10 @@
         <item name="colorPrimary">#0F9D58</item>
         <item name="colorPrimaryVariant">#0F9D58</item>
         <item name="colorOnPrimary">#000</item>
+
+    </style>
+    <style name="font_famiy">
+        <item name="android:fontFamily">@font/inter</item>
     </style>
 </resources>
 

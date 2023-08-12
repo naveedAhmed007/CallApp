@@ -27,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Open the new page (send_call) on button click
-                Intent intent = new Intent(MainActivity.this, send_call.class);
+                Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                 startActivity(intent);
+
             }
         });
     }

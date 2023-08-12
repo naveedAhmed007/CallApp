@@ -1,0 +1,366 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#CCE9FAFB"
+    android:layout_height="match_parent">
+
+    <!-- Custom Action Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/customActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#4DCBB8FE"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Prefix Icon -->
+        <ImageView
+            android:id="@+id/yolo_logo"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:src="@drawable/yolo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="8dp"/>
+
+        <!-- Postfix Icons -->
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/prefixIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:paddingStart="16dp"
+            android:src="@drawable/notification_bell"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.468" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/postfixIcon1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingEnd="16dp"
+            android:layout_marginRight="10px"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/postfixIcon2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="52dp"
+            android:paddingEnd="16dp"
+            android:src="@drawable/reload_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/postfixIcon1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.444" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:id="@+id/secondContainer"
+        android:layout_width="0dp"
+        android:layout_height="130dp"
+        android:background="@drawable/dashborad_main_view"
+        app:layout_constraintTop_toBottomOf="@id/customActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintWidth_percent="0.95" />
+    <TextView
+        android:id="@+id/subHeading1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remaining Credit  1"
+        android:textColor="#000000"
+        android:layout_marginStart="10dp"
+        android:textSize="15dp"
+        android:fontFamily="@font/inter"
+        android:layout_marginTop="40dp"
+        app:layout_constraintStart_toStartOf="@id/secondContainer"
+        app:layout_constraintTop_toTopOf="@id/secondContainer"
+        app:layout_constraintBottom_toTopOf="@id/subHeading2"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <!-- Subheading 2 -->
+    <TextView
+        android:id="@+id/subHeading2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="25 min / 240 min "
+        android:layout_marginStart="10dp"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:layout_marginTop="3dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/secondContainer"
+        app:layout_constraintTop_toBottomOf="@id/subHeading1"
+        app:layout_constraintVertical_bias="0.5" />
+
+
+    <!-- Profile Picture Icon -->
+
+    <!-- Heading 1 (Top Right) -->
+
+    <ImageView
+        android:id="@+id/profilePicImageView"
+        android:layout_width="57dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="128dp"
+
+        android:src="@drawable/profile_image"
+        app:layout_constraintBottom_toBottomOf="@id/subHeading2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/secondContainer"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/heading1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="John Heather"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:layout_marginTop="40dp"
+        android:textStyle="bold"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@id/secondContainer"
+        app:layout_constraintTop_toTopOf="@id/secondContainer"
+        app:layout_constraintBottom_toTopOf="@id/heading2"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <!-- Heading 2 (Bottom Right) -->
+    <TextView
+        android:id="@+id/heading2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+983 057 565 2123"
+        android:textColor="#000000"
+        android:textSize="11dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/inter"
+
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="@id/secondContainer"
+        app:layout_constraintTop_toBottomOf="@id/heading1"
+        app:layout_constraintVertical_bias="0.5" />
+
+
+    <ImageView
+        android:id="@+id/profilePicImageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="36dp"
+        android:src="@drawable/progress_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/secondContainer" />
+
+    <View
+        android:id="@+id/dividerLine"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        app:layout_constraintTop_toBottomOf="@id/profilePicImageView2"
+        app:layout_constraintStart_toStartOf="@id/secondContainer"
+        app:layout_constraintEnd_toEndOf="@id/secondContainer"
+        android:layout_marginTop="10dp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintWidth_percent="0.95"/>
+
+    <!-- Last Container -->
+    <View
+        android:id="@+id/lastContainer"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:background="#e6eaf7"
+        app:layout_constraintTop_toBottomOf="@id/dividerLine"
+        app:layout_constraintStart_toStartOf="@id/secondContainer"
+        app:layout_constraintEnd_toEndOf="@id/secondContainer"
+        app:layout_constraintWidth_percent="0.95"
+        android:layout_marginTop="10dp"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:paddingTop="26dp"
+        android:paddingBottom="26dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"/>
+
+    <!-- Bold Heading -->
+    <TextView
+        android:id="@+id/boldHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More with Yolo"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="@id/lastContainer"
+        app:layout_constraintTop_toTopOf="@id/lastContainer"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"/>
+    <!-- First Row of Boxes -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/firstRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        app:layout_constraintTop_toBottomOf="@id/boldHeading">
+
+        <!-- Box 1 -->
+        <ImageView
+            android:id="@+id/box1"
+            android:layout_width="72dp"
+            android:layout_height="74dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/yolo_logo"
+            android:scaleType="centerInside"
+            android:background="@drawable/rounded_icons"/>
+
+        <!-- Box 2 -->
+        <ImageView
+            android:id="@+id/box2"
+            android:layout_width="72dp"
+            android:layout_height="74dp"
+            app:layout_constraintStart_toEndOf="@id/box1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/yolo_logo"
+            android:scaleType="centerInside"
+            android:background="@drawable/rounded_icons"/>
+
+        <!-- Box 3 -->
+        <ImageView
+            android:id="@+id/box3"
+            android:layout_width="72dp"
+            android:layout_height="74dp"
+            app:layout_constraintStart_toEndOf="@id/box2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/yolo_logo"
+            android:scaleType="centerInside"
+            android:background="@drawable/rounded_icons"/>
+
+        <!-- Box 4 -->
+        <ImageView
+            android:id="@+id/box4"
+            android:layout_width="72dp"
+            android:layout_height="74dp"
+            app:layout_constraintStart_toEndOf="@id/box3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/yolo_logo"
+            android:scaleType="centerInside"
+            android:background="@drawable/rounded_icons"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Second Row of Boxes -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/secondRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toBottomOf="@id/firstRow"
+        tools:layout_editor_absoluteX="10dp">
+
+        <!-- Box 5 -->
+        <ImageView
+            android:id="@+id/box5"
+            android:layout_width="72dp"
+            android:layout_height="74dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:src="@drawable/yolo_logo"
+            android:scaleType="centerInside"
+            android:background="@drawable/rounded_icons"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Box 6 -->
+        <ImageView
+            android:id="@+id/box6"
+            android:layout_width="72dp"
+            android:layout_height="74dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="6dp"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/box5"
+            android:src="@drawable/yolo_logo"
+            android:scaleType="centerInside"
+            android:background="@drawable/rounded_icons"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Box 7 -->
+        <ImageView
+            android:id="@+id/box7"
+            android:layout_width="72dp"
+            android:layout_height="74dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:src="@drawable/yolo_logo"
+            android:scaleType="centerInside"
+            android:background="@drawable/rounded_icons"
+            app:layout_constraintStart_toEndOf="@id/box6"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Box 8 -->
+        <ImageView
+            android:id="@+id/box8"
+            android:layout_width="72dp"
+            android:layout_height="74dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/yolo_logo"
+            android:scaleType="centerInside"
+            android:background="@drawable/rounded_icons"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/box7"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/secondRowHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="left"
+        android:text="History"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/secondRow" />
+</androidx.constraintlayout.widget.ConstraintLayout>

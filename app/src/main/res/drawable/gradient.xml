@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:innerRadiusRatio="3.5"
+    android:shape="ring"
+    android:thickness="2.5dp"
+    android:useLevel="false">
+    <gradient
+        android:angle="0"
+        android:endColor="#d059ff"
+        android:startColor="#7bc8fa"
+        android:type="linear" />
+</shape>
+
+
+    <!--    <ProgressBar-->
+    <!--        android:id="@+id/progressBar"-->
+    <!--        style="?android:attr/progressBarStyleHorizontal"-->
+    <!--        android:layout_width="50dp"-->
+    <!--        android:layout_height="50dp"-->
+    <!--        android:indeterminate="true"-->
+    <!--        android:indeterminateTintMode="src_atop"-->
+    <!--        android:progressDrawable="@drawable/gradientDrawable"-->
+    <!--        android:layout_gravity="center_vertical|center_horizontal"-->
+    <!--        android:visibility="visible"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/secondContainer"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        />-->

@@ -1,14 +1,282 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="UTF-8" ?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.Search">
+    android:background="@drawable/send_call_bg"
+    tools:context=".send_call">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Custom Action Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/customActionBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="hello search" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-</FrameLayout>
+        <!-- Prefix Icon -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/prefixIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingStart="16dp"
+            />
+
+        <!-- Postfix Icon -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/postfixIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/notification_bell"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingEnd="16dp"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Heading, Subheading, and Input fields container -->
+    <LinearLayout
+        android:id="@+id/headerContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/customActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView
+            android:id="@+id/headerImage"
+            android:layout_width="111dp"
+            android:layout_height="87dp"
+            android:src="@drawable/app_logo"
+            android:layout_gravity="center"
+
+            />
+
+        <TextView
+            android:id="@+id/yolo_app"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YOLO"
+            android:fontFamily="@font/inter"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="29sp"
+            android:layout_marginBottom="3dp"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/headerImage"
+            app:layout_constraintStart_toStartOf="@id/headerImage"
+            />
+
+        <TextView
+            android:id="@+id/welcomeBackTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A call away from home!"
+            android:textColor="#000000"
+            android:fontFamily="@font/inter"
+            android:textSize="19sp"
+            android:layout_marginBottom="24dp"
+            android:textStyle="bold"
+            android:shadowColor="#80000000"
+            android:shadowDx="3"
+            android:shadowDy="9"
+            android:shadowRadius="8"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toBottomOf="@+id/yolo_app"
+            app:layout_constraintStart_toStartOf="@id/yolo_app"
+            />
+
+    </LinearLayout>
+
+
+
+
+    <!-- New Container with White Background and Border Radius -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/input_container_bg"
+        android:orientation="vertical"
+        android:paddingTop="36dp"
+        android:paddingBottom="36dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/headerContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
+
+
+        <!-- Customize username field with country code dropdown -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <!-- Prefix icon -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/countryCodeDropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/usa_flag"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="12dp"
+                android:clickable="true"
+                />
+            <!-- TextView to display selected country code -->
+            <TextView
+                android:id="@+id/countryCodeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/passworCountryCodeDropdownExpend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/expend"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="12dp"
+                android:clickable="true"/>
+
+            <!-- Username Input -->
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Username"
+                android:background="@null"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                />
+
+            <!-- Postfix icon -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/contact_list_icon"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="12dp"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#9C9C9C"
+            android:layout_marginBottom="24dp"
+            />
+
+
+        <!-- Password Input -->
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <!-- Prefix icon -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/passwordCountryCodeDropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/canada"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="12dp"
+                android:clickable="true"
+                />
+            <!-- TextView to display selected country code for password input -->
+            <TextView
+                android:id="@+id/passwordCountryCodeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/passwordCountryCodeDropdownExpend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/expend"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="12dp"
+                android:clickable="true"/>
+            <!-- Password Input -->
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Password"
+                android:paddingStart="12dp"
+                android:background="@null"
+                android:paddingEnd="12dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:inputType="textPassword"
+                />
+
+            <!-- Postfix icon -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/contact_list_icon"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="12dp"
+                />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#9C9C9C"
+            android:layout_marginBottom="18dp"
+            />
+
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/call_button"
+            android:layout_width="wrap_content"
+            android:layout_height="43dp"
+            android:text="Send Call"
+            app:backgroundTint="@null"
+            android:background="@drawable/call_button_background"
+            android:textColor="#FFFFFF"
+            android:textSize="14dp"
+            android:fontFamily="@font/inter"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"/>
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
