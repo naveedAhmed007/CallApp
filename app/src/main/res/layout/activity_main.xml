@@ -84,11 +84,13 @@
 
                     <!-- Username Input -->
                     <EditText
+                        android:id="@+id/usernameEditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="Username"
                         android:background="@null"
+                        android:inputType="textPersonName"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         android:paddingTop="12dp"
@@ -107,11 +109,24 @@
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
                 <View
+                    android:id="@+id/usernameSeparator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#9C9C9C"
-                    android:layout_marginBottom="24px"
+                    android:layout_marginBottom="22px"
 
+                    />
+                <!-- TextView to display error message -->
+                <TextView
+                    android:id="@+id/usernameErrorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FF0000"
+                    android:visibility="gone"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="12dp"
+                    android:text="Enter a username!"
                     />
                 <!--          Customize username field End -->
 
@@ -127,6 +142,7 @@
 
                     <!-- Password Input -->
                     <EditText
+                        android:id="@+id/passwordEditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -149,12 +165,25 @@
                         />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
+                <!-- View that separates the password field -->
                 <View
+                    android:id="@+id/passwordSeparator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#9C9C9C"
-                    android:layout_marginBottom="18px"
+                    android:layout_marginBottom="18px"/>
 
+                <!-- TextView to display error message for password -->
+                <TextView
+                    android:id="@+id/passwordErrorTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FF0000"
+                    android:visibility="gone"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_gravity="left"
+                    android:text="Enter a password!"
                     />
                 <!--          Customize password field End -->
 

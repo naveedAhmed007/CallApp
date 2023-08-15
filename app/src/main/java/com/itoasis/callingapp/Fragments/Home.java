@@ -28,10 +28,31 @@ public class Home extends Fragment {
                 showCountryCodeDropdown(v, countryCodeTextView);
             }
         });
+        ImageView secondIcon = rootView.findViewById(R.id.passworCountryCodeDropdownExpend);
+
+// Set a click listener for the second icon
+        secondIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the country code dropdown using a PopupMenu
+                showCountryCodeDropdown(v, countryCodeTextView);
+            }
+        });
+
 
         final TextView passwordCountryCodeTextView = rootView.findViewById(R.id.passwordCountryCodeTextView);
         ImageView passwordCountryCodeDropdown = rootView.findViewById(R.id.passwordCountryCodeDropdown);
         passwordCountryCodeDropdown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the country code dropdown using a PopupMenu
+                showCountryCodeDropdown(v, passwordCountryCodeTextView);
+            }
+        });
+        ImageView second_expend_icon = rootView.findViewById(R.id.passwordCountryCodeDropdownExpend);
+
+// Set a click listener for the second icon
+        second_expend_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Show the country code dropdown using a PopupMenu
@@ -54,7 +75,7 @@ public class Home extends Fragment {
 
                 // Set the selected country code in the TextView with icon
                 countryCodeTextView.setText(selectedCountryCode);
-                countryCodeTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.contact_list_icon, 0, 0, 0);
+               // countryCodeTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.contact_list_icon, 0, 0, 0);
 
                 return true;
             }

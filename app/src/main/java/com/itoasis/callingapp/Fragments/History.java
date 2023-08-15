@@ -11,24 +11,20 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.adapter.HistoryAdapter;
 import com.itoasis.callingapp.modal.HistoryModal;
-
 
 import java.util.ArrayList;
 
 public class History extends Fragment {
 
     private RecyclerView historyRV;
-    private TextInputEditText searchView;
+    private EditText searchEditText;
 
-    // variable for our adapter
-    // class and array list
     private HistoryAdapter adapter;
     private ArrayList<HistoryModal> courseModelArrayList;
 
@@ -36,13 +32,16 @@ public class History extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
-        searchView = rootView.findViewById(R.id.search_edit_text);
+        searchEditText = rootView.findViewById(R.id.search_edit_text);
 
         historyRV = rootView.findViewById(R.id.history_recyclar);
 
         courseModelArrayList = new ArrayList<HistoryModal>();
 
-        // below line is to add data to our array list.
+        // Adding data to the array list...
+
+
+// below line is to add data to our array list.
         courseModelArrayList.add(new HistoryModal("DSA1","yar","11","12"));
         courseModelArrayList.add(new HistoryModal("DSA2","yar","11","12"));
         courseModelArrayList.add(new HistoryModal("DSA3","yar","11","12"));
@@ -53,30 +52,22 @@ public class History extends Fragment {
         courseModelArrayList.add(new HistoryModal("DSA8","yar","11","12"));
         courseModelArrayList.add(new HistoryModal("DSA9","yar","11","12"));
         courseModelArrayList.add(new HistoryModal("DSA10","yar","11","12"));
-        // initializing our adapter class.
+// initializing our adapter class.
+
         adapter = new HistoryAdapter(courseModelArrayList, rootView.getContext());
 
-        // adding layout manager to our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(rootView.getContext());
         historyRV.setHasFixedSize(true);
-
-        // setting layout manager
-        // to our recycler view.
         historyRV.setLayoutManager(manager);
-
-        // setting adapter to
-        // our recycler view.
         historyRV.setAdapter(adapter);
+
         setupSearch();
 
-
         return rootView;
-
     }
 
-
     private void setupSearch() {
-        searchView.addTextChangedListener(new TextWatcher() {
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -101,7 +92,6 @@ public class History extends Fragment {
             }
         }
 
-adapter.filterList(filteredList);
-            }
-
+        adapter.filterList(filteredList);
+    }
 }

@@ -1,8 +1,10 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="10dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -10,16 +12,21 @@
 
         <TextView
             android:id="@+id/callerCharacter"
-            android:layout_width="39dp"
-            android:layout_height="50dp"
+            android:layout_width="45dp"
+            android:layout_height="39dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
             android:background="@drawable/border_text"
             android:text="J"
             android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginRight="5dp"
             app:layout_constraintVertical_bias="0.5" />
 
         <TextView
@@ -27,38 +34,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
             android:text="John Heather"
             android:textColor="#2D2A2A"
+            android:textSize="13dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/callerCharacter"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintVertical_bias="0.5" />
 
         <ImageView
             android:id="@+id/phone1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintHorizontal_bias="0.3"
             android:contentDescription="no preview"
             android:src="@drawable/phone2"
             app:layout_constraintBottom_toBottomOf="@+id/callerName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.09"
             app:layout_constraintStart_toEndOf="@+id/callerName"
             app:layout_constraintTop_toTopOf="@+id/callerName"
             app:layout_constraintVertical_bias="1.0" />
+
         <ImageView
             android:id="@+id/phone2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="no preview"
-            android:src="@drawable/baseline_arrow_back_24"
+            android:src="@drawable/right_arrow"
             app:layout_constraintBottom_toBottomOf="@+id/callerName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.02"
+            app:layout_constraintEnd_toStartOf="@+id/ReceuiverName"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/phone1"
-            app:layout_constraintTop_toTopOf="@+id/callerName"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintTop_toTopOf="@+id/callerName" />
 
         <ImageView
             android:id="@+id/phone3"
@@ -68,30 +77,31 @@
             android:src="@drawable/phone2"
             app:layout_constraintBottom_toBottomOf="@+id/callerName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.02"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/phone2"
             app:layout_constraintTop_toTopOf="@+id/callerName"
-            app:layout_constraintVertical_bias="0.2" />
+            app:layout_constraintVertical_bias="1.0" />
+
         <TextView
             android:id="@+id/ReceuiverName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
-            android:text="John Heather"
+            android:fontFamily="@font/inter"
+            android:text="MOM"
             android:textColor="#2D2A2A"
-            app:layout_constraintEnd_toStartOf="@id/time"
-
-            app:layout_constraintTop_toTopOf="parent"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintEnd_toStartOf="@id/time"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.333" />
 
         <TextView
             android:id="@+id/Date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="12:17"
+            android:layout_marginTop="2dp"
+            android:text="12/03"
+            android:textSize="10dp"
             android:textColor="#2D2A2A"
             app:layout_constraintEnd_toStartOf="@id/ReceuiverName"
             app:layout_constraintTop_toBottomOf="@+id/ReceuiverName" />
@@ -99,8 +109,9 @@
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="12:17"
+            android:textSize="10dp"
+            android:layout_marginTop="2dp"
+            android:text="12:45"
             android:textColor="#2D2A2A"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="10dp"

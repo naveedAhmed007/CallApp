@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.itoasis.callingapp.Fragments.History;
 import com.itoasis.callingapp.Fragments.Home;
+import com.itoasis.callingapp.Fragments.Notification;
 import com.itoasis.callingapp.Fragments.Search;
 import com.itoasis.callingapp.R;
 
@@ -24,6 +25,8 @@ BottomNavigationView bottomNavigationView;
         setContentView(R.layout.bottom_navigation);
         frameLayout=findViewById(R.id.f1);
         bottomNavigationView=findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setBackground(null);
+        bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         getSupportActionBar().hide();
         getSupportFragmentManager().beginTransaction().replace(R.id.f1, new Home()).commit();
 
@@ -34,17 +37,20 @@ BottomNavigationView bottomNavigationView;
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.home:
+                    case R.id.profile:
                         selectedFragment = new Home();
                         break;
                     case R.id.placeholder:
                         selectedFragment = new Home();
                         break;
-                    case R.id.Search:
+                    case R.id.chat:
                         selectedFragment = new Search();
                         break;
-                    case R.id.Profile:
+                    case R.id.history:
                         selectedFragment = new History();
+                        break;
+                        case R.id.Logout:
+                        selectedFragment = new Notification();
                         break;
                     default:
                         return false;

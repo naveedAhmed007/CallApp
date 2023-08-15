@@ -18,5 +18,9 @@
     <style name="font_famiy">
         <item name="android:fontFamily">@font/inter</item>
     </style>
+    <style name="RoundedEditText" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@drawable/rounded_search_background</item>
+
+    </style>
 </resources>
 
