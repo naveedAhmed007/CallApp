@@ -1,0 +1,5 @@
+<!-- circular_bg.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="#d9d0fa" /> <!-- Change the color as needed -->
+</shape>

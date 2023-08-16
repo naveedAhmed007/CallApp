@@ -1,11 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/send_call_bg"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@drawable/profile_bg"
     tools:context=".send_call">
 
     <!-- Custom Action Bar -->
@@ -27,7 +29,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:paddingStart="16dp"
+            />
+
+        <!-- Heading -->
+        <TextView
+            android:fontFamily="@font/inter"
+            android:id="@+id/headingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notification"
+            android:textColor="@android:color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/prefixIcon"
+            app:layout_constraintEnd_toStartOf="@id/postfixIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             />
 
         <!-- Postfix Icon -->
@@ -39,244 +57,182 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:paddingEnd="16dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Custom Action Bar End -->
 
-    <!-- Heading, Subheading, and Input fields container -->
-    <LinearLayout
-        android:id="@+id/headerContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/customActionBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-        <ImageView
-            android:id="@+id/headerImage"
-            android:layout_width="111dp"
-            android:layout_height="87dp"
-            android:src="@drawable/app_logo"
-            android:layout_gravity="center"
-
-            />
-
-        <TextView
-            android:id="@+id/yolo_app"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="YOLO"
-            android:fontFamily="@font/inter"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:textSize="29sp"
-            android:layout_marginBottom="3dp"
-            android:layout_gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/headerImage"
-            app:layout_constraintStart_toStartOf="@id/headerImage"
-            />
-
-        <TextView
-            android:id="@+id/welcomeBackTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="A call away from home!"
-            android:textColor="#000000"
-            android:fontFamily="@font/inter"
-            android:textSize="19sp"
-            android:layout_marginBottom="24dp"
-            android:textStyle="bold"
-            android:shadowColor="#80000000"
-            android:shadowDx="3"
-            android:shadowDy="9"
-            android:shadowRadius="8"
-            android:layout_gravity="center"
-            app:layout_constraintTop_toBottomOf="@+id/yolo_app"
-            app:layout_constraintStart_toStartOf="@id/yolo_app"
-            />
-
-    </LinearLayout>
-
-
-
-
-    <!-- New Container with White Background and Border Radius -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/input_container_bg"
-        android:orientation="vertical"
-        android:paddingTop="36dp"
-        android:paddingBottom="36dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/headerContainer"
+    <!-- Circular Profile -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/circularViewLayout"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/profile_circle"
+        app:layout_constraintTop_toBottomOf="@id/customActionBar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_chainStyle="packed">
+        android:layout_marginTop="60dp"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.0">
 
-
-        <!-- Customize username field with country code dropdown -->
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
-
-            <!-- Prefix icon -->
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/countryCodeDropdown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/usa_flag"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="12dp"
-                android:clickable="true"
-                />
-            <!-- TextView to display selected country code -->
-            <TextView
-                android:id="@+id/countryCodeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:layout_marginTop="0dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:drawablePadding="8dp"
-                android:gravity="center_vertical"
-                />
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/passworCountryCodeDropdownExpend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/expend"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="12dp"
-                android:clickable="true"/>
-
-            <!-- Username Input -->
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Username"
-                android:background="@null"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                />
-
-            <!-- Postfix icon -->
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/contact_list_icon"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="12dp"
-                />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#9C9C9C"
-            android:layout_marginBottom="24dp"
-            />
-
-
-        <!-- Password Input -->
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
-
-            <!-- Prefix icon -->
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/passwordCountryCodeDropdown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/canada"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="12dp"
-                android:clickable="true"
-                />
-            <!-- TextView to display selected country code for password input -->
-            <TextView
-                android:id="@+id/passwordCountryCodeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:layout_marginTop="0dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:drawablePadding="8dp"
-                android:gravity="center_vertical"
-                />
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/passwordCountryCodeDropdownExpend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/expend"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="12dp"
-                android:clickable="true"/>
-            <!-- Password Input -->
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Password"
-                android:paddingStart="12dp"
-                android:background="@null"
-                android:paddingEnd="12dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:inputType="textPassword"
-                />
-
-            <!-- Postfix icon -->
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/contact_list_icon"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="12dp"
-                />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#9C9C9C"
-            android:layout_marginBottom="18dp"
-            />
-
-        <!-- Login Button -->
-        <Button
-            android:id="@+id/call_button"
+        <TextView
+            android:id="@+id/name_profle"
             android:layout_width="wrap_content"
-            android:layout_height="43dp"
-            android:text="Send Call"
-            app:backgroundTint="@null"
-            android:background="@drawable/call_button_background"
-            android:textColor="#FFFFFF"
-            android:textSize="14dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:fontFamily="@font/inter"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center"/>
+            android:gravity="center"
+            android:text="J"
+            android:textColor="@android:color/white"
+            android:textSize="35dp"
+            android:textStyle="bold"
+            android:layout_marginRight="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints,NotSibling" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/subHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="John Heather"
+        android:textColor="@android:color/black"
+        android:textSize="18dp"
+        app:layout_constraintTop_toBottomOf="@id/circularViewLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/phoneNumberLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="Phone Number:"
+        android:textColor="@android:color/black"
+        android:textSize="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subHeading" />
+
+    <View
+        android:id="@+id/roundedView"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/input_field_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberLabel" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:hint="057 565 2123"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roundedView"
+        app:layout_constraintStart_toStartOf="@+id/roundedView"
+        app:layout_constraintTop_toTopOf="@+id/roundedView"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/postfixIconEditText"
+        android:layout_width="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/pen_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/roundedView"
+        app:layout_constraintEnd_toEndOf="@+id/roundedView"
+        app:layout_constraintTop_toTopOf="@+id/roundedView"
+        tools:ignore="MissingConstraints" />
+    //------------------------------
+
+    <TextView
+        android:id="@+id/phoneNumberLabel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Remaining Credit:"
+        android:textColor="@android:color/black"
+        android:textSize="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/roundedView" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:max="100"
+        android:progress="45"
+        app:layout_constraintBottom_toTopOf="@+id/roundedView2"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberLabel2"
+        tools:layout_editor_absoluteX="24dp" />
+
+    <View
+        android:id="@+id/roundedView2"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+
+        android:layout_marginTop="8dp"
+        android:background="@drawable/input_field_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberLabel2" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:hint="057 565 2123"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roundedView2"
+        app:layout_constraintStart_toStartOf="@+id/roundedView2"
+        app:layout_constraintTop_toTopOf="@+id/roundedView2"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/HeadingLabel3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="28 February 2023"
+        android:textColor="@android:color/black"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/roundedView2" />
 
 
-    </LinearLayout>
+    <View
+        android:id="@+id/paymentbox"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
 
+        android:layout_marginTop="8dp"
+        android:background="@drawable/input_field_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/HeadingLabel3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

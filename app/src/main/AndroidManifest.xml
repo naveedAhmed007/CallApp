@@ -30,17 +30,13 @@
         <activity
             android:name=".send_call"
             android:screenOrientation="portrait"
-
-
-
             />
         <activity
             android:name=".Activities.DashboardActivity"
             android:screenOrientation="portrait"
-
-
-
             />
+        <activity android:name=".call_screen" />
+
     </application>
 
 </manifest>
