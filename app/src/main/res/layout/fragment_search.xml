@@ -8,17 +8,22 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:background="@drawable/profile_bg"
-    tools:context=".send_call">
+    tools:context=".Fragments.profile_call">
 
     <!-- Custom Action Bar -->
+    <!-- Custom Action Bar End -->
+
+
+    <!-- Circular Profile -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/customActionBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@android:color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- Prefix Icon -->
         <androidx.appcompat.widget.AppCompatImageView
@@ -26,43 +31,51 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_arrow_back_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Heading -->
+
+        <!-- New Icon -->
         <TextView
-            android:fontFamily="@font/inter"
             android:id="@+id/headingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notification"
+            android:fontFamily="@font/inter"
+            android:text="Profile"
             android:textColor="@android:color/black"
             android:textSize="17dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/prefixIcon"
-            app:layout_constraintEnd_toStartOf="@id/postfixIcon"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/postfixIcon"
+            app:layout_constraintStart_toEndOf="@+id/prefixIcon"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            />
+            app:layout_constraintVertical_bias="0.5" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/rightIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/profile_pencil"
+            app:layout_constraintBottom_toBottomOf="@+id/headingText"
+            app:layout_constraintEnd_toStartOf="@+id/postfixIcon"
+            app:layout_constraintStart_toStartOf="@+id/headingText"
+            app:layout_constraintTop_toTopOf="@+id/headingText"
+            app:layout_constraintHorizontal_bias="0.4"/>
         <!-- Postfix Icon -->
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/postfixIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/notification_bell"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!-- Custom Action Bar End -->
 
-    <!-- Circular Profile -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/circularViewLayout"
         android:layout_width="80dp"
@@ -228,11 +241,96 @@
     <View
         android:id="@+id/paymentbox"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-
+        android:layout_height="98dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/input_field_bg"
+
+        android:background="@drawable/payment_cards_radius"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/HeadingLabel3" />
+
+    <ImageView
+        android:id="@+id/paymentImage"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/circular_yolo_logo"
+        app:layout_constraintBottom_toBottomOf="@+id/paymentbox"
+        app:layout_constraintEnd_toEndOf="@+id/paymentbox"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="@+id/paymentbox"
+        app:layout_constraintTop_toTopOf="@+id/paymentbox" />
+
+    <TextView
+        android:id="@+id/payment_card_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lorem Ipsum"
+        android:textColor="@android:color/black"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/paymentbox"
+        app:layout_constraintEnd_toEndOf="@+id/paymentbox"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toEndOf="@+id/paymentImage"
+        app:layout_constraintTop_toTopOf="@+id/paymentbox"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/payment_card_Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4:37 PM"
+        android:textColor="@android:color/black"
+        android:textSize="13dp"
+        app:layout_constraintBottom_toBottomOf="@+id/paymentbox"
+        app:layout_constraintEnd_toEndOf="@+id/payment_card_heading"
+        app:layout_constraintHorizontal_bias="0.288"
+        app:layout_constraintStart_toEndOf="@+id/paymentImage"
+        app:layout_constraintTop_toBottomOf="@+id/payment_card_heading"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <TextView
+        android:id="@+id/payment_card_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rs. 250.00"
+        android:textColor="#A82727"
+        android:textSize="13dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/paymentbox"
+        app:layout_constraintEnd_toEndOf="@+id/paymentbox"
+        app:layout_constraintHorizontal_bias="0.812"
+        app:layout_constraintStart_toEndOf="@+id/payment_card_heading"
+        app:layout_constraintTop_toTopOf="@+id/paymentbox"
+
+        app:layout_constraintVertical_bias="0.287" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/materialButton"
+        android:layout_width="90dp"
+        android:layout_height="38dp"
+        android:backgroundTint="#80E4DAFF"
+        android:text="Repeat"
+        android:textColor="@android:color/black"
+        android:textSize="13dp"
+        app:cornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/paymentbox"
+        app:layout_constraintEnd_toEndOf="@+id/paymentbox"
+        app:layout_constraintHorizontal_bias="0.905"
+        app:layout_constraintStart_toEndOf="@+id/payment_card_Time"
+        app:layout_constraintTop_toBottomOf="@+id/payment_card_price"
+        app:layout_constraintVertical_bias="0.444" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/greaterThen_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_keyboard_arrow_right_24"
+        app:layout_constraintBottom_toBottomOf="@+id/payment_card_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@+id/payment_card_price"
+        app:layout_constraintTop_toTopOf="@+id/payment_card_price" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
