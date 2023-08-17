@@ -1,0 +1,164 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="108dp"
+    android:layout_marginTop="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        //----------------------------------
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name  :"
+            android:textColor="#7A7979"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.097"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.195" />
+
+        <TextView
+            android:id="@+id/name_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="John Heather"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.786"
+            app:layout_constraintStart_toEndOf="@+id/name"
+            app:layout_constraintTop_toTopOf="@+id/name"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User ID  :"
+            android:textColor="#7A7979"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            app:layout_constraintVertical_bias="0.2" />
+
+        <TextView
+            android:id="@+id/id_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0003"
+            android:textSize="12dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/user_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.816"
+            app:layout_constraintStart_toEndOf="@+id/user_id"
+            app:layout_constraintTop_toTopOf="@+id/user_id"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageButton
+            android:id="@+id/imageButtonEdit"
+            android:layout_width="27dp"
+            android:layout_height="25dp"
+            android:background="@drawable/main_btns_gradients"
+            android:src="@drawable/pen_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.856"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/id_value"
+            app:layout_constraintVertical_bias="0.238" />
+
+        <ImageButton
+            android:id="@+id/imageButtonDelete"
+            android:layout_width="27dp"
+            android:layout_height="25dp"
+            android:background="@drawable/main_btns_gradients"
+            android:src="@drawable/chat_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.664"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/id_value"
+            app:layout_constraintVertical_bias="0.238" />
+
+        <ImageButton
+            android:id="@+id/imageButtonChat"
+            android:layout_width="27dp"
+            android:layout_height="25dp"
+            android:background="@drawable/main_btns_gradients"
+            android:src="@drawable/del_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.763"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/id_value"
+            app:layout_constraintVertical_bias="0.238" />
+
+        <ImageButton
+            android:id="@+id/something"
+            android:layout_width="115dp"
+            android:layout_height="25dp"
+            android:background="@drawable/main_btns_gradients"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.445"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/id_value"
+            app:layout_constraintVertical_bias="0.238" />
+
+
+        <!-- Prefix Icon -->
+
+        <!-- Text -->
+        <ImageView
+            android:id="@+id/prefixIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/credit_hour"
+            app:layout_constraintBottom_toBottomOf="@+id/something"
+            app:layout_constraintStart_toStartOf="@+id/something"
+            app:layout_constraintTop_toTopOf="@+id/something" />
+
+        <TextView
+            android:id="@+id/centerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="24/240 min "
+            android:textSize="12dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/something"
+            app:layout_constraintEnd_toStartOf="@+id/postfixIcon"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/prefixIcon"
+            app:layout_constraintTop_toTopOf="@+id/something" />
+
+        <!-- Postfix Icon -->
+        <ImageView
+            android:id="@+id/postfixIcon"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="4dp"
+            android:src="@drawable/mini_pen"
+            app:layout_constraintBottom_toBottomOf="@+id/something"
+            app:layout_constraintEnd_toEndOf="@+id/something"
+            app:layout_constraintTop_toTopOf="@+id/something"
+            app:layout_constraintVertical_bias="0.507" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
