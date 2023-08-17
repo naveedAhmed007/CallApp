@@ -52,6 +52,10 @@ public class AdminBottomNavigation extends AppCompatActivity {
                 case R.id.more:
                     showPopupMenu(bottomNavigationView);
                     break;
+                case R.id.chat:
+                    setCurrentFragment(new Payment());
+                    break;
+
 //                case R.id.logout:
 //                    setCurrentFragment(new Home());
 //                    break;
