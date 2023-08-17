@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             usernameSeparator.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
             usernameErrorTextView.setVisibility(View.GONE); // Hide error message
             // Proceed with other actions or validations
-            Intent intent = new Intent(MainActivity.this, send_call.class);
+            Intent intent = new Intent(MainActivity.this, AdminBottomNavigation.class);
             startActivity(intent);
         }
     }
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             passwordSeparator.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
             passwordErrorTextView.setVisibility(View.GONE); // Hide error message
             // Proceed with other actions or validations
-            Intent intent = new Intent(MainActivity.this, send_call.class);
+            Intent intent = new Intent(MainActivity.this, AdminBottomNavigation.class);
             startActivity(intent);
         }
     }

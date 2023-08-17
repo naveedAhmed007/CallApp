@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/prices"
+        app:showAsAction="ifRoom|withText"
+        android:icon="@drawable/baseline_person_24"
+        android:title="Set Prices" />
+
+    <item
+        android:id="@+id/details"
+        app:showAsAction="ifRoom|withText"
+        android:icon="@drawable/baseline_chat_24"
+        android:title="User Details" />
+
+    <item
+        android:id="@+id/chat"
+        app:showAsAction="ifRoom|withText"
+        android:icon="@drawable/baseline_chat_24"
+        android:title="Chat" />
+    <item
+        android:id="@+id/summary"
+        app:showAsAction="ifRoom|withText"
+        android:icon="@drawable/baseline_chat_24"
+        android:title="Summary" />
+
+    <item
+        android:id="@+id/history"
+        app:showAsAction="ifRoom|withText"
+        android:icon="@drawable/baseline_history_24"
+        android:title="History" />
+
+
+</menu>
