@@ -1,0 +1,134 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="#edf4f5"
+    tools:context=".Fragments.History">
+
+    <!-- Custom Action Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/customActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Prefix Icon -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/prefixIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            />
+        <!-- Heading -->
+        <TextView
+            android:fontFamily="@font/inter"
+            android:id="@+id/headingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="History"
+            android:textColor="@android:color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            />
+
+        <!-- Postfix Icon -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addUser"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        app:icon="@drawable/contact_list_icon"
+        app:iconGravity="textStart"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="Add User"
+        app:backgroundTint="@null"
+        android:fontFamily="@font/inter"
+        android:textColor="#FFFFFF"
+        android:textSize="10sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customActionBar"
+        android:background="@drawable/call_button_background"
+
+        />
+    <FrameLayout
+        android:id="@+id/profile_image_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/circle_background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customActionBar"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:src="@drawable/database" />
+
+    </FrameLayout>
+    <TextView
+        android:fontFamily="@font/inter"
+        android:id="@+id/totalcredit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Credit : 20,000 min"
+        android:textColor="@android:color/black"
+        android:textSize="10dp"
+        android:textFontWeight="400"
+        android:layout_marginLeft="5dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@+id/profile_image_container"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_image_container"
+        app:layout_constraintTop_toBottomOf="@+id/customActionBar"
+        app:layout_constraintLeft_toRightOf="@+id/profile_image_container"
+
+
+
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+
+
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addUser"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="20dp"
+        android:id="@+id/recycleruserDetails"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
