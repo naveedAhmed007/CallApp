@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="#edf4f5"
+    tools:context=".Fragments.Payment">
+
+    <!-- Custom Action Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/customActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Prefix Icon -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/prefixIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            />
+        <!-- Heading -->
+        <TextView
+            android:fontFamily="@font/inter"
+            android:id="@+id/headingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="History"
+            android:textColor="@android:color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/prefixIcon"
+            app:layout_constraintEnd_toStartOf="@id/postfixIcon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            />
+
+        <!-- Postfix Icon -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/postfixIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/notification_bell"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/dateTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="28 February 2023 "
+        android:textSize="14sp"
+        android:textColor="#2D2A2A"
+        android:textFontWeight="600"
+        app:layout_constraintTop_toBottomOf="@+id/customActionBar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+
+
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateTV"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="20dp"
+        android:id="@+id/recyclerPayment"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
