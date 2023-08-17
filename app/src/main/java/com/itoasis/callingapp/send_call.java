@@ -13,7 +13,8 @@ import com.itoasis.callingapp.Fragments.History;
 import com.itoasis.callingapp.Fragments.Home;
 import com.itoasis.callingapp.Fragments.Notification;
 import com.itoasis.callingapp.Fragments.Search;
-import com.itoasis.callingapp.R;
+import com.itoasis.callingapp.Fragments.profile_call;
+import com.itoasis.callingapp.Fragments.send_Notification;
 
 public class send_call extends AppCompatActivity {
 FrameLayout frameLayout;
@@ -38,18 +39,18 @@ BottomNavigationView bottomNavigationView;
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.profile:
-                        selectedFragment = new Home();
+                        selectedFragment = new profile_call();
                         break;
                     case R.id.placeholder:
                         selectedFragment = new Home();
                         break;
                     case R.id.chat:
-                        selectedFragment = new Search();
+                        selectedFragment = new profile_call();
                         break;
                     case R.id.history:
                         selectedFragment = new History();
                         break;
-                        case R.id.Logout:
+                    case R.id.Payment:
                         selectedFragment = new Notification();
                         break;
                     default:

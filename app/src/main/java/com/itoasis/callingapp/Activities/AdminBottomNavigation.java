@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.itoasis.callingapp.Fragments.Home;
 import com.itoasis.callingapp.Fragments.Payment;
-import com.itoasis.callingapp.Fragments.UserDetails;
 import com.itoasis.callingapp.R;
 
 public class AdminBottomNavigation extends AppCompatActivity {
@@ -38,19 +37,19 @@ public class AdminBottomNavigation extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.prices:
+                case R.id.summary:
                     setCurrentFragment(new Payment());
                     break;
-                case R.id.details:
-                    setCurrentFragment(new UserDetails());
-                    break;
-                case R.id.chat:
+                case R.id.history:
                     setCurrentFragment(new Home());
                     break;
-                case R.id.summary:
+                case R.id.set_prices:
+                    setCurrentFragment(new Home());
+                    break;
+                case R.id.log_out:
 
                     break;
-                case R.id.history:
+                case R.id.more:
                     showPopupMenu(bottomNavigationView);
                     break;
 //                case R.id.logout:
@@ -69,12 +68,12 @@ public class AdminBottomNavigation extends AppCompatActivity {
     }
     private void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.inflate(R.menu.admin_bottom); // Replace with your actual menu resource
+        popupMenu.inflate(R.menu.new_menu); // Replace with your actual menu resource
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch(item.getItemId()){
-                    case R.id.prices:
+                    case R.id.set_prices:
                         Toast.makeText(AdminBottomNavigation.this, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", Toast.LENGTH_SHORT).show();
                 }
                 return true;

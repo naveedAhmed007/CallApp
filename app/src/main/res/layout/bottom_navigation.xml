@@ -45,7 +45,7 @@
         android:src="@drawable/baseline_add_24"
         app:maxImageSize="50dp"
         app:tint="@android:color/white"
-        app:backgroundTint="#CD5CFF"
+        app:backgroundTint="#cbb8fe"
         app:layout_anchor="@id/bottomAppBar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

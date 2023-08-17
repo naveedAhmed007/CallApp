@@ -4,25 +4,30 @@
     app:cardCornerRadius="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     android:layout_marginTop="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:padding="15dp"
+        android:paddingStart="8dp"
+        android:layout_height="match_parent">
 
         <!-- First Row -->
         <TextView
             android:id="@+id/boxText"
-            android:layout_width="36dp"
-            android:layout_height="31dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/darker_gray"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/border_text"
+            android:fontFamily="@font/inter"
             android:gravity="center"
             android:text="A"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
+            android:textSize="24dp"
+            android:textStyle="bold"
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,19 +38,20 @@
             android:id="@+id/notificationTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="10dp"
-
+            android:lineSpacingExtra="6dp"
+            android:layout_marginStart="20dp"
+            android:paddingEnd="70dp"
 
 
             android:text="Lorem Ipsum is simply dummy text of the printing and typesetting"
 
+            app:layout_constraintBottom_toBottomOf="@+id/boxText"
             app:layout_constraintLeft_toRightOf="@+id/boxText"
+
+
             app:layout_constraintStart_toEndOf="@+id/boxText"
-
-
             app:layout_constraintTop_toTopOf="@+id/boxText"
-            app:layout_constraintBottom_toBottomOf="@+id/boxText"/>
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/timeText"
@@ -53,8 +59,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
 
-            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="5dp"
             android:text="8:59 PM"
+            android:textSize="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/notificationTV" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,15 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/prices"
-        app:showAsAction="ifRoom|withText"
-        android:icon="@drawable/baseline_person_24"
-        android:title="Set Prices" />
-
-    <item
         android:id="@+id/details"
         app:showAsAction="ifRoom|withText"
-        android:icon="@drawable/baseline_chat_24"
+        android:icon="@drawable/baseline_person_24"
         android:title="User Details" />
 
     <item
@@ -20,16 +14,16 @@
         android:icon="@drawable/baseline_chat_24"
         android:title="Chat" />
     <item
-        android:id="@+id/summary"
+        android:id="@+id/set_prices"
         app:showAsAction="ifRoom|withText"
-        android:icon="@drawable/baseline_chat_24"
-        android:title="Summary" />
+        android:icon="@drawable/baseline_label_24"
+        android:title="Set Prices" />
 
     <item
-        android:id="@+id/history"
+        android:id="@+id/more"
         app:showAsAction="ifRoom|withText"
-        android:icon="@drawable/baseline_history_24"
-        android:title="History" />
+        android:icon="@drawable/baseline_more_vert_24"
+        android:title="More" />
 
 
 </menu>
