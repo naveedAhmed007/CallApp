@@ -38,7 +38,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // below line is to inflate our layout.
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_rv_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -46,9 +46,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
         // setting data to our views of recycler view.
         MessageModal model = MessageModalArrayList.get(position);
-        holder.courseNameTV.setText(model.getCourseName());
-        holder.courseDescTV.setText(model.getCourseDescription());
+        holder.nameChat.setText(model.getName());
+        holder.notificationTV.setText(model.getMessage());
+        holder.time.setText(model.getTime());
     }
+
 
     @Override
     public int getItemCount() {
@@ -58,13 +60,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // creating variables for our views.
-        private final TextView courseNameTV;
-        private final TextView courseDescTV;
+        private final TextView nameChat;
+        private final TextView notificationTV;
+        private final TextView time;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our views with their ids.
-            courseNameTV = itemView.findViewById(R.id.idTVCourseName);
-            courseDescTV = itemView.findViewById(R.id.idTVCourseDescription);
+            nameChat = itemView.findViewById(R.id.NameChat);
+            notificationTV = itemView.findViewById(R.id.notificationTV);
+            time = itemView.findViewById(R.id.timeText);
         }
     }
 }

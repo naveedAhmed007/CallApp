@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.itoasis.callingapp.Fragments.Home;
+import com.itoasis.callingapp.Fragments.Message;
 import com.itoasis.callingapp.Fragments.Payment;
 import com.itoasis.callingapp.Fragments.add_user;
 import com.itoasis.callingapp.Fragments.setPrices;
@@ -55,7 +56,7 @@ public class AdminBottomNavigation extends AppCompatActivity {
                     showPopupMenu(bottomNavigationView);
                     break;
                 case R.id.chat:
-                    setCurrentFragment(new Payment());
+                    setCurrentFragment(new Message());
                     break;
 
 //                case R.id.logout:

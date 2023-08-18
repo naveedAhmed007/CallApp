@@ -43,6 +43,7 @@
             android:text="John Heather"
             android:textSize="10dp"
             android:paddingStart="20dp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/notificationTV"
             app:layout_constraintEnd_toStartOf="@+id/timeText"
             app:layout_constraintHorizontal_bias="0"
