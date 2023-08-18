@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="50dp"
+    android:background="#edf4f5"
+    tools:context="Fragments.add_user">
+
+
+    <!-- Custom Action Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/customActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Prefix Icon -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/prefixIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+        <!-- Heading -->
+        <TextView
+            android:id="@+id/headingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter"
+            android:text="Notification"
+            android:textColor="@android:color/black"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.4"
+            app:layout_constraintStart_toEndOf="@+id/prefixIcon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!-- View with rounded corners -->
+
+
+    <View
+        android:id="@+id/roundedView"
+        android:layout_width="match_parent"
+        android:layout_height="388dp"
+        android:layout_marginTop="76dp"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customActionBar" />
+
+    <TextView
+        android:id="@+id/HeadingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginTop="24dp"
+        android:text="Heading"
+        android:textColor="@android:color/black"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/MessageLabel"
+        app:layout_constraintEnd_toEndOf="@+id/editText"
+        app:layout_constraintStart_toStartOf="@+id/editText"
+        app:layout_constraintTop_toTopOf="@+id/roundedView"
+        app:layout_constraintVertical_bias="0.114"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/notifications_fields_bg"
+        android:hint="                                             "
+        android:imeOptions="actionDone"
+        android:inputType="textShortMessage"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/MessageLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.315"
+        app:layout_constraintStart_toStartOf="@+id/roundedView"
+        app:layout_constraintTop_toBottomOf="@+id/HeadingLabel"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="0.9"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/MessageLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textColor="@android:color/black"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roundedView"
+        app:layout_constraintEnd_toEndOf="@+id/roundedView"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintStart_toStartOf="@+id/roundedView"
+        app:layout_constraintTop_toTopOf="@+id/roundedView" />
+
+
+    <EditText
+        android:id="@+id/editTextmessage"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_weight="1"
+        android:background="@drawable/notifications_fields_bg"
+        android:hint="                                              "
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="@+id/MessageLabel"
+        app:layout_constraintTop_toBottomOf="@+id/MessageLabel"
+        app:layout_constraintWidth_percent="0.9"
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/CountryHeadingLebal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textColor="@android:color/black"
+        android:textSize="14dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/customView"
+        app:layout_constraintStart_toStartOf="@+id/customView" />
+
+    <!-- Add the new view -->
+    <View
+        android:id="@+id/customView"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/notifications_fields_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/roundedView"
+        app:layout_constraintEnd_toEndOf="@+id/roundedView"
+        app:layout_constraintHorizontal_bias="0.405"
+        app:layout_constraintStart_toStartOf="@+id/roundedView"
+        app:layout_constraintTop_toBottomOf="@+id/editTextmessage"
+        app:layout_constraintVertical_bias="0.277"
+        app:layout_constraintWidth_percent="0.9" />
+
+    <TextView
+        android:id="@+id/CountryNamePlaceHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All"
+        android:textColor="#717171"
+        android:textSize="11dp"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintBottom_toBottomOf="@+id/customView"
+        app:layout_constraintEnd_toEndOf="@+id/customView"
+        app:layout_constraintStart_toStartOf="@+id/customView"
+        app:layout_constraintTop_toTopOf="@+id/customView" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/drop_down_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dropdown_gray"
+        app:layout_constraintBottom_toBottomOf="@+id/customView"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintEnd_toEndOf="@+id/customView"
+        app:layout_constraintStart_toStartOf="@+id/customView"
+
+        app:layout_constraintTop_toTopOf="@+id/customView" />
+
+
+    <View
+        android:id="@+id/send_notification_btn"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/main_btns_gradients"
+        app:layout_constraintBottom_toBottomOf="@+id/roundedView"
+        app:layout_constraintEnd_toEndOf="@+id/roundedView"
+        app:layout_constraintStart_toStartOf="@+id/roundedView"
+        app:layout_constraintTop_toBottomOf="@+id/customView"
+        app:layout_constraintWidth_percent="0.6" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/send_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:src="@drawable/baseline_send_24"
+        app:layout_constraintBottom_toBottomOf="@+id/send_notification_btn"
+        app:layout_constraintEnd_toEndOf="@+id/send_notification_btn"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="@+id/send_notification_btn"
+        app:layout_constraintTop_toTopOf="@+id/send_notification_btn"
+        />
+
+    <TextView
+        android:id="@+id/send_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Notification"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintBottom_toBottomOf="@+id/send_notification_btn"
+        app:layout_constraintEnd_toEndOf="@+id/send_notification_btn"
+        app:layout_constraintStart_toStartOf="@+id/send_notification_btn"
+        app:layout_constraintTop_toTopOf="@+id/send_notification_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

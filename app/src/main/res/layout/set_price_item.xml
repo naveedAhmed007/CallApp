@@ -1,0 +1,130 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="96dp"
+    android:layout_marginTop="15dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        //----------------------------------
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hourly rate:"
+            android:textColor="#7A7979"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/user_id"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <ImageButton
+            android:id="@+id/something"
+            android:layout_width="75dp"
+            android:layout_height="23dp"
+            android:background="@drawable/main_btns_gradients"
+            app:layout_constraintBottom_toBottomOf="@+id/user_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.816"
+            app:layout_constraintStart_toEndOf="@+id/user_id"
+            app:layout_constraintTop_toTopOf="@+id/user_id"
+            app:layout_constraintVertical_bias="0.1" />
+
+
+        <!-- Prefix Icon -->
+
+        <!-- Text -->
+
+        <ImageView
+            android:id="@+id/prefixIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/baseline_edit_24"
+            app:layout_constraintBottom_toBottomOf="@+id/something"
+            app:layout_constraintStart_toStartOf="@+id/something"
+            app:layout_constraintTop_toTopOf="@+id/something"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/centerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$ 2.00 "
+            android:textColor="@color/white"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="@+id/something"
+            app:layout_constraintEnd_toEndOf="@+id/something"
+            app:layout_constraintHorizontal_bias="0.458"
+            app:layout_constraintStart_toEndOf="@id/prefixIcon"
+            app:layout_constraintTop_toTopOf="@+id/something"
+            app:layout_constraintVertical_bias="0.2" />
+
+        <TextView
+            android:id="@+id/user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Decreasing Hourly rate:"
+            android:textColor="#7A7979"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            app:layout_constraintVertical_bias="0.4" />
+
+
+        <!-- Prefix Icon -->
+
+        <!-- Text -->
+
+        <ImageButton
+            android:id="@+id/something2"
+            android:layout_width="75dp"
+            android:layout_height="23dp"
+            android:background="@drawable/main_btns_gradients"
+            app:layout_constraintBottom_toBottomOf="@+id/name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.814"
+            app:layout_constraintStart_toEndOf="@+id/user_id"
+            app:layout_constraintTop_toTopOf="@+id/name"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/prefixIcon2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/baseline_edit_24"
+            app:layout_constraintBottom_toBottomOf="@+id/something"
+            app:layout_constraintStart_toStartOf="@+id/something"
+            app:layout_constraintTop_toTopOf="@+id/something2"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/centerText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$2.00"
+            android:textColor="@color/white"
+            android:textSize="13dp"
+            app:layout_constraintBottom_toBottomOf="@+id/something2"
+            app:layout_constraintEnd_toEndOf="@+id/something"
+            app:layout_constraintHorizontal_bias="0.458"
+            app:layout_constraintStart_toEndOf="@id/prefixIcon"
+            app:layout_constraintTop_toTopOf="@+id/something2"
+            app:layout_constraintVertical_bias="0.2" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
