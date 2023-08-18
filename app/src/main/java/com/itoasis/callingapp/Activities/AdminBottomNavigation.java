@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.itoasis.callingapp.Fragments.Home;
 import com.itoasis.callingapp.Fragments.Payment;
+import com.itoasis.callingapp.Fragments.add_user;
 import com.itoasis.callingapp.R;
 
 public class AdminBottomNavigation extends AppCompatActivity {
@@ -44,7 +45,7 @@ public class AdminBottomNavigation extends AppCompatActivity {
                     setCurrentFragment(new Home());
                     break;
                 case R.id.set_prices:
-                    setCurrentFragment(new Home());
+                    setCurrentFragment(new add_user());
                     break;
                 case R.id.log_out:
 

@@ -25,13 +25,13 @@
             android:id="@+id/paymentName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
 
+            android:layout_marginStart="56dp"
             android:text="lorem Ipsum"
             android:textColor="#2D2A2A"
             android:textFontWeight="600"
-            android:textSize="14sp"
 
+            android:textSize="14sp"
             app:layout_constraintLeft_toRightOf="@+id/profile_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/price" />
