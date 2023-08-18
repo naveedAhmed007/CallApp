@@ -22,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.itoasis.callingapp.Fragments.Home;
 import com.itoasis.callingapp.Fragments.Payment;
 import com.itoasis.callingapp.Fragments.UserDetails;
+import com.itoasis.callingapp.Fragments.setPrices;
 import com.itoasis.callingapp.R;
 
 public class AdminBottomNavigation extends AppCompatActivity {
@@ -45,7 +46,7 @@ public class AdminBottomNavigation extends AppCompatActivity {
                     setCurrentFragment(new Home());
                     break;
                 case R.id.set_prices:
-                    setCurrentFragment(new UserDetails());
+                    setCurrentFragment(new setPrices());
                     break;
                 case R.id.log_out:
 
