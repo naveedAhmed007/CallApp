@@ -44,26 +44,12 @@ monthPicker=v.findViewById(R.id.button);
 monthPicker.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-        showMonthPickerMenu();
+
     }
 });
         return v;
     }
 
 
-    private void showMonthPickerMenu() {
-        PopupMenu popupMenu = new PopupMenu(requireContext(), monthPicker);
-        popupMenu.getMenuInflater().inflate(R.menu.month_picker_menu, popupMenu.getMenu());
 
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                String selectedMonth = item.getTitle().toString();
-                // Do something with the selected month
-                return true;
-            }
-        });
-
-        popupMenu.show();
-    }
 }
