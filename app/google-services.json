@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "621123585376",
+    "project_id": "callingapp-9f18f",
+    "storage_bucket": "callingapp-9f18f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621123585376:android:8b292be984321e1b5cca05",
+        "android_client_info": {
+          "package_name": "com.itoasis.callingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621123585376-4eolmbmruivgrmd7jl6akccm73acm922.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2CJ3EIg4rdo1r5SWWeqQebeEtM5vyLIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621123585376-4eolmbmruivgrmd7jl6akccm73acm922.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
