@@ -1,8 +1,11 @@
 package com.itoasis.callingapp.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +28,8 @@ public class UserDetails extends Fragment  {
     // class and array list
     private UserDetailsAdapter adapter;
     private ArrayList<UserDetailsModal> UserDetailsModalArrayList;
+    private com.google.android.material.button.MaterialButton addUser;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,23 @@ public class UserDetails extends Fragment  {
 
                 View v=inflater.inflate(R.layout.fragment_user_details, container, false);
         recyclerView = v.findViewById(R.id.recycleruserDetails);
-buildRecyclerView();
+        addUser =v.findViewById(R.id.addUser);
+        addUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new add_user();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.flFragment, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+            }
+        });
+
+
+
+        buildRecyclerView();
         return v;
     }
 

@@ -19,10 +19,12 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.itoasis.callingapp.Fragments.History;
 import com.itoasis.callingapp.Fragments.Home;
 import com.itoasis.callingapp.Fragments.Message;
 import com.itoasis.callingapp.Fragments.Payment;
 import com.itoasis.callingapp.Fragments.Summary;
+import com.itoasis.callingapp.Fragments.UserDetails;
 import com.itoasis.callingapp.Fragments.add_user;
 import com.itoasis.callingapp.Fragments.setPrices;
 import com.itoasis.callingapp.R;
@@ -34,35 +36,28 @@ public class AdminBottomNavigation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_bottom_navigation);
         getSupportActionBar().hide();
-        getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, new Home()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.flFragment, new UserDetails()).commit();
 
 
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.summary:
-                    setCurrentFragment(new Payment());
-                    break;
-                case R.id.history:
-                    setCurrentFragment(new Home());
-                    break;
-                case R.id.set_prices:
-                    setCurrentFragment(new Summary());
-                    break;
-                case R.id.log_out:
-
-                    break;
-                case R.id.more:
-                    showPopupMenu(bottomNavigationView);
+                case R.id.details:
+                    setCurrentFragment(new UserDetails());
                     break;
                 case R.id.chat:
-                    setCurrentFragment(new Message());
+                    setCurrentFragment(new Payment());
                     break;
 
-//                case R.id.logout:
-//                    setCurrentFragment(new Home());
-//                    break;
+                case R.id.set_prices:
+                    setCurrentFragment(new setPrices());
+                    break;
+                                case R.id.more:
+                    showPopupMenu(bottomNavigationView);
+                    break;
+
+
             }
             return true;
         });
@@ -81,8 +76,11 @@ public class AdminBottomNavigation extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch(item.getItemId()){
-                    case R.id.set_prices:
-                        Toast.makeText(AdminBottomNavigation.this, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", Toast.LENGTH_SHORT).show();
+                    case R.id.summary:
+                        setCurrentFragment(new Summary());
+                        break;case R.id.history:
+                        setCurrentFragment(new History());
+                        break;
                 }
                 return true;
             }
