@@ -29,26 +29,26 @@ int mDay,mMonth,mYear;
 
 
 Button monthPicker;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v=inflater.inflate(R.layout.fragment_summary, container, false);
-monthPicker=v.findViewById(R.id.button);
-monthPicker.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        showMonthPickerMenu();
-    }
-});
-        return v;
-    }
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//    }
+//
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+////        View v=inflater.inflate(R.layout.fragment_summary, container, false);
+////monthPicker=v.findViewById(R.id.button);
+//monthPicker.setOnClickListener(new View.OnClickListener() {
+//    @Override
+//    public void onClick(View v) {
+//        showMonthPickerMenu();
+//    }
+//});
+//        return v;
+//    }
 
 
     private void showMonthPickerMenu() {

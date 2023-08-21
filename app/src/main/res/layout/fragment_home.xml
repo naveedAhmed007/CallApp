@@ -159,8 +159,9 @@
                 android:layout_marginEnd="12dp"
                 android:clickable="true"/>
 
-            <!-- Username Input -->
+            <!-- first_Number -->
             <EditText
+                android:id="@+id/first_Number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -175,6 +176,7 @@
 
             <!-- Postfix icon -->
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/contact_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/contact_list_icon"
@@ -246,6 +248,7 @@
 
             <!-- Postfix icon -->
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/contact_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/contact_list_icon"
@@ -273,6 +276,7 @@
             android:background="@drawable/call_button_background"
             android:textColor="#FFFFFF"
             android:textSize="14dp"
+            android:textStyle="bold"
             android:fontFamily="@font/inter"
             android:layout_marginTop="16dp"
             android:layout_gravity="center"/>

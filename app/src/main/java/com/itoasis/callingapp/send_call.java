@@ -4,14 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.itoasis.callingapp.Fragments.History;
 import com.itoasis.callingapp.Fragments.Home;
+import com.itoasis.callingapp.Fragments.Message;
 import com.itoasis.callingapp.Fragments.Notification;
+import com.itoasis.callingapp.Fragments.Payment;
+import com.itoasis.callingapp.Fragments.PhoneCall;
 import com.itoasis.callingapp.Fragments.Search;
 import com.itoasis.callingapp.Fragments.profile_call;
 import com.itoasis.callingapp.Fragments.send_Notification;
@@ -19,19 +24,31 @@ import com.itoasis.callingapp.Fragments.send_Notification;
 public class send_call extends AppCompatActivity {
 FrameLayout frameLayout;
     Fragment selectedFragment;
+    private com.google.android.material.floatingactionbutton.FloatingActionButton fab;
+
 BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bottom_navigation);
+        fab=findViewById(R.id.fab);
         frameLayout=findViewById(R.id.f1);
         bottomNavigationView=findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setBackground(null);
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         getSupportActionBar().hide();
-        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new Home()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new profile_call()).commit();
 
-        selectedFragment = new Home();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.f1, new Home()).commit();
+
+            }
+        });
+
+
+        selectedFragment = new profile_call();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -45,13 +62,13 @@ BottomNavigationView bottomNavigationView;
                         selectedFragment = new Home();
                         break;
                     case R.id.chat:
-                        selectedFragment = new profile_call();
+                        selectedFragment = new Message();
                         break;
                     case R.id.history:
                         selectedFragment = new History();
                         break;
                     case R.id.Payment:
-                        selectedFragment = new Notification();
+                        selectedFragment = new Payment();
                         break;
                     default:
                         return false;
@@ -64,10 +81,6 @@ BottomNavigationView bottomNavigationView;
         });
 
         
-//
-//        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-//        bottomNavigationView.setBackground(null);
-//        bottomNavigationView.getMenu().getItem(2).setEnabled(false);
-        // You can perform any initialization or actions for the send_call activity here
+
     }
 }

@@ -4,6 +4,12 @@
         android:title="(+1)" />
     <item
         android:id="@+id/country_ca"
-        android:title="Canada (+1)" />
+        android:title="(+5)" />
+    <item
+        android:id="@+id/country_uk"
+        android:title="(+91)" />
+    <item
+        android:id="@+id/country_pk"
+        android:title="(+92)" />
     <!-- Add more country codes as needed -->
 </menu>

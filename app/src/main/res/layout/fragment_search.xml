@@ -10,6 +10,16 @@
     android:background="@drawable/profile_bg"
     tools:context=".Fragments.profile_call">
 
+    <FrameLayout
+        android:id="@+id/flFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <!-- Custom Action Bar -->
     <!-- Custom Action Bar End -->
 

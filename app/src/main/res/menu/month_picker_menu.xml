@@ -6,5 +6,5 @@
     <item
         android:id="@+id/february"
         android:title="February"/>
-    <!-- Add other month items -->
+
 </menu>
