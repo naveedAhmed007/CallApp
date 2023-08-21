@@ -12,11 +12,6 @@
 
     <!-- Custom Action Bar -->
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/customActionBar"
@@ -68,17 +63,17 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter"
         android:text="Month"
+        android:layout_marginTop="20dp"
         android:textColor="@android:color/black"
         android:textSize="15dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintTop_toBottomOf="@+id/customActionBar"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.501" />
+        android:layout_marginLeft="50dp"
+
+
+
+         />
 
 
     <ImageButton
@@ -89,7 +84,7 @@
         android:src="@drawable/baseline_arrow_drop_down_24"
         app:layout_constraintBottom_toBottomOf="@+id/Month"
         app:layout_constraintEnd_toStartOf="@+id/Month"
-        app:layout_constraintHorizontal_bias="0.664"
+        app:layout_constraintHorizontal_bias="0.9"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/Month" />
@@ -117,7 +112,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/month_underLine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintRight_toRightOf="@id/Month"
         app:layout_constraintStart_toEndOf="@+id/Month"
         app:layout_constraintTop_toTopOf="@+id/Month"
@@ -131,7 +126,7 @@
         android:src="@drawable/baseline_arrow_drop_down_24"
         app:layout_constraintBottom_toBottomOf="@+id/Month"
         app:layout_constraintEnd_toStartOf="@+id/Day"
-        app:layout_constraintHorizontal_bias="0.664"
+        app:layout_constraintHorizontal_bias="0.9"
 
         app:layout_constraintStart_toEndOf="@+id/Month"
         app:layout_constraintTop_toTopOf="@+id/Month" />
@@ -146,6 +141,19 @@
         app:layout_constraintEnd_toEndOf="@+id/Day"
         app:layout_constraintStart_toStartOf="@+id/Day"
         app:layout_constraintTop_toBottomOf="@+id/Day" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+
+
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Month"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginVertical="10dp"
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 
