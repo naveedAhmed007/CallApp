@@ -75,23 +75,11 @@
             android:layout_height="25dp"
             android:background="@drawable/main_btns_gradients"
             android:src="@drawable/pen_image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.856"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/id_value"
-            app:layout_constraintVertical_bias="0.238" />
 
-        <ImageButton
-            android:id="@+id/imageButtonDelete"
-            android:layout_width="27dp"
-            android:layout_height="25dp"
-            android:background="@drawable/main_btns_gradients"
-            android:src="@drawable/chat_image"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.664"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/id_value"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toStartOf="@+id/id_value"
             app:layout_constraintTop_toBottomOf="@+id/id_value"
             app:layout_constraintVertical_bias="0.238" />
 
@@ -100,31 +88,44 @@
             android:layout_width="27dp"
             android:layout_height="25dp"
             android:background="@drawable/main_btns_gradients"
+            android:src="@drawable/chat_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageButtonEdit"
+            app:layout_constraintHorizontal_bias="0.526"
+            app:layout_constraintStart_toEndOf="@+id/imageButtonDelete"
+            app:layout_constraintTop_toBottomOf="@+id/id_value"
+            app:layout_constraintVertical_bias="0.238"  />
+
+        <ImageButton
+            android:id="@+id/imageButtonDelete"
+            android:layout_width="27dp"
+            android:layout_height="25dp"
+            android:background="@drawable/main_btns_gradients"
             android:src="@drawable/del_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.763"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.15"
+            app:layout_constraintStart_toEndOf="@+id/postfixIcon"
             app:layout_constraintTop_toBottomOf="@+id/id_value"
-            app:layout_constraintVertical_bias="0.238" />
-
-        <ImageButton
-            android:id="@+id/something"
-            android:layout_width="115dp"
-            android:layout_height="25dp"
-            android:background="@drawable/main_btns_gradients"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.445"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/id_value"
-            app:layout_constraintVertical_bias="0.238" />
+            app:layout_constraintVertical_bias="0.238"
+          />
 
 
         <!-- Prefix Icon -->
 
         <!-- Text -->
+        <ImageButton
+            android:id="@+id/something"
+            android:layout_width="115dp"
+            android:layout_height="25dp"
+            android:background="@drawable/main_btns_gradients"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.368"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/id_value"
+            app:layout_constraintVertical_bias="0.238" />
+
         <ImageView
             android:id="@+id/prefixIcon"
             android:layout_width="20dp"
@@ -139,8 +140,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="24/240 min "
-            android:textSize="12dp"
             android:textColor="@color/white"
+            android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="@+id/something"
             app:layout_constraintEnd_toStartOf="@+id/postfixIcon"
             app:layout_constraintHorizontal_bias="0.5"
