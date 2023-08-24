@@ -1,8 +1,8 @@
 package com.itoasis.callingapp.adapter;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +13,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.modal.UserDetailsModal;
 
@@ -20,44 +26,44 @@ import java.util.ArrayList;
 
 public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.ViewHolder> {
 
-    // creating a variable for array list and context.
     private ArrayList<UserDetailsModal> UserDetailsModalArrayList;
     Context context;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference userDetailsCollection = db.collection("userDetails");
 
-
-    // creating a constructor for our variables.
     public UserDetailsAdapter(ArrayList<UserDetailsModal> UserDetailsModalArrayList, Context context) {
         this.UserDetailsModalArrayList = UserDetailsModalArrayList;
         this.context=context;
     }
 
-    // method for filtering our recyclerview items.
     public void filterList(ArrayList<UserDetailsModal> filterlist) {
-        // below line is to add our filtered
-        // list in our course array list.
         UserDetailsModalArrayList = filterlist;
-        // below line is to notify our adapter
-        // as change in recycler view data.
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public UserDetailsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // below line is to inflate our layout.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_details_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull UserDetailsAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        // setting data to our views of recycler view.
         UserDetailsModal model = UserDetailsModalArrayList.get(position);
         holder.name.setText(model.getName());
         holder.id.setText(model.getUserId());
+        holder.creditstv.setText(model.getCredit() + "/240");
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Get the user ID of the item to be deleted
+                String userId = model.getUserId(); // Assuming this is the unique identifier for the user
+
+                // Call a method to delete the user from Firestore
+                deleteDocumentById(userId);
+
+                // Remove the item from the RecyclerView locally
                 removeAt(position);
             }
         });
@@ -65,29 +71,44 @@ public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.
 
     @Override
     public int getItemCount() {
-        // returning the size of array list.
         return UserDetailsModalArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // creating variables for our views.
-        private final TextView name,id;
-        private final ImageButton edit,delete;
+        private final TextView name, id, creditstv;
+        private final ImageButton edit, delete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // initializing our views with their ids.
             name = itemView.findViewById(R.id.name_value);
             id = itemView.findViewById(R.id.id_value);
-            edit=itemView.findViewById(R.id.imageButtonEdit);
-            delete=itemView.findViewById(R.id.imageButtonDelete);
-
-
+            edit = itemView.findViewById(R.id.imageButtonEdit);
+            creditstv = itemView.findViewById(R.id.creditstv);
+            delete = itemView.findViewById(R.id.imageButtonDelete);
         }
     }
+
     private void removeAt(int position) {
         UserDetailsModalArrayList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, UserDetailsModalArrayList.size());
+    }
+    private void deleteDocumentById(String documentId) {
+        userDetailsCollection.document(documentId).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Document deleted successfully
+                        Toast.makeText(context, "Document deleted from Firestore", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle deletion failure
+                        Toast.makeText(context, "Error deleting document: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e("Firestore Delete Error", "Error deleting document: " + e.getMessage());
+                    }
+                });
     }
 }

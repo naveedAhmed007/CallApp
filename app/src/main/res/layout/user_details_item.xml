@@ -136,7 +136,7 @@
             app:layout_constraintTop_toTopOf="@+id/something" />
 
         <TextView
-            android:id="@+id/centerText"
+            android:id="@+id/creditstv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="24/240 min "
