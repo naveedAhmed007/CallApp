@@ -56,7 +56,47 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
+<!--    <RadioGroup-->
+<!--        android:id="@+id/roleRadioGroup"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/adminRadioButton" -->
+<!--        app:layout_constraintStart_toStartOf="@+id/adminRadioButton" -->
+<!--        app:layout_constraintTop_toBottomOf="@+id/customActionBar" >-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/RoleHeadingLabel"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Role:"-->
+<!--        android:textColor="#747474"-->
+<!--        android:textSize="14dp"-->
+<!--        app:layout_constraintVertical_bias="1" />-->
+
+<!--    <RadioButton-->
+<!--        android:id="@+id/adminRadioButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Admin"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textSize="14dp"-->
+<!--        android:checked="true" -->
+<!--    />-->
+
+<!--    <RadioButton-->
+<!--        android:id="@+id/clientRadioButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Client"-->
+<!--        android:textColor="#000000"-->
+<!--        android:textSize="14dp"-->
+<!--        />-->
+
+<!--</RadioGroup>-->
+
+
+<TextView
         android:id="@+id/NameHeadingLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

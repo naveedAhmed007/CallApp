@@ -275,6 +275,7 @@
         android:id="@+id/box4"
         android:layout_width="74dp"
         android:layout_height="72dp"
+        android:clickable="true"
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_icons"
         android:paddingBottom="10dp"

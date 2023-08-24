@@ -40,4 +40,5 @@ public class UserDetailsModal {
     public void setUserId(String userId) {
         this.UserId = userId;
     }
+
 }

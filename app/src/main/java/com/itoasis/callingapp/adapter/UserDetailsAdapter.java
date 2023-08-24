@@ -13,10 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.R;
@@ -29,7 +32,7 @@ public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.
     private ArrayList<UserDetailsModal> UserDetailsModalArrayList;
     Context context;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference userDetailsCollection = db.collection("userDetails");
+    CollectionReference userDetailsCollection = db.collection("users");
 
     public UserDetailsAdapter(ArrayList<UserDetailsModal> UserDetailsModalArrayList, Context context) {
         this.UserDetailsModalArrayList = UserDetailsModalArrayList;
@@ -94,21 +97,28 @@ public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.
         notifyItemRangeChanged(position, UserDetailsModalArrayList.size());
     }
     private void deleteDocumentById(String documentId) {
-        userDetailsCollection.document(documentId).delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Document deleted successfully
-                        Toast.makeText(context, "Document deleted from Firestore", Toast.LENGTH_SHORT).show();
+
+
+        Query query = userDetailsCollection.whereEqualTo("email",documentId);
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Assuming there is only one document with the given email
+                        String documentId = document.getId();
+                        userDetailsCollection.document(documentId).delete();
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Handle deletion failure
-                        Toast.makeText(context, "Error deleting document: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("Firestore Delete Error", "Error deleting document: " + e.getMessage());
-                    }
-                });
+                } else {
+                    // Handle errors
+                }
+            }
+        });
+
+
+
+
+
     }
 }
