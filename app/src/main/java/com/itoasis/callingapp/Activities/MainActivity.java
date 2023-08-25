@@ -25,6 +25,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.Activities.DashboardActivity;
 import com.itoasis.callingapp.R;
+import com.itoasis.callingapp.send_call;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -135,19 +136,29 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-                                startActivity(intent);
+                                String userEmail = user.getEmail();
+
+                                if (userEmail != null && userEmail.equals("umarninjauuuu@gmail.com")) {
+                                    // If the email matches, open DashboardActivity
+                                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    // If the email does not match, open fragmentProfile
+
+                                    Intent intent = new Intent(MainActivity.this, send_call.class);
+                                    startActivity(intent);
+                                }
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Toast.makeText(MainActivity.this, "Please Enter Correct Email and Password.",
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Sign-in failed. Please check your email and password and try again.", Toast.LENGTH_SHORT).show();
                             }
                         }
+
                     });
         }
     }
+
 
 
     private void checkAndHandleEmptyPassword() {
