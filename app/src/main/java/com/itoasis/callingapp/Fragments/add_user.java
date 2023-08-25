@@ -14,8 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hbb20.CountryCodePicker;
@@ -31,9 +37,15 @@ public class add_user extends Fragment {
     TextView nameError, emailError, passwordError, creditError, countryError;
     CountryCodePicker countryCodePicker;
 
+    private FirebaseAuth mAuth; // Firebase Authentication
+    private FirebaseFirestore db; // Firestore
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_add_user, container, false);
+
+        mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Authentication
+        db = FirebaseFirestore.getInstance(); // Initialize Firestore
 
         // Initialize views
         nameEditText = v.findViewById(R.id.nameEditText);
@@ -48,8 +60,6 @@ public class add_user extends Fragment {
         creditField = v.findViewById(R.id.credit_field);
         countryCodePicker = v.findViewById(R.id.countryCodePicker);
         countryError = v.findViewById(R.id.countryError);
-
-
 
         addUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,33 +138,48 @@ public class add_user extends Fragment {
         // Create a Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Create a HashMap to store user data
-        Map<String, Object> user = new HashMap<>();
-        user.put("name", userName);
-        user.put("email", email);
-        user.put("password", password);
-        user.put("countryCode", selectedCountryCode);
-        user.put("credits", credits);
+        // Create a Firebase Authentication user with the provided email and password
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // User creation was successful
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            String uid = firebaseUser.getUid(); // Get the unique user ID
 
-        // Upload the user data to Firestore
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        // Data uploaded successfully
-                        Toast.makeText(getContext(), "User added successfully", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Handle failure
-                        Toast.makeText(getContext(), "Error adding user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            // Create a HashMap to store user data for Firestore
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("name", userName);
+                            user.put("email", email);
+                            user.put("countryCode", selectedCountryCode);
+                            user.put("credits", credits);
+
+                            // Upload the user data to Firestore
+                            db.collection("users")
+                                    .document(uid) // Use the UID as the document ID in Firestore
+                                    .set(user)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            // Data uploaded successfully to Firestore
+                                            Toast.makeText(getContext(), "User data added successfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Handle Firestore data upload failure
+                                            Toast.makeText(getContext(), "Error adding user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else {
+                            // User creation failed, handle the error here
+                            Toast.makeText(getContext(), "Error creating user: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }
-
 
     public void applyValidation(EditText editText, TextView error) {
         editText.addTextChangedListener(new TextWatcher() {
@@ -172,6 +197,7 @@ public class add_user extends Fragment {
             }
         });
     }
+
     public static boolean isValidEmail(CharSequence target) {
         return (Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
@@ -203,7 +229,6 @@ public class add_user extends Fragment {
         }
         return false;
     }
-
 
     // Rest of your code...
 }

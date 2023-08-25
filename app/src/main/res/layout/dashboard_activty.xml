@@ -1,9 +1,17 @@
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#CCE9FAFB"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".Activities.DashboardActivity"
+    android:background="#CCE9FAFB">
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <!-- Custom Action Bar -->
@@ -275,6 +283,7 @@
         android:id="@+id/box4"
         android:layout_width="74dp"
         android:layout_height="72dp"
+        android:clickable="true"
         android:layout_marginTop="8dp"
         android:background="@drawable/rounded_icons"
         android:paddingBottom="10dp"
@@ -467,3 +476,4 @@
         app:layout_constraintTop_toTopOf="@+id/box7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -60,7 +60,7 @@ public class UserDetails extends Fragment {
 
         // Initialize Firebase
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference usersRef = db.collection("users"); // Replace "users" with your Firestore collection name
+        CollectionReference usersRef = db.collection("users");
 
         usersRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
