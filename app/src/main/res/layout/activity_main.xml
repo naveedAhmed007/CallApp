@@ -161,8 +161,8 @@
                         <!-- Postfix icon -->
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/password_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:src="@drawable/gary_eye"
                             android:layout_gravity="center_vertical"
                             android:layout_marginEnd="12dp"

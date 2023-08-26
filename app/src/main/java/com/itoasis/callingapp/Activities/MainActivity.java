@@ -2,6 +2,7 @@ package com.itoasis.callingapp.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private View passwordSeparator;
     private TextView passwordErrorTextView;
 
+
     private FirebaseAuth mAuth;
 
     @Override
@@ -60,14 +62,19 @@ public class MainActivity extends AppCompatActivity {
         passwordIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Toggle the password visibility
-                if (passwordEditText.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
-                    passwordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                AppCompatImageView passwordPostfixIcon=findViewById(R.id.password_icon);
+                int inputType = passwordEditText.getInputType();
+                if (inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                    // Password is visible, switch to password mode
+                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    passwordPostfixIcon.setImageResource(R.drawable.gary_eye); // Change to closed eye icon
                 } else {
-                    passwordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    // Password is hidden, switch to visible mode
+                    passwordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    passwordPostfixIcon.setImageResource(R.drawable.gray_corss_eye); // Change to open eye icon
                 }
 
-                // Move the cursor to the end of the text to maintain cursor position
+                // Move cursor to the end of the text
                 passwordEditText.setSelection(passwordEditText.getText().length());
             }
         });
@@ -158,9 +165,9 @@ public class MainActivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 String userEmail = user.getEmail();
 
-                                if (userEmail != null && userEmail.equals("client@gmail.com")) {
+                                if (userEmail != null && userEmail.equals("umarninjauuuu@gmail.com")) {
                                     // If the email matches, open DashboardActivity
-                                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                                    Intent intent = new Intent(MainActivity.this, send_call.class);
                                     startActivity(intent);
                                 } else {
                                     // If the email does not match, open send_call
