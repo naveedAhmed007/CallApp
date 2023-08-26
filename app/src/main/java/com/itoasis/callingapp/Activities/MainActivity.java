@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -126,6 +127,13 @@ public class MainActivity extends AppCompatActivity {
         if (username.isEmpty()) {
             usernameSeparator.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
             usernameErrorTextView.setVisibility(View.VISIBLE);
+        } else if ( !isValidEmail(username)) {
+            usernameSeparator.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            usernameErrorTextView.setText("Enter a Valid Email");
+            usernameErrorTextView.setVisibility(View.VISIBLE);
+        } else if (!username.isEmpty()&&passwordEditText.getText().toString().isEmpty()) {
+            passwordSeparator.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            passwordErrorTextView.setVisibility(View.VISIBLE);
         } else {
             usernameSeparator.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
             usernameErrorTextView.setVisibility(View.GONE);
@@ -152,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(MainActivity.this, "Sign-in failed. Please check your email and password and try again.", Toast.LENGTH_SHORT).show();
+                                passwordSeparator.setBackgroundColor((getResources().getColor(android.R.color.holo_red_dark)));
+                                passwordErrorTextView.setText("Incorrect Password");
+                                passwordErrorTextView.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -160,7 +171,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    public static boolean isValidEmail(CharSequence target) {
+        return (Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
     private void checkAndHandleEmptyPassword() {
         String password = passwordEditText.getText().toString().trim();
         if (password.isEmpty()) {

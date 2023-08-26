@@ -42,16 +42,8 @@ public class History extends Fragment {
 
 
 // below line is to add data to our array list.
-        courseModelArrayList.add(new HistoryModal("DSA1","yar","11","12"));
-        courseModelArrayList.add(new HistoryModal("DSA2","yar","11","12"));
-        courseModelArrayList.add(new HistoryModal("DSA3","yar","11","12"));
-        courseModelArrayList.add(new HistoryModal("DSA4","yar","11","12"));
-        courseModelArrayList.add(new HistoryModal("DSA5","yar","11","12"));
-        courseModelArrayList.add(new HistoryModal("DSA6","yar","11","12"));
-        courseModelArrayList.add(new HistoryModal("DSA7","yar","11","12"));
-        courseModelArrayList.add(new HistoryModal("DSA8","yar","11","12"));
-        courseModelArrayList.add(new HistoryModal("DSA9","yar","11","12"));
-        courseModelArrayList.add(new HistoryModal("DSA10","yar","11","12"));
+        courseModelArrayList.add(new HistoryModal("John Heather","MOM","12/03","12:45PM"));
+
 // initializing our adapter class.
 
         adapter = new HistoryAdapter(courseModelArrayList, rootView.getContext());

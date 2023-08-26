@@ -20,8 +20,9 @@
         android:id="@+id/flFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,16 +71,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintVertical_bias="0.5" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/rightIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/profile_pencil"
-            app:layout_constraintBottom_toBottomOf="@+id/headingText"
-            app:layout_constraintEnd_toStartOf="@+id/postfixIcon"
-            app:layout_constraintStart_toStartOf="@+id/headingText"
-            app:layout_constraintTop_toTopOf="@+id/headingText"
-            app:layout_constraintHorizontal_bias="0.4"/>
+
         <!-- Postfix Icon -->
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/postfixIcon"
@@ -104,6 +96,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintVertical_bias="0.0">
 
+
         <TextView
             android:id="@+id/name_profle"
             android:layout_width="wrap_content"
@@ -125,8 +118,19 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/rightIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/profile_pencil"
+        app:layout_constraintBottom_toBottomOf="@+id/circularViewLayout"
+        app:layout_constraintEnd_toEndOf="@+id/circularViewLayout"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintVertical_bias="0.95"
+        app:layout_constraintStart_toStartOf="@+id/circularViewLayout"
+        app:layout_constraintTop_toTopOf="@+id/circularViewLayout" />
     <TextView
-        android:id="@+id/subHeading"
+        android:id="@+id/User_Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="John Heather"
@@ -147,7 +151,7 @@
         android:textColor="@android:color/black"
         android:textSize="14dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/subHeading" />
+        app:layout_constraintTop_toBottomOf="@id/User_Name" />
 
     <View
         android:id="@+id/roundedView"
