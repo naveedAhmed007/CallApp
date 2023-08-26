@@ -30,6 +30,7 @@ public class MainActivity2 extends AppCompatActivity {
             }
             else {
                 startActivity(new Intent(this, MainActivity.class));
+                finish();
             }
         }
     }

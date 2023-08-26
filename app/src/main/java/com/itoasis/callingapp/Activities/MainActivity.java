@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 String userEmail = user.getEmail();
 
-                                if (userEmail != null && userEmail.equals("umarninjauuuu@gmail.com")) {
+                                if (userEmail != null && userEmail.equals("client@gmail.com")) {
                                     // If the email matches, open DashboardActivity
                                     Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                                     startActivity(intent);

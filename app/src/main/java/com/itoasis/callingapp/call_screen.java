@@ -56,8 +56,31 @@ public class call_screen extends AppCompatActivity {
         setContentView(R.layout.calling_screen);
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
-            imageButton2 = findViewById(R.id.imageButton2);
+
         }// Replace with the correct layout name
+
+        imageButton2 = findViewById(R.id.imageButton2);
+        imageButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(singleTon.getActivityCall()==1) {
+                    CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
+                    singleTon.resetActivityCall();
+                    singleTon.resetAnswerCall();
+
+
+                }
+                else{
+                    CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2));
+                    CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
+                    singleTon.resetActivityCall();
+                    singleTon.resetAnswerCall();
+
+
+                }
+            }
+        });
 
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
 
