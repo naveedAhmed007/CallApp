@@ -1,18 +1,12 @@
 package com.itoasis.callingapp.Activities;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.app.role.RoleManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
@@ -26,12 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.itoasis.callingapp.Activities.DashboardActivity;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.send_call;
 
@@ -46,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView passwordErrorTextView;
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
 
         usernameEditText = findViewById(R.id.usernameEditText);
         usernameSeparator = findViewById(R.id.usernameSeparator);
@@ -68,6 +54,23 @@ public class MainActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         passwordSeparator = findViewById(R.id.passwordSeparator);
         passwordErrorTextView = findViewById(R.id.passwordErrorTextView);
+
+        // Find the password icon view and set an OnClickListener
+        View passwordIcon = findViewById(R.id.password_icon);
+        passwordIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Toggle the password visibility
+                if (passwordEditText.getInputType() == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
+                    passwordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else {
+                    passwordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+
+                // Move the cursor to the end of the text to maintain cursor position
+                passwordEditText.setSelection(passwordEditText.getText().length());
+            }
+        });
 
         usernameEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -134,11 +137,12 @@ public class MainActivity extends AppCompatActivity {
         if (username.isEmpty()) {
             usernameSeparator.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
             usernameErrorTextView.setVisibility(View.VISIBLE);
-        } else if ( !isValidEmail(username)) {
+        } else if (!isValidEmail(username)) {
             usernameSeparator.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
-            usernameErrorTextView.setText("Enter a Valid Email");
+            usernameErrorTextView.setText("Enter a valid email!");
             usernameErrorTextView.setVisibility(View.VISIBLE);
-        } else if (!username.isEmpty()&&passwordEditText.getText().toString().isEmpty()) {
+        } else if (!username.isEmpty() && passwordEditText.getText().toString().isEmpty()) {
+            passwordErrorTextView.setText("Enter a password!");
             passwordSeparator.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
             passwordErrorTextView.setVisibility(View.VISIBLE);
         } else {
@@ -159,28 +163,31 @@ public class MainActivity extends AppCompatActivity {
                                     Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                                     startActivity(intent);
                                 } else {
-                                    // If the email does not match, open fragmentProfile
-
+                                    // If the email does not match, open send_call
                                     Intent intent = new Intent(MainActivity.this, send_call.class);
                                     startActivity(intent);
                                 }
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Toast.makeText(MainActivity.this, "Sign-in failed. Please check your email and password and try again.", Toast.LENGTH_SHORT).show();
-                                passwordSeparator.setBackgroundColor((getResources().getColor(android.R.color.holo_red_dark)));
+                                passwordSeparator.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
                                 passwordErrorTextView.setText("Incorrect Password");
                                 passwordErrorTextView.setVisibility(View.VISIBLE);
                             }
                         }
-
                     });
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        this.finishAffinity();
+    }
 
     public static boolean isValidEmail(CharSequence target) {
-        return (Patterns.EMAIL_ADDRESS.matcher(target).matches());
+        return Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
+
     private void checkAndHandleEmptyPassword() {
         String password = passwordEditText.getText().toString().trim();
         if (password.isEmpty()) {
@@ -192,8 +199,3 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
-
-
-
-
-
