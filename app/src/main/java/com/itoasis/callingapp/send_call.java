@@ -37,7 +37,7 @@ BottomNavigationView bottomNavigationView;
         bottomNavigationView.setBackground(null);
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         getSupportActionBar().hide();
-        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new profile_call()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new Home()).commit();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +56,7 @@ BottomNavigationView bottomNavigationView;
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.profile:
-                        selectedFragment = new profile_call();
+                        selectedFragment = new Home();
                         break;
                     case R.id.placeholder:
                         selectedFragment = new Home();

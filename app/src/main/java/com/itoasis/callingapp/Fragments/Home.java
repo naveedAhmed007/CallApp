@@ -1,11 +1,20 @@
 package com.itoasis.callingapp.Fragments;
 
+import static android.content.ContentValues.TAG;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telecom.TelecomManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,21 +24,41 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.call_screen;
+import com.itoasis.callingapp.utils.CallListHelper;
+import com.itoasis.callingapp.utils.CallManager;
+import com.itoasis.callingapp.utils.Singleton;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Home extends Fragment {
-    private EditText firstNumberEditText;
-
+    private EditText firstNumberEditText,secondNumberEditText;
+    FirebaseFirestore db;
+    Singleton singleton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+         db= FirebaseFirestore.getInstance();
+        singleton=Singleton.getInstance();
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        firstNumberEditText= rootView.findViewById(R.id.first_Number);
+        secondNumberEditText= rootView.findViewById(R.id.second_number);
 
         // Find the ImageView for the postfix icon inside the rootView
         AppCompatImageView postfixIcon = rootView.findViewById(R.id.contact_one);
@@ -91,13 +120,51 @@ public class Home extends Fragment {
         call_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open the new activity when the postfix icon is clicked
-                openNewActivity();
+                Map<String, Object> numbers = new HashMap<>();
+                String inputNumber1=secondNumberEditText.getText().toString().trim();
+                String inputNumber=firstNumberEditText.getText().toString().trim();
+
+                if (!inputNumber.isEmpty() && !inputNumber1.isEmpty()) {
+                numbers.put("number1", inputNumber);
+                numbers.put("number2", inputNumber1);
+                numbers.put("length", "0");
+                addData(numbers);
+
+                    singleton.setPhoneNumber(inputNumber1);
+
+                    @SuppressLint("ServiceCast") TelecomManager telecomManager = (TelecomManager) getContext().getSystemService(Context.TELECOM_SERVICE);
+                    Uri uri = Uri.fromParts("tel", inputNumber, null);
+                    Bundle extras = new Bundle();
+                    extras.putBoolean(TelecomManager.EXTRA_START_CALL_WITH_SPEAKERPHONE, false);
+
+                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+
+                        if (telecomManager.getDefaultDialerPackage().equals(getContext().getPackageName())){
+                            telecomManager.placeCall(uri, extras);
+                        }
+                        else{
+                            Uri phoneNumber = Uri.parse("tel:" + inputNumber);
+                            Intent callIntent = new Intent(Intent.ACTION_CALL, phoneNumber);
+                            callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(callIntent);
+                        }
+                    }
+                    else{
+                        Toast.makeText(getContext(), "Please allow permission", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+
+
             }
         });
 
         // Find the EditText field for "Number 1"
-        firstNumberEditText = rootView.findViewById(R.id.first_Number);
+
+
+
+
 
         return rootView;
     }
@@ -170,4 +237,25 @@ public class Home extends Fragment {
         Intent intent = new Intent(requireContext(), call_screen.class);
         startActivity(intent);
     }
+
+
+    public void addData(Map<String, Object> numbers){
+        db.collection("numbers")
+                .add(numbers)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        Toast.makeText(getContext(), "numbers are added", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+    }
+
+
 }
