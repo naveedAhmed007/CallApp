@@ -1,10 +1,14 @@
 package com.itoasis.callingapp.Activities;
 
+import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -28,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.Fragments.UserDetails;
+import com.itoasis.callingapp.Fragments.add_user;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.utils.Singleton;
 
@@ -94,28 +99,30 @@ initVariables();
         box4ImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open your desired activity here
-                singleton.setPhoneNumber(phonenumber2);
-                @SuppressLint("ServiceCast") TelecomManager telecomManager = (TelecomManager) getSystemService(Context.TELECOM_SERVICE);
-                Uri uri = Uri.fromParts("tel", phonenumber1, null);
-                Bundle extras = new Bundle();
-                extras.putBoolean(TelecomManager.EXTRA_START_CALL_WITH_SPEAKERPHONE, false);
-
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-
-                    if (telecomManager.getDefaultDialerPackage().equals(getApplicationContext().getPackageName())){
-                        telecomManager.placeCall(uri, extras);
-                    }
-                    else{
-                        Uri phoneNumber = Uri.parse("tel:" + phonenumber1);
-                        Intent callIntent = new Intent(Intent.ACTION_CALL, phoneNumber);
-                        callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(callIntent);
-                    }
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Please allow permission", Toast.LENGTH_SHORT).show();
-                }
+//                // Open your desired activity here
+//                singleton.setPhoneNumber(phonenumber2);
+//                @SuppressLint("ServiceCast") TelecomManager telecomManager = (TelecomManager) getSystemService(Context.TELECOM_SERVICE);
+//                Uri uri = Uri.fromParts("tel", phonenumber1, null);
+//                Bundle extras = new Bundle();
+//                extras.putBoolean(TelecomManager.EXTRA_START_CALL_WITH_SPEAKERPHONE, false);
+//
+//                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+//
+//                    if (telecomManager.getDefaultDialerPackage().equals(getApplicationContext().getPackageName())){
+//                        telecomManager.placeCall(uri, extras);
+//                    }
+//                    else{
+//                        Uri phoneNumber = Uri.parse("tel:" + phonenumber1);
+//                        Intent callIntent = new Intent(Intent.ACTION_CALL, phoneNumber);
+//                        callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(callIntent);
+//                    }
+//                }
+//                else{
+//                    Toast.makeText(getApplicationContext(), "Please allow permission", Toast.LENGTH_SHORT).show();
+//                }
+                Intent intent = new Intent(DashboardActivity.this, AdminBottomNavigation.class);
+                startActivity(intent);
             }
         });
     }

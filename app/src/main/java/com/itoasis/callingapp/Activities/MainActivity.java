@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private View passwordSeparator;
     private TextView passwordErrorTextView;
 
-
     private FirebaseAuth mAuth;
 
     @Override
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         passwordIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppCompatImageView passwordPostfixIcon=findViewById(R.id.password_icon);
+                AppCompatImageView passwordPostfixIcon = findViewById(R.id.password_icon);
                 int inputType = passwordEditText.getInputType();
                 if (inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
                     // Password is visible, switch to password mode
@@ -130,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser != null) {
             // User is signed in, you can reload or update the UI as needed
             reload();
+        }else {
+            Toast.makeText(this, "Nnja", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -163,15 +164,18 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                String userEmail = user.getEmail();
+                                String userEmail = user != null ? user.getEmail() : null;
 
                                 if (userEmail != null && userEmail.equals("umarninjauuuu@gmail.com")) {
                                     // If the email matches, open DashboardActivity
-                                    Intent intent = new Intent(MainActivity.this, send_call.class);
+                                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                                     startActivity(intent);
                                 } else {
                                     // If the email does not match, open send_call
                                     Intent intent = new Intent(MainActivity.this, send_call.class);
+
+                                    // Pass user email to the send_call activity
+                                    intent.putExtra("user_email", userEmail);
                                     startActivity(intent);
                                 }
                             } else {
@@ -182,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                                 passwordErrorTextView.setVisibility(View.VISIBLE);
                             }
                         }
+
                     });
         }
     }

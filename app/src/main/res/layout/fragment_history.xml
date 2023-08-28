@@ -22,8 +22,9 @@
 
         <!-- Prefix Icon -->
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/prefixIcon"
+            android:id="@+id/History_back_btn"
             android:layout_width="wrap_content"
+            android:clickable="true"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_arrow_back_24"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +42,7 @@
             android:textColor="@android:color/black"
             android:textSize="17dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/prefixIcon"
+            app:layout_constraintStart_toEndOf="@id/History_back_btn"
             app:layout_constraintEnd_toStartOf="@id/postfixIcon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
