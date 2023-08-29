@@ -38,7 +38,7 @@ public class DashboardActivity extends AppCompatActivity {
     CollectionReference usersCollection;
     Singleton singleton;
     String phonenumber1,phonenumber2;
-    ImageView box4ImageView;
+    ImageView box4ImageView,setPrices,addUser,callButton;
 
 
     @Override
@@ -80,6 +80,7 @@ initVariables();
 
 
 
+
                             }
                         }
                     }
@@ -118,11 +119,44 @@ initVariables();
                 }
             }
         });
+        setPrices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        addUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AdminBottomNavigation.class);
+
+                intent.putExtra("key", "addUser");
+                // start the Intent
+                startActivity(intent);
+
+            }
+        });
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AdminBottomNavigation.class);
+
+                intent.putExtra("key", "home");
+                singleton.setCallScreenFrom("admin");
+                // start the Intent
+                startActivity(intent);
+
+
+            }
+        });
     }
     private void initVariables() {
         db = FirebaseFirestore.getInstance();
         usersCollection=db.collection("numbers");
         singleton=Singleton.getInstance();
          box4ImageView = findViewById(R.id.box4);
+         setPrices=findViewById(R.id.box3);
+        addUser=findViewById(R.id.box5);
+        callButton =findViewById(R.id.callButton);
     }
 }

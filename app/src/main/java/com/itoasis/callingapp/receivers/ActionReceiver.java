@@ -10,14 +10,16 @@ import android.util.Log;
 
 import com.itoasis.callingapp.utils.CallListHelper;
 import com.itoasis.callingapp.utils.CallManager;
+import com.itoasis.callingapp.utils.Singleton;
 
 public class ActionReceiver extends BroadcastReceiver {
-
+Singleton singleton=Singleton.getInstance();
     @SuppressLint({"UseCompatTextViewDrawableApis", "SetTextI18n"})
     @Override
     public void onReceive(Context context, Intent intent) {
 
 
+        singleton.incrementCounterCalls();
         Bundle intentExtras = intent.getExtras();
 
         for (String k: intentExtras.keySet()) {
@@ -30,6 +32,7 @@ public class ActionReceiver extends BroadcastReceiver {
 
 
             if(action.equalsIgnoreCase("YES")){
+
                 CallManager.answerCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
             }
             else if(action.equalsIgnoreCase("NO")){
@@ -68,6 +71,9 @@ public class ActionReceiver extends BroadcastReceiver {
 //            }
 
             if(action.equalsIgnoreCase("YES")){
+
+
+
 
 //                if (CallActivity.isSpeakerOn){
 //                    CallManager.speakerCall(false);

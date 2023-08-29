@@ -20,10 +20,12 @@ import com.itoasis.callingapp.Fragments.PhoneCall;
 import com.itoasis.callingapp.Fragments.Search;
 import com.itoasis.callingapp.Fragments.profile_call;
 import com.itoasis.callingapp.Fragments.send_Notification;
+import com.itoasis.callingapp.utils.Singleton;
 
 public class send_call extends AppCompatActivity {
 FrameLayout frameLayout;
     Fragment selectedFragment;
+    Singleton singleton;
     private com.google.android.material.floatingactionbutton.FloatingActionButton fab;
 
 BottomNavigationView bottomNavigationView;
@@ -31,6 +33,7 @@ BottomNavigationView bottomNavigationView;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bottom_navigation);
+        singleton=Singleton.getInstance();
         fab=findViewById(R.id.fab);
         frameLayout=findViewById(R.id.f1);
         bottomNavigationView=findViewById(R.id.bottomNavigationView);
@@ -56,7 +59,9 @@ BottomNavigationView bottomNavigationView;
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.profile:
+
                         selectedFragment = new Home();
+                        singleton.setCallScreenFrom("client");
                         break;
                     case R.id.placeholder:
                         selectedFragment = new Home();

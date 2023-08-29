@@ -5,14 +5,17 @@ public class Singleton {
 
 
     private static Singleton instance;
-    private int counter,activityCall,answeredCall;
+    private int counter,activityCall,answeredCall,counterreceivedcalls;
     private String phoneNumber; // New member variable to store phoneNumber
+    private String callScreenFrom; // New member variable to store phoneNumber
 
     private Singleton() {
         counter = 0;
         phoneNumber = ""; // Initialize phoneNumber as an empty string
         activityCall=0;
         answeredCall=0;
+        callScreenFrom="";
+        counterreceivedcalls=0;
     }
 
     public static synchronized Singleton getInstance() {
@@ -34,10 +37,17 @@ public class Singleton {
         this.phoneNumber = phoneNumber;
     }
 
+    public synchronized String getCallScreenFrom() {
+        return callScreenFrom;
+    }
+
+    public synchronized void setCallScreenFrom(String callScreenFrom) {
+        this.callScreenFrom = callScreenFrom;
+    }
+
     public synchronized String getPhoneNumber() {
         return phoneNumber;
     }
-
 
     public synchronized int getActivityCall() {
         return activityCall;
@@ -60,5 +70,21 @@ public class Singleton {
         activityCall=0;
 
     }
+    public synchronized void resetCallScreenFrom(){
+     callScreenFrom="";
+
+    }
+    public synchronized void resetCountCalls(){
+        counterreceivedcalls=0;
+
+    }
+    public synchronized int getCounterCalls() {
+        return counterreceivedcalls;
+    }
+
+    public synchronized void incrementCounterCalls() {
+        counterreceivedcalls++;
+    }
+
 
 }

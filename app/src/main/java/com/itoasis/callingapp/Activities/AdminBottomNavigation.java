@@ -57,6 +57,22 @@ public class AdminBottomNavigation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_bottom_navigation);
+        getSupportActionBar().hide();
+        Intent intent = getIntent();
+        String str = intent.getStringExtra("key");
+        switch(str){
+            case "addUser":
+                setCurrentFragment(new add_user());
+
+                break;
+            case "home":
+                setCurrentFragment(new Home());
+
+                break;
+            default:
+                setCurrentFragment(new UserDetails());
+                break;
+        }
 
 
 

@@ -26,12 +26,14 @@ import com.itoasis.callingapp.receivers.ActionReceiver;
 public class NotificationHelper {
 
     public static int NOTIFICATION_ID = 834831;
+    static Singleton singleton=Singleton.getInstance();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void createIncomingNotification(Context context, Call call) {
 
         String callerPhoneNumber = call.getDetails().getHandle().getSchemeSpecificPart();
         String callerName = ContactsHelper.getContactNameByPhoneNumber(callerPhoneNumber, context);
+
 
         String CHANNEL_ID = "Hidden_Pirates_Phone_App";
 
@@ -64,6 +66,7 @@ public class NotificationHelper {
         Intent answerCallIntent = new Intent(context, ActionReceiver.class);
         answerCallIntent.putExtra("pickUpCall", "YES");
         PendingIntent pickUpCallYesPendingIntent;
+
         pickUpCallYesPendingIntent = PendingIntent.getBroadcast(context, 1, answerCallIntent, PendingIntent.FLAG_MUTABLE);
 
 
@@ -107,7 +110,7 @@ public class NotificationHelper {
             callerName = ContactsHelper.getContactNameByPhoneNumber(callerPhoneNumber, context);
         }
 
-        String CHANNEL_ID = "Hidden_Pirates_Phone_App";
+        String CHANNEL_ID = "com.itoasis.Calling_APP";
 
         NotificationChannel channel = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -123,6 +126,7 @@ public class NotificationHelper {
         NotificationManager manager = context.getSystemService(NotificationManager.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager.createNotificationChannel(channel);
+            singleton.incrementCounterCalls();
         }
 
 
@@ -240,5 +244,9 @@ public class NotificationHelper {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
         notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+    public static void cancelNotification(Context context, int notificationId) {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.cancel(notificationId);
     }
 }

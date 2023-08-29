@@ -99,7 +99,7 @@ public class call_screen extends AppCompatActivity {
                 }
                 else if (action.equals("call_answered")) {
                     singleTon.incrementAnsweredCall();
-                    getLastDocumentId();
+//                    getLastDocumentId();
 
 //                    inProgressCallRLView.setVisibility(View.VISIBLE);
 //                    incomingRLView.setVisibility(View.GONE);
@@ -138,6 +138,8 @@ public class call_screen extends AppCompatActivity {
                             singleTon.resetAnswerCall();
                             CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2).conference(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                             CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).mergeConference();
+                            NotificationHelper.cancelNotification(getApplicationContext(), NotificationHelper.NOTIFICATION_ID);
+
                             android.os.Process.killProcess(android.os.Process.myPid());
                             System.exit(1);
                         }
