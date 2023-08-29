@@ -40,7 +40,7 @@ BottomNavigationView bottomNavigationView;
         bottomNavigationView.setBackground(null);
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         getSupportActionBar().hide();
-        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new Home()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new Message()).commit();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

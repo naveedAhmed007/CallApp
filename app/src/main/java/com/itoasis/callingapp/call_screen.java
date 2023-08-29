@@ -98,8 +98,9 @@ public class call_screen extends AppCompatActivity {
 //                    CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                 }
                 else if (action.equals("call_answered")) {
+                    getLastDocumentId();
                     singleTon.incrementAnsweredCall();
-//                    getLastDocumentId();
+
 
 //                    inProgressCallRLView.setVisibility(View.VISIBLE);
 //                    incomingRLView.setVisibility(View.GONE);
@@ -123,7 +124,6 @@ public class call_screen extends AppCompatActivity {
 
 
                     if(singleTon.getActivityCall()==1){
-
                         placeCall(singleTon.getPhoneNumber());
                         Intent intent1 = getIntent();
                         finish();
@@ -133,7 +133,9 @@ public class call_screen extends AppCompatActivity {
 
                     }
                     if(singleTon.getActivityCall()==2){
-                        if(singleTon.getAnsweredcall()==5){
+
+                        if(singleTon.getAnsweredcall()==3){
+
                             singleTon.resetActivityCall();
                             singleTon.resetAnswerCall();
                             CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2).conference(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
@@ -143,6 +145,10 @@ public class call_screen extends AppCompatActivity {
                             android.os.Process.killProcess(android.os.Process.myPid());
                             System.exit(1);
                         }
+                        else{
+                            Log.d("TAG======================", String.valueOf(singleTon.getAnsweredcall()));
+                        }
+
                     }
 
 
@@ -184,37 +190,38 @@ public class call_screen extends AppCompatActivity {
                     DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
 
                     // Get the document ID
+
                     String documentId = documentSnapshot.getId();
-
-                    db.collection("numbers").document(documentId)
-                            .update("length", "1")
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    // Update successful
-                                    Log.d(TAG, "Field updated successfully in the last document");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Handle errors
-                                    Log.e(TAG, "Error updating field in the last document", e);
-                                }
-                            });
-
-
-                    Toast.makeText(getApplicationContext(), documentId, Toast.LENGTH_SHORT).show();
+                    if (documentId != "") {
+                        db.collection("numbers").document(documentId)
+                                .update("length", "1")
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        // Update successful
+                                        Log.d(TAG, "Field updated successfully in the last document");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        // Handle errors
+                                        Log.e(TAG, "Error updating field in the last document", e);
+                                    }
+                                });
 
 
+                        Toast.makeText(getApplicationContext(), documentId, Toast.LENGTH_SHORT).show();
 
 
-                    // Now you have the last document ID based on the condition
-                    // You can use it as needed
-                } else {
-                    Toast.makeText(getApplicationContext(), "No matching document found", Toast.LENGTH_SHORT).show();
+                        // Now you have the last document ID based on the condition
+                        // You can use it as needed
+                    } else {
+                        Toast.makeText(getApplicationContext(), "No matching document found", Toast.LENGTH_SHORT).show();
 
-                    // No document found
+                        // No document found
+                    }
+
                 }
             }
         });

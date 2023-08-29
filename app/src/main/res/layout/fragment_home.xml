@@ -173,7 +173,7 @@
                 android:layout_weight="1"
                 android:textColor="#000"
                 android:hint="Number 1"
-                android:text="03049008079"
+                android:text="03237824555"
 
                 android:background="@null"
                 android:paddingStart="12dp"
@@ -254,7 +254,7 @@
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:inputType="number"
-                android:text="03338138603"
+                android:text="03216437143"
                 android:id="@+id/second_number"
                 />
 
