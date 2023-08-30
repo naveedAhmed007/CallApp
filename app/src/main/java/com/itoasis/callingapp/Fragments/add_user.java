@@ -105,7 +105,7 @@ public class add_user extends Fragment {
                 String userName = nameEditText.getText().toString().trim();
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordField.getText().toString().trim();
-                String selectedCountryCode = countryCodePicker.getSelectedCountryName();
+                String selectedCountryCode = countryCodePicker.getSelectedCountryNameCode();
                 String credits = creditField.getText().toString().trim();
 
                 if (userName.isEmpty() || userName.length() < 3) {
@@ -114,11 +114,11 @@ public class add_user extends Fragment {
                 } else if (email.isEmpty() || !isValidEmail(email)) {
                     emailError.setText(email.isEmpty() ? "Enter an email" : "Enter a valid email");
                     emailError.setVisibility(View.VISIBLE);
-                } else if (password.isEmpty()) {
-                    passwordError.setVisibility(View.VISIBLE);
-                } else if (password.length() < 8 || !containsUpperCase(password) || !containsLowerCase(password) || !containsSpecialCharacter(password)) {
-                    passwordError.setText("Password must have at least 8 characters, an uppercase letter, a lowercase letter, and a special character");
-                    passwordError.setVisibility(View.VISIBLE);
+//                } else if (password.isEmpty()) {
+//                    passwordError.setVisibility(View.VISIBLE);
+//                } else if (password.length() < 8 || !containsUpperCase(password) || !containsLowerCase(password) || !containsSpecialCharacter(password)) {
+//                    passwordError.setText("Password must have at least 8 characters, an uppercase letter, a lowercase letter, and a special character");
+//                    passwordError.setVisibility(View.VISIBLE);
                 } else if (selectedCountryCode.isEmpty() || selectedCountryCode.equals("0")) {
                     countryError.setVisibility(View.VISIBLE);
                 } else if (credits.isEmpty()) {
@@ -171,8 +171,8 @@ public class add_user extends Fragment {
     private boolean isValidInput(String userName, String email, String password, String credits) {
         return !userName.isEmpty() && userName.length() >= 3
                 && !email.isEmpty() && isValidEmail(email)
-                && !password.isEmpty() && password.length() >= 8
-                && containsUpperCase(password) && containsLowerCase(password) && containsSpecialCharacter(password)
+                && !password.isEmpty() && password.length() < 10
+               // && containsUpperCase(password) && containsLowerCase(password) && containsSpecialCharacter(password)
                 && !credits.isEmpty();
     }
 
@@ -246,7 +246,7 @@ public class add_user extends Fragment {
                             String userCountryCode = documentSnapshot.getString("countryCode");
                             String userPassword = documentSnapshot.getString("password");
 
-
+                            Toast.makeText(requireContext(), userCountryCode, Toast.LENGTH_SHORT).show();
 
                             // Populate EditText fields with user data
                             nameEditText.setText(userName);
@@ -383,5 +383,4 @@ public class add_user extends Fragment {
         return false;
     }
 
-    // Rest of your code...
 }

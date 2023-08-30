@@ -3,8 +3,10 @@ package com.itoasis.callingapp.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import com.itoasis.callingapp.utils.NetworkChangeListener;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -25,6 +27,7 @@ import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.send_call;
 
 public class MainActivity extends AppCompatActivity {
+    private NetworkChangeListener networkChangeListener;
 
     private EditText usernameEditText;
     private View usernameSeparator;
@@ -43,8 +46,18 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-
         setContentView(R.layout.activity_main);
+
+
+        // Initialize the NetworkChangeListener
+        networkChangeListener = new NetworkChangeListener();
+
+        // Register the BroadcastReceiver
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        registerReceiver(networkChangeListener, filter);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -133,7 +146,12 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Nnja", Toast.LENGTH_SHORT).show();
         }
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Unregister the BroadcastReceiver when the activity is destroyed
+        unregisterReceiver(networkChangeListener);
+    }
     private void reload() {
         // Perform any actions needed when the user is signed in or their state changes
         // This could include updating UI elements or loading user-specific data
@@ -166,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 String userEmail = user != null ? user.getEmail() : null;
 
-                                if (userEmail != null && userEmail.equals("umarninjauuuu@gmail.com")) {
+                                if (userEmail != null && userEmail.equals("admin@test.com")) {
                                     // If the email matches, open DashboardActivity
                                     Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
                                     startActivity(intent);

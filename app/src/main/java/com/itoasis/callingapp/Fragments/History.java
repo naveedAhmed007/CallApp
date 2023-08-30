@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -66,7 +67,7 @@ public class History extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         // Adding data to the array list...
-        courseModelArrayList.add(new HistoryModal("John Heather","MOM","12/03","12:45PM"));
+        courseModelArrayList.add(new HistoryModal("John Heather", "MOM", "12/03", "12:45PM"));
 
         // Initializing our adapter class.
         adapter = new HistoryAdapter(courseModelArrayList, rootView.getContext());
@@ -75,7 +76,7 @@ public class History extends Fragment {
         historyRV.setHasFixedSize(true);
         historyRV.setLayoutManager(manager);
         historyRV.setAdapter(adapter);
-        AppCompatImageView  goBackButton = rootView.findViewById(R.id.History_back_btn);
+        AppCompatImageView goBackButton = rootView.findViewById(R.id.History_back_btn);
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

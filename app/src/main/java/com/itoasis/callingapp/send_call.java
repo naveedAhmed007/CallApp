@@ -3,7 +3,6 @@ package com.itoasis.callingapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,6 +27,7 @@ import com.itoasis.callingapp.Fragments.PhoneCall;
 import com.itoasis.callingapp.Fragments.Search;
 import com.itoasis.callingapp.Fragments.profile_call;
 import com.itoasis.callingapp.Fragments.send_Notification;
+import com.itoasis.callingapp.utils.Singleton;
 
 public class send_call extends AppCompatActivity {
     FrameLayout frameLayout;
@@ -55,7 +54,6 @@ public class send_call extends AppCompatActivity {
         // Retrieve the user's email from the Intent extras
         userEmail = getIntent().getStringExtra("user_email");
         Toast.makeText(this, userEmail, Toast.LENGTH_SHORT).show();
-
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
 
@@ -101,40 +99,51 @@ public class send_call extends AppCompatActivity {
     // Fetch user's name from Firestore using their email
     private void fetchUserName(String userEmail) {
         if (userEmail != null) {
-            db.collection("users")
-                    .whereEqualTo("email", userEmail)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot querySnapshot = task.getResult();
-                                if (querySnapshot != null && !querySnapshot.isEmpty()) {
-                                    DocumentSnapshot document = querySnapshot.getDocuments().get(0);
-                                    String userName = document.getString("name");
+            Query query = db.collection("users").whereEqualTo("email", userEmail);
 
-                                    // Update your UI with the retrieved user's name
-                                    updateUIWithUserName(userName);
-                                } else {
-                                    // Handle the case where no matching document is found
-                                    Toast.makeText(send_call.this, "No user data found", Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                // Handle errors in Firestore query
-                                Toast.makeText(send_call.this, "Error fetching user data", Toast.LENGTH_SHORT).show();
-                            }
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot snapshot = task.getResult();
+
+                        if (snapshot != null && !snapshot.isEmpty()) {
+                            // Assuming "name" is the field in Firestore where the user's name is stored
+                            DocumentSnapshot document = snapshot.getDocuments().get(0); // Assuming there's only one result
+                            userName = document.getString("name");
+                            updateUIWithUserName(userName);
+
+                            // Store the user's name in Singleton
+                            Singleton.getInstance().setUserName(userName);
+                            Singleton.getInstance().setChar(userName.charAt(0));
+
+                        } else {
+                            // Handle the case where no matching document is found
+                            Toast.makeText(send_call.this, "No user data found", Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    } else {
+                        // Handle errors in Firestore query
+                        Toast.makeText(send_call.this, "Error fetching user data", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
         }
     }
 
     // Update your UI with the user's name
-    private void updateUIWithUserName (String userName){
+    private void updateUIWithUserName(String userName) {
         if (userName != null) {
             // Update your UI elements, e.g., a TextView to display the user's name
             // For example, if you have a TextView with the id "User_Name":
             TextView userNameTextView = findViewById(R.id.User_Name);
             userNameTextView.setText(userName);
+
+            char firstChar = userName.charAt(0);
+            TextView nameProfileAlphabet = findViewById(R.id.name_profle_alphabet);
+            nameProfileAlphabet.setText(String.valueOf(firstChar));
+        } else {
+            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
         }
     }
 }
