@@ -111,7 +111,7 @@ public class send_call extends AppCompatActivity {
                             // Assuming "name" is the field in Firestore where the user's name is stored
                             DocumentSnapshot document = snapshot.getDocuments().get(0); // Assuming there's only one result
                             userName = document.getString("name");
-                            updateUIWithUserName(userName);
+                            //updateUIWithUserName(userName);
 
                             // Store the user's name in Singleton
                             Singleton.getInstance().setUserName(userName);
@@ -132,18 +132,18 @@ public class send_call extends AppCompatActivity {
     }
 
     // Update your UI with the user's name
-    private void updateUIWithUserName(String userName) {
-        if (userName != null) {
-            // Update your UI elements, e.g., a TextView to display the user's name
-            // For example, if you have a TextView with the id "User_Name":
-            TextView userNameTextView = findViewById(R.id.User_Name);
-            userNameTextView.setText(userName);
-
-            char firstChar = userName.charAt(0);
-            TextView nameProfileAlphabet = findViewById(R.id.name_profle_alphabet);
-            nameProfileAlphabet.setText(String.valueOf(firstChar));
-        } else {
-            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    private void updateUIWithUserName(String userName) {
+//        if (userName != null) {
+//            // Update your UI elements, e.g., a TextView to display the user's name
+//            // For example, if you have a TextView with the id "User_Name":
+//            TextView userNameTextView = findViewById(R.id.User_Name);
+//            userNameTextView.setText(userName);
+//
+//            char firstChar = userName.charAt(0);
+//            TextView nameProfileAlphabet = findViewById(R.id.name_profle_alphabet);
+//            nameProfileAlphabet.setText(String.valueOf(firstChar));
+//        } else {
+//            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 }
