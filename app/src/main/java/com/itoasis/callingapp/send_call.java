@@ -32,6 +32,7 @@ import com.itoasis.callingapp.utils.Singleton;
 public class send_call extends AppCompatActivity {
     FrameLayout frameLayout;
     Fragment selectedFragment;
+    Singleton singleton;
     private com.google.android.material.floatingactionbutton.FloatingActionButton fab;
     BottomNavigationView bottomNavigationView;
     private String userEmail; // User's email
@@ -44,13 +45,14 @@ public class send_call extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bottom_navigation);
 
-        fab = findViewById(R.id.fab);
-        frameLayout = findViewById(R.id.f1);
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        singleton=Singleton.getInstance();
+        fab=findViewById(R.id.fab);
+        frameLayout=findViewById(R.id.f1);
+        bottomNavigationView=findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setBackground(null);
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         getSupportActionBar().hide();
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new Message()).commit();
         // Retrieve the user's email from the Intent extras
         userEmail = getIntent().getStringExtra("user_email");
         Toast.makeText(this, userEmail, Toast.LENGTH_SHORT).show();
@@ -60,8 +62,7 @@ public class send_call extends AppCompatActivity {
         // Fetch user's name using their email
         fetchUserName(userEmail);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new profile_call()).commit();
-
+       
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +77,15 @@ public class send_call extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.profile:
+
+                        selectedFragment = new Home();
+                        singleton.setCallScreenFrom("client");
+                        break;
+                    case R.id.placeholder:
+                        
+
                         selectedFragment = new profile_call();
+
                         break;
                     case R.id.chat:
                         selectedFragment = new Message();

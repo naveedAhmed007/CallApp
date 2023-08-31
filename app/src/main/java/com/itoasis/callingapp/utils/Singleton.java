@@ -3,17 +3,25 @@ package com.itoasis.callingapp.utils;
 public class Singleton {
 
     private static Singleton instance;
-    private int counter, activityCall, answeredCall;
+
+    private int counter,activityCall,answeredCall,counterreceivedcalls;
     private String phoneNumber; // New member variable to store phoneNumber
-    private String userName; // New member variable to store the user's name
+    private String callScreenFrom; // New member variable to store phoneNumber
+    private boolean listener; // New member variable to store phoneNumber
+ // New member variable to store the user's name
     private char firstChar;
 
     private Singleton() {
         counter = 0;
         phoneNumber = ""; // Initialize phoneNumber as an empty string
-        activityCall = 0;
-        answeredCall = 0;
+
+        activityCall=0;
+        answeredCall=0;
+        callScreenFrom="";
+        counterreceivedcalls=0;
+        listener=false;
         userName = ""; // Initialize userName as an empty string
+
     }
 
     public static synchronized Singleton getInstance() {
@@ -33,6 +41,14 @@ public class Singleton {
 
     public synchronized void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public synchronized String getCallScreenFrom() {
+        return callScreenFrom;
+    }
+
+    public synchronized void setCallScreenFrom(String callScreenFrom) {
+        this.callScreenFrom = callScreenFrom;
     }
 
     public synchronized String getPhoneNumber() {
@@ -78,5 +94,32 @@ public class Singleton {
     public synchronized char getChar() {
         return firstChar;
     }
+    public synchronized void resetCallScreenFrom(){
+     callScreenFrom="";
+
+    }
+    public synchronized void resetCountCalls(){
+        counterreceivedcalls=0;
+
+    }
+    public synchronized int getCounterCalls() {
+        return counterreceivedcalls;
+    }
+
+    public synchronized void incrementCounterCalls() {
+        counterreceivedcalls++;
+    }
+    public synchronized void changeListener() {
+        listener=true;
+    }
+    public synchronized boolean getListener() {
+        return listener;
+    }
+    public synchronized void resetListener(){
+        listener=false;
+
+    }
+
+
 
 }

@@ -171,6 +171,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#000"
                 android:hint="Number 1"
                 android:text="03237824555"
 
@@ -246,6 +247,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Number 2"
+                android:textColor="#000"
                 android:paddingStart="12dp"
                 android:background="@null"
                 android:paddingEnd="12dp"
