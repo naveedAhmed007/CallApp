@@ -1,8 +1,10 @@
 package com.itoasis.callingapp.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.itoasis.callingapp.Fragments.add_user;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.modal.UserDetailsModal;
 
@@ -36,7 +39,7 @@ public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.
 
     public UserDetailsAdapter(ArrayList<UserDetailsModal> UserDetailsModalArrayList, Context context) {
         this.UserDetailsModalArrayList = UserDetailsModalArrayList;
-        this.context=context;
+        this.context = context;
     }
 
     public void filterList(ArrayList<UserDetailsModal> filterlist) {
@@ -57,17 +60,28 @@ public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.
         holder.name.setText(model.getName());
         holder.id.setText(model.getUserId());
         holder.creditstv.setText(model.getCredit() + "/240");
+
+        // Edit button click listener
+        holder.edit.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isEditMode", true);
+            bundle.putString("userId", model.getUserId());
+            add_user editFragment = new add_user();
+            editFragment.setArguments(bundle);
+            FragmentTransaction fragmentTransaction = ((AppCompatActivity) context)
+                    .getSupportFragmentManager()
+                    .beginTransaction();
+            fragmentTransaction.replace(R.id.flFragment, editFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        });
+
+        // Delete button click listener
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Get the user ID of the item to be deleted
-                String userId = model.getUserId(); // Assuming this is the unique identifier for the user
-
-                // Call a method to delete the user from Firestore
-                deleteDocumentById(userId);
-
-                // Remove the item from the RecyclerView locally
-                removeAt(position);
+                // Show a confirmation dialog
+                showDeleteConfirmationDialog(model.getUserId(), position);
             }
         });
     }
@@ -91,34 +105,68 @@ public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.
         }
     }
 
+    private void showDeleteConfirmationDialog(String userId, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Confirm Deletion");
+        builder.setMessage("Are you sure you want to delete this user?");
+
+        // Add buttons for Yes and No
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // User clicked Yes, proceed with deletion
+                deleteDocumentById(userId, position);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // User clicked No, do nothing
+                dialog.dismiss();
+            }
+        });
+
+        // Show the dialog
+        builder.create().show();
+    }
+
     private void removeAt(int position) {
         UserDetailsModalArrayList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, UserDetailsModalArrayList.size());
     }
-    private void deleteDocumentById(String documentId) {
 
-
-        Query query = userDetailsCollection.whereEqualTo("email",documentId);
+    // Method to delete a user by their user ID
+    private void deleteDocumentById(String userId, int position) {
+        Query query = userDetailsCollection.whereEqualTo("email", userId);
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        // Assuming there is only one document with the given email
+                        // Assuming there is only one document with the given user ID
                         String documentId = document.getId();
-                        userDetailsCollection.document(documentId).delete();
+                        userDetailsCollection.document(documentId).delete()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            // User deleted successfully
+                                            Toast.makeText(context, "User deleted successfully", Toast.LENGTH_SHORT).show();
+                                            removeAt(position); // Remove from RecyclerView
+                                        } else {
+                                            // Handle errors
+                                            Toast.makeText(context, "Error deleting user: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                     }
                 } else {
                     // Handle errors
+                    Toast.makeText(context, "Error deleting user: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
-
-
-
     }
 }

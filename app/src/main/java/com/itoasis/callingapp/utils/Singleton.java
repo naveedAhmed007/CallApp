@@ -1,23 +1,27 @@
 package com.itoasis.callingapp.utils;
 
-
 public class Singleton {
 
-
     private static Singleton instance;
+
     private int counter,activityCall,answeredCall,counterreceivedcalls;
     private String phoneNumber; // New member variable to store phoneNumber
     private String callScreenFrom; // New member variable to store phoneNumber
     private boolean listener; // New member variable to store phoneNumber
+ // New member variable to store the user's name
+    private char firstChar;
 
     private Singleton() {
         counter = 0;
         phoneNumber = ""; // Initialize phoneNumber as an empty string
+
         activityCall=0;
         answeredCall=0;
         callScreenFrom="";
         counterreceivedcalls=0;
         listener=false;
+        userName = ""; // Initialize userName as an empty string
+
     }
 
     public static synchronized Singleton getInstance() {
@@ -54,6 +58,7 @@ public class Singleton {
     public synchronized int getActivityCall() {
         return activityCall;
     }
+
     public synchronized void incrementActivityCall() {
         activityCall++;
     }
@@ -61,16 +66,33 @@ public class Singleton {
     public synchronized void incrementAnsweredCall() {
         answeredCall++;
     }
+
     public synchronized int getAnsweredcall() {
         return answeredCall;
     }
-    public synchronized void resetAnswerCall(){
-        answeredCall=0;
 
+    public synchronized void resetAnswerCall() {
+        answeredCall = 0;
     }
-    public synchronized void resetActivityCall(){
-        activityCall=0;
 
+    public synchronized void resetActivityCall() {
+        activityCall = 0;
+    }
+
+    public synchronized void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public synchronized String getUserName() {
+        return userName;
+    }
+
+    public synchronized void setChar(char firstChar) {
+        this.firstChar = firstChar;
+    }
+
+    public synchronized char getChar() {
+        return firstChar;
     }
     public synchronized void resetCallScreenFrom(){
      callScreenFrom="";

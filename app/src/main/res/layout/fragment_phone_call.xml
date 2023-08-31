@@ -20,7 +20,7 @@
 
         <!-- Prefix Icon -->
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/prefixIcon"
+            android:id="@+id/History_back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_arrow_back_24"

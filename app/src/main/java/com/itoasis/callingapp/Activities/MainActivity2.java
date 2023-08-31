@@ -18,6 +18,10 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         requestDefaultDialerRole();
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

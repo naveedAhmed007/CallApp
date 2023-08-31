@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,23 +25,34 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.hbb20.CountryCodePicker;
 import com.itoasis.callingapp.R;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 public class add_user extends Fragment {
+
+    private boolean isEditMode = false;
     ImageView passwordPostfixIcon;
     EditText nameEditText, emailEditText, passwordField, creditField;
     View addUser;
     TextView nameError, emailError, passwordError, creditError, countryError;
     CountryCodePicker countryCodePicker;
 
+    private String userId;
+
     private FirebaseAuth mAuth; // Firebase Authentication
     private FirebaseFirestore db; // Firestore
+
+    private CollectionReference userDetailsCollection; // Define your collection reference
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +60,8 @@ public class add_user extends Fragment {
 
         mAuth = FirebaseAuth.getInstance(); // Initialize Firebase Authentication
         db = FirebaseFirestore.getInstance(); // Initialize Firestore
+
+        userDetailsCollection = db.collection("users"); // Initialize the collection reference
 
         // Initialize views
         nameEditText = v.findViewById(R.id.nameEditText);
@@ -61,16 +77,36 @@ public class add_user extends Fragment {
         countryCodePicker = v.findViewById(R.id.countryCodePicker);
         countryError = v.findViewById(R.id.countryError);
 
+        Bundle args = getArguments();
+        if (args != null) {
+            userId = args.getString("userId");
+            isEditMode = args.getBoolean("isEditMode", false);
+            // If userId is not null, load user data for editing
+            if (userId != null) {
+                loadUserDataForEditing(userId);
+            }
+        }
+
+        // Find the TextView with the id 'add_user'
+        TextView addUserTextView = v.findViewById(R.id.add_user);
+
+        // Check if it's in edit mode or add mode and set the text accordingly
+        if (isEditMode) {
+            // If in edit mode, change the text
+            addUserTextView.setText("Edit User");
+        } else {
+            // If in add mode, keep the default text
+            addUserTextView.setText("Add User");
+        }
+
         addUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userName = nameEditText.getText().toString().trim();
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordField.getText().toString().trim();
-                String selectedCountryCode = countryCodePicker.getSelectedCountryCode();
+                String selectedCountryCode = countryCodePicker.getSelectedCountryNameCode();
                 String credits = creditField.getText().toString().trim();
-
-                // Rest of your validation code here...
 
                 if (userName.isEmpty() || userName.length() < 3) {
                     nameError.setText(userName.isEmpty() ? "Enter a name" : "Name must be greater than 3 characters");
@@ -78,11 +114,11 @@ public class add_user extends Fragment {
                 } else if (email.isEmpty() || !isValidEmail(email)) {
                     emailError.setText(email.isEmpty() ? "Enter an email" : "Enter a valid email");
                     emailError.setVisibility(View.VISIBLE);
-                } else if (password.isEmpty()) {
-                    passwordError.setVisibility(View.VISIBLE);
-                } else if (password.length() < 8 || !containsUpperCase(password) || !containsLowerCase(password) || !containsSpecialCharacter(password)) {
-                    passwordError.setText("Password must have at least 8 characters, an uppercase letter, a lowercase letter, and a special character");
-                    passwordError.setVisibility(View.VISIBLE);
+//                } else if (password.isEmpty()) {
+//                    passwordError.setVisibility(View.VISIBLE);
+//                } else if (password.length() < 8 || !containsUpperCase(password) || !containsLowerCase(password) || !containsSpecialCharacter(password)) {
+//                    passwordError.setText("Password must have at least 8 characters, an uppercase letter, a lowercase letter, and a special character");
+//                    passwordError.setVisibility(View.VISIBLE);
                 } else if (selectedCountryCode.isEmpty() || selectedCountryCode.equals("0")) {
                     countryError.setVisibility(View.VISIBLE);
                 } else if (credits.isEmpty()) {
@@ -91,9 +127,15 @@ public class add_user extends Fragment {
                 if (!selectedCountryCode.isEmpty() && !selectedCountryCode.equals("0")) {
                     countryError.setVisibility(View.GONE);
 
-                    // If all data is valid, proceed to upload to Firestore
+                    // If all data is valid, proceed
                     if (isValidInput(userName, email, password, credits)) {
-                        uploadUserData(userName, email, password, selectedCountryCode, credits);
+                        if (userId != null) {
+                            // Edit mode: Update existing user data
+                            editUserData(userId, userName, email, password, selectedCountryCode, credits);
+                        } else {
+                            // Create mode: Add a new user
+                            uploadUserData(userName, email, password, selectedCountryCode, credits);
+                        }
                     }
                 }
             }
@@ -129,8 +171,8 @@ public class add_user extends Fragment {
     private boolean isValidInput(String userName, String email, String password, String credits) {
         return !userName.isEmpty() && userName.length() >= 3
                 && !email.isEmpty() && isValidEmail(email)
-                && !password.isEmpty() && password.length() >= 8
-                && containsUpperCase(password) && containsLowerCase(password) && containsSpecialCharacter(password)
+                && !password.isEmpty() && password.length() < 10
+               // && containsUpperCase(password) && containsLowerCase(password) && containsSpecialCharacter(password)
                 && !credits.isEmpty();
     }
 
@@ -152,6 +194,7 @@ public class add_user extends Fragment {
                             Map<String, Object> user = new HashMap<>();
                             user.put("name", userName);
                             user.put("email", email);
+                            user.put("password", password);
                             user.put("countryCode", selectedCountryCode);
                             user.put("credits", credits);
 
@@ -163,6 +206,12 @@ public class add_user extends Fragment {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             // Data uploaded successfully to Firestore
+                                            Fragment fragment = new UserDetails();
+                                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                            fragmentTransaction.replace(R.id.flFragment, fragment);
+                                            fragmentTransaction.addToBackStack(null);
+                                            fragmentTransaction.commit();
                                             Toast.makeText(getContext(), "User data added successfully", Toast.LENGTH_SHORT).show();
                                         }
                                     })
@@ -180,6 +229,110 @@ public class add_user extends Fragment {
                     }
                 });
     }
+    private void loadUserDataForEditing(String userEmail) {
+        // Query Firestore to find the user with the provided email
+        db.collection("users")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            // User data found in Firestore
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            String userName = documentSnapshot.getString("name");
+                            String userEmail = documentSnapshot.getString("email");
+                            String userCredits = documentSnapshot.getString("credits");
+                            String userCountryCode = documentSnapshot.getString("countryCode");
+                            String userPassword = documentSnapshot.getString("password");
+
+                            Toast.makeText(requireContext(), userCountryCode, Toast.LENGTH_SHORT).show();
+
+                            // Populate EditText fields with user data
+                            nameEditText.setText(userName);
+                            emailEditText.setText(userEmail);
+                            creditField.setText(userCredits);
+                            passwordField.setText(userPassword);
+                            countryCodePicker.setCountryForNameCode(userCountryCode);
+
+                        } else {
+                            // User data not found in Firestore, handle the case
+                            Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle any errors while retrieving user data
+                        Toast.makeText(getContext(), "Error fetching user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+    // Method to edit user data
+    private void editUserData(String userEmail, String userName, String email, String password, String selectedCountryCode, String credits) {
+        // Query Firestore to find the user with the provided email
+        Query query = userDetailsCollection.whereEqualTo("email", userEmail);
+
+        query.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            // User data found in Firestore
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            String userId = documentSnapshot.getId(); // Get the user's unique ID
+                            // Now you have the user's ID, you can update their data
+                            DocumentReference userRef = db.collection("users").document(userId);
+
+                            // Create a HashMap to store updated user data
+                            Map<String, Object> updatedData = new HashMap<>();
+                            updatedData.put("name", userName);
+                            updatedData.put("email", email);
+                            updatedData.put("countryCode", selectedCountryCode);
+                            updatedData.put("credits", credits);
+                            updatedData.put("password", password);
+
+                            // Update the document in Firestore
+                            userRef.update(updatedData)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            // User data updated successfully
+                                            Fragment fragment = new UserDetails();
+                                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                            fragmentTransaction.replace(R.id.flFragment, fragment);
+                                            fragmentTransaction.addToBackStack(null);
+                                            fragmentTransaction.commit();
+                                            Toast.makeText(getContext(), "User data updated successfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            // Handle Firestore data update failure
+                                            Toast.makeText(getContext(), "Error updating user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else {
+                            // User data not found in Firestore, handle the case
+                            Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle any errors while retrieving user data
+                        Toast.makeText(getContext(), "Error fetching user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
 
     public void applyValidation(EditText editText, TextView error) {
         editText.addTextChangedListener(new TextWatcher() {
@@ -230,5 +383,4 @@ public class add_user extends Fragment {
         return false;
     }
 
-    // Rest of your code...
 }

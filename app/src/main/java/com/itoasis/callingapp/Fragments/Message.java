@@ -3,6 +3,8 @@ package com.itoasis.callingapp.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -110,5 +112,25 @@ public class Message extends Fragment {
         // setting adapter to
         // our recycler view.
         recyclerView.setAdapter(adapter);
+    }
+
+    private void navigateToDesiredFragment() {
+        // Create an instance of the fragment you want to navigate to
+        profile_call profile_call = new profile_call(); // Replace with your fragment name
+
+        // Get the FragmentManager
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        // Start a FragmentTransaction
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Replace the current fragment with the desired fragment
+        transaction.replace(R.id.f1, profile_call); // Replace "R.id.f1" with your FrameLayout ID
+
+        // Add the transaction to the back stack (optional)
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 }
