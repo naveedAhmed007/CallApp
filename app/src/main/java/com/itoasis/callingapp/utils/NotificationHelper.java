@@ -12,7 +12,9 @@ import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.service.notification.NotificationListenerService;
 import android.telecom.Call;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -23,10 +25,12 @@ import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.call_screen;
 import com.itoasis.callingapp.receivers.ActionReceiver;
 
-public class NotificationHelper {
+public class NotificationHelper extends NotificationListenerService {
 
     public static int NOTIFICATION_ID = 834831;
     static Singleton singleton=Singleton.getInstance();
+    private static int outgoingCallCount = 0;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void createIncomingNotification(Context context, Call call) {
@@ -191,7 +195,8 @@ public class NotificationHelper {
 //    _____________________________________________________________________________________________________________
 
     public static void createOutgoingNotification(Context context, Call call) {
-
+        outgoingCallCount++;
+        Log.d("OutgoingCall==================================",String.valueOf(outgoingCallCount));
         String callerPhoneNumber = call.getDetails().getHandle().getSchemeSpecificPart();
         String callerName = ContactsHelper.getContactNameByPhoneNumber(callerPhoneNumber, context);
 

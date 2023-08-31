@@ -17,12 +17,19 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
 import android.telecom.Call;
 import android.telecom.TelecomManager;
+import android.telephony.PhoneStateListener;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,29 +44,60 @@ import com.itoasis.callingapp.utils.AirplaneModeChangeReceiver;
 import com.itoasis.callingapp.utils.CallListHelper;
 import com.itoasis.callingapp.utils.CallManager;
 import com.itoasis.callingapp.utils.ContactsHelper;
+import com.itoasis.callingapp.utils.MyPhoneStateListener;
 import com.itoasis.callingapp.utils.NotificationHelper;
+import com.itoasis.callingapp.utils.OutgoingCallReceiver;
 import com.itoasis.callingapp.utils.Singleton;
 
 public class call_screen extends AppCompatActivity {
     AirplaneModeChangeReceiver airplaneModeChangeReceiver = new AirplaneModeChangeReceiver();
+    private static final int CALL_STATE_OFFHOOK_CHECK_DELAY = 25000; // 25 seconds
+
+
+    private Handler handler = new Handler(Looper.getMainLooper());
     FirebaseFirestore db;
+    TextView counterTV;
     public static String PHONE_NUMBER, CALLER_NAME;
     Singleton singleTon= Singleton.getInstance();
     public static String speakerBtnName = "Speaker On", muteBtnName = "Mute";
 
     // Reference to the "users" collection
     CollectionReference usersCollection;
+    private CountDownTimer countUpTimer;
+    private boolean isCountdownRunning = false;
+    private long elapsedTime = 0;
+
     ImageButton imageButton2;
+    private TelephonyManager telephonyManager;
+    private MyPhoneStateListener phoneStateListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calling_screen);
+
+
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
 
         }// Replace with the correct layout name
 
+        telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        phoneStateListener = new MyPhoneStateListener();
+
+        // Register the listener to receive call state changes
+        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         imageButton2 = findViewById(R.id.imageButton2);
+        counterTV=findViewById(R.id.textView2);
+        if(singleTon.getActivityCall()==2){
+            startCountup();
+
+                        }
+
+
+
+
+
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +106,9 @@ public class call_screen extends AppCompatActivity {
                     CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                     singleTon.resetActivityCall();
                     singleTon.resetAnswerCall();
+
+
+
 
 
                 }
@@ -98,6 +139,7 @@ public class call_screen extends AppCompatActivity {
 //                    CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                 }
                 else if (action.equals("call_answered")) {
+
                     getLastDocumentId();
                     singleTon.incrementAnsweredCall();
 
@@ -123,7 +165,10 @@ public class call_screen extends AppCompatActivity {
 
 
 
+
                     if(singleTon.getActivityCall()==1){
+
+
                         placeCall(singleTon.getPhoneNumber());
                         Intent intent1 = getIntent();
                         finish();
@@ -131,11 +176,23 @@ public class call_screen extends AppCompatActivity {
 
 
 
+
+
                     }
                     if(singleTon.getActivityCall()==2){
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
 
-                        if(singleTon.getAnsweredcall()==3){
+                                setupPhoneStateListener();
 
+
+
+
+
+                        if(singleTon.getListener()==true ){
+                            stopCountdown();
+                            singleTon.resetListener();
                             singleTon.resetActivityCall();
                             singleTon.resetAnswerCall();
                             CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2).conference(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
@@ -145,9 +202,9 @@ public class call_screen extends AppCompatActivity {
                             android.os.Process.killProcess(android.os.Process.myPid());
                             System.exit(1);
                         }
-                        else{
-                            Log.d("TAG======================", String.valueOf(singleTon.getAnsweredcall()));
-                        }
+                            }
+                        }, CALL_STATE_OFFHOOK_CHECK_DELAY);
+
 
                     }
 
@@ -324,9 +381,32 @@ public class call_screen extends AppCompatActivity {
 
     }
 
+    private void startCountup() {
+        isCountdownRunning = true;
+        countUpTimer = new CountDownTimer(Long.MAX_VALUE, 1000) { // Count up every 1 second
+            public void onTick(long millisUntilFinished) {
+                elapsedTime += 1000;
+                counterTV.setText("Countup: " + (elapsedTime / 1000));
+            }
 
+            public void onFinish() {
+                // This method is not used in count up timer
+            }
+        }.start();
+    }
 
-
+    private void stopCountdown() {
+        if (countUpTimer != null) {
+            countUpTimer.cancel();
+        }
+        counterTV.setText("Countdown: Stopped");
+        isCountdownRunning = false;
+    }
+    private void setupPhoneStateListener() {
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        OutgoingCallReceiver outgoingCallReceiver = new OutgoingCallReceiver();
+        telephonyManager.listen(outgoingCallReceiver, PhoneStateListener.LISTEN_CALL_STATE);
+    }
     }
 
 

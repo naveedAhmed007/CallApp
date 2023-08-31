@@ -254,7 +254,7 @@
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:inputType="number"
-                android:text="03216437143"
+                android:text="03040143713"
                 android:id="@+id/second_number"
                 />
 

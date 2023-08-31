@@ -8,6 +8,7 @@ public class Singleton {
     private int counter,activityCall,answeredCall,counterreceivedcalls;
     private String phoneNumber; // New member variable to store phoneNumber
     private String callScreenFrom; // New member variable to store phoneNumber
+    private boolean listener; // New member variable to store phoneNumber
 
     private Singleton() {
         counter = 0;
@@ -16,6 +17,7 @@ public class Singleton {
         answeredCall=0;
         callScreenFrom="";
         counterreceivedcalls=0;
+        listener=false;
     }
 
     public static synchronized Singleton getInstance() {
@@ -85,6 +87,17 @@ public class Singleton {
     public synchronized void incrementCounterCalls() {
         counterreceivedcalls++;
     }
+    public synchronized void changeListener() {
+        listener=true;
+    }
+    public synchronized boolean getListener() {
+        return listener;
+    }
+    public synchronized void resetListener(){
+        listener=false;
+
+    }
+
 
 
 }
