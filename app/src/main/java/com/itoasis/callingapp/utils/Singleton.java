@@ -5,7 +5,7 @@ public class Singleton {
     private static Singleton instance;
 
     private int counter,activityCall,answeredCall,counterreceivedcalls;
-    private String phoneNumber; // New member variable to store phoneNumber
+    private String phoneNumber,userName; // New member variable to store phoneNumber
     private String callScreenFrom; // New member variable to store phoneNumber
     private boolean listener; // New member variable to store phoneNumber
  // New member variable to store the user's name

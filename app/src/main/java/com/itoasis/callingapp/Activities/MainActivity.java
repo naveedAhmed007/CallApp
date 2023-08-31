@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             // User is signed in, you can reload or update the UI as needed
             reload();
         }else {
-            Toast.makeText(this, "Nnja", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Nnja", Toast.LENGTH_SHORT).show();
         }
     }
     @Override
