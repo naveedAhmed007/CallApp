@@ -14,10 +14,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
+    <uses-permission
+        android:name="android.permission.BIND_ACCESSIBILITY_SERVICE"
         tools:ignore="ProtectedPermissions" />
-
-
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission
+        android:name="android.permission.MODIFY_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -29,27 +33,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CallingApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".MainActivity3"
+            android:exported="false" />
         <activity
             android:name=".Activities.MainActivity2"
-            android:exported="true" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Activities.AdminBottomNavigation"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activities.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.DIAL" />
@@ -63,27 +66,22 @@
 
                 <data android:scheme="tel" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".send_call"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activities.DashboardActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            />
-        <activity android:name=".call_screen"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".call_screen"
             android:exported="false"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:showOnLockScreen="true"
-            android:launchMode="singleInstance"
-            tools:ignore="LockedOrientationActivity"
-
-            />
-
+            tools:ignore="LockedOrientationActivity" />
 
         <service
             android:name="com.itoasis.callingapp.services.CallService"
@@ -95,13 +93,15 @@
             <meta-data
                 android:name="android.telecom.IN_CALL_SERVICE_RINGING"
                 android:value="true" />
+
             <intent-filter>
                 <action android:name="android.telecom.InCallService" />
             </intent-filter>
         </service>
-        <receiver android:name="com.itoasis.callingapp.receivers.ActionReceiver"
-            android:enabled="true"
 
+        <receiver
+            android:name="com.itoasis.callingapp.receivers.ActionReceiver"
+            android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="YES" />
@@ -117,7 +117,9 @@
             </intent-filter>
         </receiver>
 
-
+        <service
+            android:name=".services.FirestoreMonitoringService"
+            android:exported="false" />
     </application>
 
 </manifest>

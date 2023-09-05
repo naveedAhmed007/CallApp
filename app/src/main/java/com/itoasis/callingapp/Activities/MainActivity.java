@@ -186,8 +186,13 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (userEmail != null && userEmail.equals("admin@test.com")) {
                                     // If the email matches, open DashboardActivity
-                                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), AdminBottomNavigation.class);
+
+                                    intent.putExtra("key", "home");
+//                                    singleton.setCallScreenFrom("admin");
+                                    // start the Intent
                                     startActivity(intent);
+
                                 } else {
                                     // If the email does not match, open send_call
                                     Intent intent = new Intent(MainActivity.this, send_call.class);

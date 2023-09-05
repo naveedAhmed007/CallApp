@@ -31,7 +31,7 @@ public class AirplaneModeChangeReceiver extends BroadcastReceiver {
         if (action.equals("call_answered")) {
             singleTon.incrementAnsweredCall();
             if(singleTon.getActivityCall()==1){
-                placeCall(singleTon.getPhoneNumber(),context);
+                placeCall(singleTon.getPhoneNumber2(),context);
 
 
             }

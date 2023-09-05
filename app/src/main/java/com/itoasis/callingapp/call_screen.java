@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -49,14 +50,17 @@ import com.itoasis.callingapp.utils.NotificationHelper;
 import com.itoasis.callingapp.utils.OutgoingCallReceiver;
 import com.itoasis.callingapp.utils.Singleton;
 
+import java.lang.reflect.Method;
+import java.util.List;
+
 public class call_screen extends AppCompatActivity {
     AirplaneModeChangeReceiver airplaneModeChangeReceiver = new AirplaneModeChangeReceiver();
-    private static final int CALL_STATE_OFFHOOK_CHECK_DELAY = 25000; // 25 seconds
+    private static final int CALL_STATE_OFFHOOK_CHECK_DELAY = 30000; // 25 seconds
 
 
     private Handler handler = new Handler(Looper.getMainLooper());
     FirebaseFirestore db;
-    TextView counterTV;
+    TextView counterTV,callerNumber1,callerNumber2,callerNames;
     public static String PHONE_NUMBER, CALLER_NAME;
     Singleton singleTon= Singleton.getInstance();
     public static String speakerBtnName = "Speaker On", muteBtnName = "Mute";
@@ -75,6 +79,14 @@ public class call_screen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calling_screen);
 
+        callerNumber1=findViewById(R.id.textView4);
+        callerNumber2=findViewById(R.id.textView5);
+        callerNames=findViewById(R.id.textView3);
+        callerNumber1.setText(singleTon.getPhoneNumber1());
+        callerNumber2.setText(singleTon.getPhoneNumber2());
+        callerNames.setText(singleTon.getCallerName());
+
+
 
 
         if (getSupportActionBar() != null) {
@@ -82,11 +94,6 @@ public class call_screen extends AppCompatActivity {
 
         }// Replace with the correct layout name
 
-        telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-        phoneStateListener = new MyPhoneStateListener();
-
-        // Register the listener to receive call state changes
-        telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_CALL_STATE);
         imageButton2 = findViewById(R.id.imageButton2);
         counterTV=findViewById(R.id.textView2);
         if(singleTon.getActivityCall()==2){
@@ -129,6 +136,8 @@ public class call_screen extends AppCompatActivity {
             @Override
             public void onReceive(Context arg0, Intent intent) {
 
+
+
                 String action = intent.getAction();
 
 
@@ -169,7 +178,7 @@ public class call_screen extends AppCompatActivity {
                     if(singleTon.getActivityCall()==1){
 
 
-                        placeCall(singleTon.getPhoneNumber());
+                        placeCall(singleTon.getPhoneNumber2());
                         Intent intent1 = getIntent();
                         finish();
                         startActivity(intent1);
@@ -180,6 +189,7 @@ public class call_screen extends AppCompatActivity {
 
                     }
                     if(singleTon.getActivityCall()==2){
+                        Log.d("TAG000000000000000000000000000000000", String.valueOf(CallListHelper.callList.size()));
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -191,16 +201,24 @@ public class call_screen extends AppCompatActivity {
 
 
                         if(singleTon.getListener()==true ){
+
                             stopCountdown();
-                            singleTon.resetListener();
+                                                        singleTon.resetListener();
                             singleTon.resetActivityCall();
                             singleTon.resetAnswerCall();
                             CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2).conference(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                             CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).mergeConference();
+                            muteMicrophone(getApplicationContext());
+                            holdCall(getApplicationContext());
                             NotificationHelper.cancelNotification(getApplicationContext(), NotificationHelper.NOTIFICATION_ID);
 
-                            android.os.Process.killProcess(android.os.Process.myPid());
+
+                            //add functionality to hold dialer Call
+
+
+                                android.os.Process.killProcess(android.os.Process.myPid());
                             System.exit(1);
+
                         }
                             }
                         }, CALL_STATE_OFFHOOK_CHECK_DELAY);
@@ -214,6 +232,7 @@ public class call_screen extends AppCompatActivity {
 
                 }
             }
+
         };
 
         IntentFilter filter = new IntentFilter();
@@ -268,13 +287,13 @@ public class call_screen extends AppCompatActivity {
                                 });
 
 
-                        Toast.makeText(getApplicationContext(), documentId, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), documentId, Toast.LENGTH_SHORT).show();
 
 
                         // Now you have the last document ID based on the condition
                         // You can use it as needed
                     } else {
-                        Toast.makeText(getApplicationContext(), "No matching document found", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "No matching document found", Toast.LENGTH_SHORT).show();
 
                         // No document found
                     }
@@ -407,6 +426,64 @@ public class call_screen extends AppCompatActivity {
         OutgoingCallReceiver outgoingCallReceiver = new OutgoingCallReceiver();
         telephonyManager.listen(outgoingCallReceiver, PhoneStateListener.LISTEN_CALL_STATE);
     }
+
+    public void holdCall(String phoneNumber) {
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        telephonyManager.listen(new PhoneStateListener() {
+            @Override
+            public void onCallStateChanged(int state, String incomingNumber) {
+                if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
+                    // Check if the incoming call's number matches the target number
+                    if (phoneNumber.equals(incomingNumber)) {
+                        // Hold the call (You will need a specific library or method for this)
+                        // For a real implementation, you might use TelecomManager.
+                        // Example: TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+                        // telecomManager.holdCall();
+                        Toast.makeText(getApplicationContext(), "Call on hold", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }, PhoneStateListener.LISTEN_CALL_STATE);
+    }
+    public static void muteMicrophone(Context context) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audioManager.setMode(AudioManager.MODE_IN_CALL);
+        audioManager.setMicrophoneMute(true);
+        audioManager.setSpeakerphoneOn(true);
+
+
+
+    }
+
+
+    public static void holdCall(Context context) {
+        try {
+            // Use reflection to access the TelephonyManager
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+            // Get the getITelephony() method
+            Class<?> telephonyManagerClass = Class.forName(telephonyManager.getClass().getName());
+            Method getITelephonyMethod = telephonyManagerClass.getDeclaredMethod("getITelephony");
+
+            // Allow access to the method
+            getITelephonyMethod.setAccessible(true);
+
+            // Invoke the getITelephony() method to get the ITelephony object
+            Object iTelephony = getITelephonyMethod.invoke(telephonyManager);
+
+            // Check if there's an ongoing call
+            if (iTelephony != null) {
+                // Put the call on hold
+                Method holdCallMethod = iTelephony.getClass().getMethod("holdCall");
+                holdCallMethod.invoke(iTelephony);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     }
 
 

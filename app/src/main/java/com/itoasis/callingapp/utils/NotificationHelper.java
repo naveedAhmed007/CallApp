@@ -200,6 +200,8 @@ public class NotificationHelper extends NotificationListenerService {
         String callerPhoneNumber = call.getDetails().getHandle().getSchemeSpecificPart();
         String callerName = ContactsHelper.getContactNameByPhoneNumber(callerPhoneNumber, context);
 
+
+
         String CHANNEL_ID = "Hidden_Pirates_Phone_App";
 
         NotificationChannel channel = null;

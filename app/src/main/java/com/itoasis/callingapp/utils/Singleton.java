@@ -1,19 +1,24 @@
 package com.itoasis.callingapp.utils;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Singleton {
 
     private static Singleton instance;
 
     private int counter,activityCall,answeredCall,counterreceivedcalls;
-    private String phoneNumber,userName; // New member variable to store phoneNumber
-    private String callScreenFrom; // New member variable to store phoneNumber
+    private String phoneNumber2,userName,phoneNumber1; // New member variable to store phoneNumber
+    private String callScreenFrom,callerNames; // New member variable to store phoneNumber
     private boolean listener; // New member variable to store phoneNumber
  // New member variable to store the user's name
     private char firstChar;
+    private byte fsNumberslength;
 
     private Singleton() {
         counter = 0;
-        phoneNumber = ""; // Initialize phoneNumber as an empty string
+        phoneNumber2 = ""; // Initialize phoneNumber as an empty string
+        phoneNumber1="";
 
         activityCall=0;
         answeredCall=0;
@@ -21,6 +26,8 @@ public class Singleton {
         counterreceivedcalls=0;
         listener=false;
         userName = ""; // Initialize userName as an empty string
+
+
 
     }
 
@@ -39,8 +46,8 @@ public class Singleton {
         counter++;
     }
 
-    public synchronized void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public synchronized void setPhoneNumber2(String phoneNumber2) {
+        this.phoneNumber2 = phoneNumber2;
     }
 
     public synchronized String getCallScreenFrom() {
@@ -51,9 +58,16 @@ public class Singleton {
         this.callScreenFrom = callScreenFrom;
     }
 
-    public synchronized String getPhoneNumber() {
-        return phoneNumber;
+    public synchronized String getPhoneNumber2() {
+        return phoneNumber2;
     }
+    public synchronized void setPhoneNumber1(String phoneNumber1) {
+        this.phoneNumber1 = phoneNumber1;
+    }
+    public synchronized String getPhoneNumber1() {
+        return phoneNumber1;
+    }
+
 
     public synchronized int getActivityCall() {
         return activityCall;
@@ -118,6 +132,19 @@ public class Singleton {
     public synchronized void resetListener(){
         listener=false;
 
+    }
+    public synchronized void setCallerName(String callerName) {
+        this.callerNames=callerName;
+    }
+    public synchronized String getCallerName() {
+        return callerNames;
+    }
+
+    public synchronized void setFireStoreNumbersLength(byte fsNumberslength) {
+        this.fsNumberslength=fsNumberslength;
+    }
+    public synchronized byte getFireStoreNumbersLength() {
+        return fsNumberslength;
     }
 
 

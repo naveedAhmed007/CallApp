@@ -28,22 +28,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.call_screen;
 import com.itoasis.callingapp.utils.CallListHelper;
@@ -53,28 +46,28 @@ import com.itoasis.callingapp.utils.Singleton;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Home extends Fragment {
+public class ClientHome extends Fragment {
     private EditText firstNumberEditText,secondNumberEditText;
     FirebaseFirestore db;
-    Button button;
-
-    // Reference to the "users" collection
-    CollectionReference usersCollection;
-    String phonenumber1,phonenumber2;
     Singleton singleton;
-    @SuppressLint("MissingInflatedId")
+    Button call_button;
+    private TextView toastTextView;
+    private AppCompatImageButton cancelToastButton;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
-
+        db= FirebaseFirestore.getInstance();
         singleton=Singleton.getInstance();
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_client_home, container, false);
         firstNumberEditText= rootView.findViewById(R.id.first_Number);
         secondNumberEditText= rootView.findViewById(R.id.second_number);
-        button=rootView.findViewById(R.id.button);
+
+        toastTextView = rootView.findViewById(R.id.toast_text); // Initialize toastTextView
+        cancelToastButton = rootView.findViewById(R.id.cancel_toast);
 
         // Find the ImageView for the postfix icon inside the rootView
         AppCompatImageView postfixIcon = rootView.findViewById(R.id.contact_one);
@@ -118,6 +111,19 @@ public class Home extends Fragment {
                 showCountryCodeDropdown(v, passwordCountryCodeTextView);
             }
         });
+        cancelToastButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                call_button.setEnabled(true);
+                // Toggle visibility of the toast and cancel button
+                if (toastTextView.getVisibility() != View.GONE) {
+                    toastTextView.setVisibility(View.GONE);
+                    cancelToastButton.setVisibility(View.GONE);
+                } else {
+                    toastTextView.setVisibility(View.VISIBLE);
+                    cancelToastButton.setVisibility(View.VISIBLE);
+                }}});
+
         ImageView second_expend_icon = rootView.findViewById(R.id.passwordCountryCodeDropdownExpend);
 
         // Set a click listener for the second icon
@@ -130,13 +136,13 @@ public class Home extends Fragment {
         });
 
         // Find the ImageView for the postfix icon
-        Button call_button = rootView.findViewById(R.id.call_button);
+        call_button = rootView.findViewById(R.id.call_button);
 
         // Set a click listener for the postfix icon
         call_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Map<String, Object> numbers = new HashMap<>();
                 String inputNumber1=secondNumberEditText.getText().toString().trim();
                 String inputNumber=firstNumberEditText.getText().toString().trim();
                 String callerName = retrieveCallerName(inputNumber);
@@ -144,28 +150,21 @@ public class Home extends Fragment {
                 String callerName1 = retrieveCallerName(inputNumber1);
                 String x=callerName+" "+callerName1;
                 singleton.setCallerName(x);
-                    if (!inputNumber.isEmpty() && !inputNumber1.isEmpty()) {
-                        singleton.setPhoneNumber2(inputNumber1);
-                        singleton.setPhoneNumber1(inputNumber);
-                        @SuppressLint("ServiceCast") TelecomManager telecomManager = (TelecomManager) getContext().getSystemService(Context.TELECOM_SERVICE);
-                        Uri uri = Uri.fromParts("tel", inputNumber, null);
-                        Bundle extras = new Bundle();
-                        extras.putBoolean(TelecomManager.EXTRA_START_CALL_WITH_SPEAKERPHONE, false);
 
-                        if (ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-
-                            if (telecomManager.getDefaultDialerPackage().equals(getContext().getApplicationContext().getPackageName())) {
-                                telecomManager.placeCall(uri, extras);
-                            } else {
-                                Uri phoneNumber = Uri.parse("tel:" + inputNumber);
-                                Intent callIntent = new Intent(Intent.ACTION_CALL, phoneNumber);
-                                callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(callIntent);
-                            }
-                        } else {
-                            Toast.makeText(getContext().getApplicationContext(), "Please allow permission", Toast.LENGTH_SHORT).show();
-                        }
+                if (!inputNumber.isEmpty() && !inputNumber1.isEmpty()) {
+                    numbers.put("number1", inputNumber);
+                    numbers.put("number2", inputNumber1);
+                    numbers.put("length", "0");
+                    addData(numbers);
+                    if (toastTextView.getVisibility() == View.GONE) {
+                        toastTextView.setVisibility(View.VISIBLE);
+                        cancelToastButton.setVisibility(View.VISIBLE);
+                     } else {
+                        toastTextView.setVisibility(View.GONE);
+                        cancelToastButton.setVisibility(View.GONE);
                     }
+                }
+                call_button.setEnabled(false);
 
 
 
@@ -174,79 +173,7 @@ public class Home extends Fragment {
             }
         });
 
-        db= FirebaseFirestore.getInstance();
-        usersCollection=db.collection("numbers");
-        usersCollection.orderBy("length", Query.Direction.ASCENDING).limit(1)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "Listen failed.", e);
-                            return;
-                        }
-
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED) {
-                                // New item added, perform your desired action here
-                                DocumentSnapshot newItemSnapshot = dc.getDocument();
-                                // Extract necessary data and show a toast
-                                String itemName = newItemSnapshot.getString("length");
-                                phonenumber1=newItemSnapshot.getString("number1");
-                                phonenumber2=newItemSnapshot.getString("number2");
-
-                                int i=Integer.parseInt(itemName);
-                                if(i==0) {
-
-//                                  button.performClick();
-
-
-
-                                }
-
-
-
-
-                            }
-                        }
-                    }
-                });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-//                String callerName = retrieveCallerName(phonenumber1);
-//
-//                String callerName1 = retrieveCallerName(phonenumber2);
-//                String x=callerName+" "+callerName1;
-//                singleton.setCallerName(x);
-
-
-                singleton.setPhoneNumber2(phonenumber2);
-                @SuppressLint("ServiceCast") TelecomManager telecomManager = (TelecomManager) getActivity().getSystemService(Context.TELECOM_SERVICE);
-                Uri uri = Uri.fromParts("tel", phonenumber1, null);
-                Bundle extras = new Bundle();
-                extras.putBoolean(TelecomManager.EXTRA_START_CALL_WITH_SPEAKERPHONE, false);
-
-                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
-
-                    if (telecomManager.getDefaultDialerPackage().equals(getContext().getPackageName())){
-                        telecomManager.placeCall(uri, extras);
-                    }
-                    else{
-                        Uri phoneNumber = Uri.parse("tel:" + phonenumber1);
-                        Intent callIntent = new Intent(Intent.ACTION_CALL, phoneNumber);
-                        callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(callIntent);
-                    }
-                }
-                else{
-                    Toast.makeText(getContext(), "Please allow permission", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-
+        // Find the EditText field for "Number 1"
 
 
 
@@ -341,10 +268,12 @@ public class Home extends Fragment {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
+
+
     }
     @SuppressLint("Range")
     private String retrieveCallerName(String phoneNumber) {
-        ContentResolver contentResolver = getContext().getContentResolver();
+        ContentResolver contentResolver = getActivity().getContentResolver();
         String callerName = "";
 
         try {
