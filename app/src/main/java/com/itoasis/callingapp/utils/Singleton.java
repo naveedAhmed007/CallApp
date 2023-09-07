@@ -83,6 +83,12 @@ public class Singleton {
         return phoneNumber1;
     }
 
+    public synchronized void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+    public synchronized String getPhoneNumber() {
+        return phoneNumber;
+    }
 
     public synchronized int getActivityCall() {
         return activityCall;

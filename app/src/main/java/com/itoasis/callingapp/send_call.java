@@ -130,8 +130,8 @@ public class send_call extends AppCompatActivity {
                             Toast.makeText(send_call.this, credits, Toast.LENGTH_SHORT).show();
                             // Store the user's name in Singleton
                             Singleton.getInstance().setUserName(userName);
-                            Singleton.getInstance().setPhoneNumber1(phoneNumberr);
-                            Singleton.getInstance().setPhoneNumber1(credits);
+                            Singleton.getInstance().setPhoneNumber(phoneNumberr);
+                            Singleton.getInstance().setPhoneNumber(credits);
                             Singleton.getInstance().setChar(userName.charAt(0));
 
                         } else {
