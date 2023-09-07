@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -47,85 +48,50 @@ import java.util.Map;
 public class Home extends Fragment {
     private EditText firstNumberEditText,secondNumberEditText;
     FirebaseFirestore db;
+    private TextView toastTextView; //
+    private AppCompatImageButton cancelToastButton;
+
     Singleton singleton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
-         db= FirebaseFirestore.getInstance();
-        singleton=Singleton.getInstance();
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        firstNumberEditText= rootView.findViewById(R.id.first_Number);
-        secondNumberEditText= rootView.findViewById(R.id.second_number);
+        firstNumberEditText = rootView.findViewById(R.id.first_Number);
+        secondNumberEditText = rootView.findViewById(R.id.second_number);
+        toastTextView = rootView.findViewById(R.id.toast_text); // Initialize toastTextView
+        cancelToastButton = rootView.findViewById(R.id.cancel_toast); // Initialize cancelToastButton
 
-        // Find the ImageView for the postfix icon inside the rootView
-        AppCompatImageView postfixIcon = rootView.findViewById(R.id.contact_one);
-
-        // Set a click listener for the postfix icon
-        postfixIcon.setOnClickListener(new View.OnClickListener() {
+        Button callButton = rootView.findViewById(R.id.call_button);
+        callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open the contacts app
-                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(intent, 1); // You can use any request code you prefer
-            }
-        });
+                // Toggle visibility of the toast and cancel button
+                if (toastTextView.getVisibility() == View.GONE) {
+                    toastTextView.setVisibility(View.VISIBLE);
+                    cancelToastButton.setVisibility(View.VISIBLE);
+                } else {
+                    toastTextView.setVisibility(View.GONE);
+                    cancelToastButton.setVisibility(View.GONE);
+                }
+                cancelToastButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Toggle visibility of the toast and cancel button
+                        if (toastTextView.getVisibility() != View.GONE) {
+                            toastTextView.setVisibility(View.GONE);
+                            cancelToastButton.setVisibility(View.GONE);
+                        } else {
+                            toastTextView.setVisibility(View.VISIBLE);
+                            cancelToastButton.setVisibility(View.VISIBLE);
+                        }}});
+                db = FirebaseFirestore.getInstance();
+                singleton = Singleton.getInstance();
+                String inputNumber1 = secondNumberEditText.getText().toString().trim();
+                String inputNumber = firstNumberEditText.getText().toString().trim();
 
-        final TextView countryCodeTextView = rootView.findViewById(R.id.countryCodeTextView);
-        ImageView countryCodeDropdown = rootView.findViewById(R.id.countryCodeDropdown);
-        countryCodeDropdown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Show the country code dropdown using a PopupMenu
-                showCountryCodeDropdown(v, countryCodeTextView);
-            }
-        });
-        ImageView secondIcon = rootView.findViewById(R.id.passworCountryCodeDropdownExpend);
-
-        // Set a click listener for the second icon
-        secondIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Show the country code dropdown using a PopupMenu
-                showCountryCodeDropdown(v, countryCodeTextView);
-            }
-        });
-
-        final TextView passwordCountryCodeTextView = rootView.findViewById(R.id.passwordCountryCodeTextView);
-        ImageView passwordCountryCodeDropdown = rootView.findViewById(R.id.passwordCountryCodeDropdown);
-        passwordCountryCodeDropdown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Show the country code dropdown using a PopupMenu
-                showCountryCodeDropdown(v, passwordCountryCodeTextView);
-            }
-        });
-        ImageView second_expend_icon = rootView.findViewById(R.id.passwordCountryCodeDropdownExpend);
-
-        // Set a click listener for the second icon
-        second_expend_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Show the country code dropdown using a PopupMenu
-                showCountryCodeDropdown(v, passwordCountryCodeTextView);
-            }
-        });
-
-        // Find the ImageView for the postfix icon
-        Button call_button = rootView.findViewById(R.id.call_button);
-
-        // Set a click listener for the postfix icon
-        call_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String, Object> numbers = new HashMap<>();
-                String inputNumber1=secondNumberEditText.getText().toString().trim();
-                String inputNumber=firstNumberEditText.getText().toString().trim();
-
-                if(singleton.getCallScreenFrom()=="admin"){
-    singleton.resetCallScreenFrom();
+                if (singleton.getCallScreenFrom().equals("admin")) { // Use .equals for string comparison
+                    singleton.resetCallScreenFrom();
                     if (!inputNumber.isEmpty() && !inputNumber1.isEmpty()) {
                         singleton.setPhoneNumber(inputNumber1);
                         @SuppressLint("ServiceCast") TelecomManager telecomManager = (TelecomManager) getContext().getSystemService(Context.TELECOM_SERVICE);
@@ -138,8 +104,8 @@ public class Home extends Fragment {
                             if (telecomManager.getDefaultDialerPackage().equals(getContext().getApplicationContext().getPackageName())) {
                                 telecomManager.placeCall(uri, extras);
                             } else {
-                                Uri phoneNumber = Uri.parse("tel:" + inputNumber);
-                                Intent callIntent = new Intent(Intent.ACTION_CALL, phoneNumber);
+                                Uri phoneNumberUri = Uri.parse("tel:" + inputNumber);
+                                Intent callIntent = new Intent(Intent.ACTION_CALL, phoneNumberUri);
                                 callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(callIntent);
                             }
@@ -147,24 +113,19 @@ public class Home extends Fragment {
                             Toast.makeText(getContext().getApplicationContext(), "Please allow permission", Toast.LENGTH_SHORT).show();
                         }
                     }
-}
-else if(singleton.getCallScreenFrom()=="client"){
-
-singleton.resetCallScreenFrom();
-    if (!inputNumber.isEmpty() && !inputNumber1.isEmpty()) {
-                    numbers.put("number1", inputNumber);
-                    numbers.put("number2", inputNumber1);
-                    numbers.put("length", "0");
-                    addData(numbers);
+                } else if (singleton.getCallScreenFrom().equals("client")) { // Use .equals for string comparison
+                    singleton.resetCallScreenFrom();
+                    if (!inputNumber.isEmpty() && !inputNumber1.isEmpty()) {
+                        Map<String, Object> numbers = new HashMap<>();
+                        numbers.put("number1", inputNumber);
+                        numbers.put("number2", inputNumber1);
+                        numbers.put("length", "0");
+                        addData(numbers);
+                    }
                 }
-
-                }
-
-
-
-
             }
         });
+
 
         // Find the EditText field for "Number 1"
 

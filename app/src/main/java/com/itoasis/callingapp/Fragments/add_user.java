@@ -42,7 +42,7 @@ public class add_user extends Fragment {
 
     private boolean isEditMode = false;
     ImageView passwordPostfixIcon;
-    EditText nameEditText, emailEditText, passwordField, creditField;
+    EditText nameEditText, emailEditText, passwordField, creditField,numberEditText;
     View addUser;
     TextView nameError, emailError, passwordError, creditError, countryError;
     CountryCodePicker countryCodePicker;
@@ -76,7 +76,7 @@ public class add_user extends Fragment {
         creditField = v.findViewById(R.id.credit_field);
         countryCodePicker = v.findViewById(R.id.countryCodePicker);
         countryError = v.findViewById(R.id.countryError);
-
+        numberEditText =v.findViewById(R.id.numberEditText);
         Bundle args = getArguments();
         if (args != null) {
             userId = args.getString("userId");
@@ -107,6 +107,7 @@ public class add_user extends Fragment {
                 String password = passwordField.getText().toString().trim();
                 String selectedCountryCode = countryCodePicker.getSelectedCountryNameCode();
                 String credits = creditField.getText().toString().trim();
+                String phoneNumber = numberEditText.getText().toString().trim();
 
                 if (userName.isEmpty() || userName.length() < 3) {
                     nameError.setText(userName.isEmpty() ? "Enter a name" : "Name must be greater than 3 characters");
@@ -131,10 +132,10 @@ public class add_user extends Fragment {
                     if (isValidInput(userName, email, password, credits)) {
                         if (userId != null) {
                             // Edit mode: Update existing user data
-                            editUserData(userId, userName, email, password, selectedCountryCode, credits);
+                            editUserData(userId, userName, email, password, selectedCountryCode, credits,phoneNumber);
                         } else {
                             // Create mode: Add a new user
-                            uploadUserData(userName, email, password, selectedCountryCode, credits);
+                            uploadUserData(userName, email, password, selectedCountryCode, credits,phoneNumber);
                         }
                     }
                 }
@@ -176,7 +177,7 @@ public class add_user extends Fragment {
                 && !credits.isEmpty();
     }
 
-    private void uploadUserData(String userName, String email, String password, String selectedCountryCode, String credits) {
+    private void uploadUserData(String userName, String email, String password, String selectedCountryCode, String credits,String phoneNumber) {
         // Create a Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -197,7 +198,7 @@ public class add_user extends Fragment {
                             user.put("password", password);
                             user.put("countryCode", selectedCountryCode);
                             user.put("credits", credits);
-
+                            user.put("phoneNumber", phoneNumber);
                             // Upload the user data to Firestore
                             db.collection("users")
                                     .document(uid) // Use the UID as the document ID in Firestore
@@ -245,6 +246,7 @@ public class add_user extends Fragment {
                             String userCredits = documentSnapshot.getString("credits");
                             String userCountryCode = documentSnapshot.getString("countryCode");
                             String userPassword = documentSnapshot.getString("password");
+                            String userPhoneNumber=documentSnapshot.getString("phoneNumber");
 
                             Toast.makeText(requireContext(), userCountryCode, Toast.LENGTH_SHORT).show();
 
@@ -254,6 +256,7 @@ public class add_user extends Fragment {
                             creditField.setText(userCredits);
                             passwordField.setText(userPassword);
                             countryCodePicker.setCountryForNameCode(userCountryCode);
+                            numberEditText.setText(userPhoneNumber);
 
                         } else {
                             // User data not found in Firestore, handle the case
@@ -272,7 +275,7 @@ public class add_user extends Fragment {
 
 
     // Method to edit user data
-    private void editUserData(String userEmail, String userName, String email, String password, String selectedCountryCode, String credits) {
+    private void editUserData(String userEmail, String userName, String email, String password, String selectedCountryCode, String credits,String phoneNumber) {
         // Query Firestore to find the user with the provided email
         Query query = userDetailsCollection.whereEqualTo("email", userEmail);
 
@@ -294,6 +297,7 @@ public class add_user extends Fragment {
                             updatedData.put("countryCode", selectedCountryCode);
                             updatedData.put("credits", credits);
                             updatedData.put("password", password);
+                            updatedData.put("phoneNumber",phoneNumber);
 
                             // Update the document in Firestore
                             userRef.update(updatedData)

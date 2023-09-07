@@ -3,7 +3,7 @@ package com.itoasis.callingapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +21,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.itoasis.callingapp.Fragments.History;
 import com.itoasis.callingapp.Fragments.Home;
 import com.itoasis.callingapp.Fragments.Message;
-import com.itoasis.callingapp.Fragments.Notification;
 import com.itoasis.callingapp.Fragments.Payment;
-import com.itoasis.callingapp.Fragments.PhoneCall;
-import com.itoasis.callingapp.Fragments.Search;
+import com.itoasis.callingapp.Fragments.chatRoom;
 import com.itoasis.callingapp.Fragments.profile_call;
-import com.itoasis.callingapp.Fragments.send_Notification;
 import com.itoasis.callingapp.utils.Singleton;
 
 public class send_call extends AppCompatActivity {
@@ -37,6 +34,8 @@ public class send_call extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     private String userEmail; // User's email
     private String userName; // User's name
+    private String credits;
+    private String phoneNumberr;
     private FirebaseFirestore db;
     private ListenerRegistration userDataListener;
 
@@ -52,7 +51,7 @@ public class send_call extends AppCompatActivity {
         bottomNavigationView.setBackground(null);
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         getSupportActionBar().hide();
-        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new Message()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new profile_call()).commit();
         // Retrieve the user's email from the Intent extras
         userEmail = getIntent().getStringExtra("user_email");
         Toast.makeText(this, userEmail, Toast.LENGTH_SHORT).show();
@@ -88,7 +87,7 @@ public class send_call extends AppCompatActivity {
 
                         break;
                     case R.id.chat:
-                        selectedFragment = new Message();
+                        selectedFragment = new chatRoom();
                         break;
                     case R.id.history:
                         selectedFragment = new History();
@@ -120,10 +119,14 @@ public class send_call extends AppCompatActivity {
                             // Assuming "name" is the field in Firestore where the user's name is stored
                             DocumentSnapshot document = snapshot.getDocuments().get(0); // Assuming there's only one result
                             userName = document.getString("name");
-                            //updateUIWithUserName(userName);
-
+                            updateUIWithUserName(userName);
+                            credits=document.getString("credits");
+                            phoneNumberr=document.getString("phoneNumber");
+                            Toast.makeText(send_call.this, credits, Toast.LENGTH_SHORT).show();
                             // Store the user's name in Singleton
                             Singleton.getInstance().setUserName(userName);
+                            Singleton.getInstance().setPhoneNumber(phoneNumberr);
+                            Singleton.getInstance().setPhoneNumber(credits);
                             Singleton.getInstance().setChar(userName.charAt(0));
 
                         } else {
@@ -140,19 +143,18 @@ public class send_call extends AppCompatActivity {
         }
     }
 
-    // Update your UI with the user's name
-//    private void updateUIWithUserName(String userName) {
-//        if (userName != null) {
-//            // Update your UI elements, e.g., a TextView to display the user's name
-//            // For example, if you have a TextView with the id "User_Name":
-//            TextView userNameTextView = findViewById(R.id.User_Name);
-//            userNameTextView.setText(userName);
-//
-//            char firstChar = userName.charAt(0);
-//            TextView nameProfileAlphabet = findViewById(R.id.name_profle_alphabet);
-//            nameProfileAlphabet.setText(String.valueOf(firstChar));
-//        } else {
-//            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    private void updateUIWithUserName(String userName) {
+        if (userName != null) {
+            // Update your UI elements, e.g., a TextView to display the user's name
+            // For example, if you have a TextView with the id "User_Name":
+            TextView userNameTextView = findViewById(R.id.User_Name);
+            userNameTextView.setText(userName);
+
+            char firstChar = userName.charAt(0);
+            TextView nameProfileAlphabet = findViewById(R.id.name_profle_alphabet);
+            nameProfileAlphabet.setText(String.valueOf(firstChar));
+        } else {
+            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

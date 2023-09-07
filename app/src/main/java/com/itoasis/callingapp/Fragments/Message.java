@@ -1,7 +1,9 @@
 package com.itoasis.callingapp.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -10,45 +12,53 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.adapter.MessageAdapter;
 import com.itoasis.callingapp.modal.MessageModal;
+import com.itoasis.callingapp.utils.Singleton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-
-public class Message extends Fragment {
-
+public class Message extends Fragment implements MessageAdapter.ItemClickListener {
+    private String chatRoomName;
     private RecyclerView recyclerView;
     private EditText searchEditText;
-
-    // variable for our adapter
-    // class and array list
     private MessageAdapter adapter;
     private ArrayList<MessageModal> messageModelArrayList;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_message, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_message, container, false);
         recyclerView = v.findViewById(R.id.recycler);
-        searchEditText=v.findViewById(R.id.search_edit_text);
-
-        buildRecyclerView();
+        searchEditText = v.findViewById(R.id.search_edit_text);
+        messageModelArrayList = new ArrayList<>();
+        adapter = new MessageAdapter(messageModelArrayList, getContext(), this); // Pass 'this' as the ItemClickListener
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
         setupSearch();
+        fetchChatRoomNames(); // Load chat room names from Firestore
         return v;
     }
+
     private void setupSearch() {
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -67,70 +77,58 @@ public class Message extends Fragment {
     }
 
     private void filter(String text) {
-        // creating a new array list to filter our data.
-        ArrayList<MessageModal> filteredlist = new ArrayList<MessageModal>();
-
-        // running a for loop to compare elements.
+        ArrayList<MessageModal> filteredList = new ArrayList<>();
         for (MessageModal item : messageModelArrayList) {
-            // checking if the entered string matched with any item of our recycler view.
-            if (item.getName().toLowerCase().contains(text.toLowerCase())) {
-                // if the item is matched we are
-                // adding it to our filtered list.
-                filteredlist.add(item);
+            if (item.getRoomName().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
             }
         }
-
-
-            adapter.filterList(filteredlist);
-
+        adapter.filterList(filteredList);
     }
 
-    private void buildRecyclerView() {
+    private void fetchChatRoomNames() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference chatRoomsRef = db.collection("chatRooms");
 
-        // below line we are creating a new array list
-        messageModelArrayList = new ArrayList<MessageModal>();
-
-        // below line is to add data to our array list.
-        messageModelArrayList.add(new MessageModal("Jimmy Heather1", "DLorem Ipsum is simply dummy text of the printing and typesetting industry.","12.07 AM"));
-        messageModelArrayList.add(new MessageModal("Jimmy Heather2", "DLorem Ipsum is simply dummy text of the printing and typesetting industry.","12.07 AM"));
-        messageModelArrayList.add(new MessageModal("Jimmy Heather3", "DLorem Ipsum is simply dummy text of the printing and typesetting industry.","12.07 AM"));
-        messageModelArrayList.add(new MessageModal("Jimmy Heather4", "DLorem Ipsum is simply dummy text of the printing and typesetting industry.","12.07 AM"));
-        messageModelArrayList.add(new MessageModal("Jimmy Heather5", "DLorem Ipsum is simply dummy text of the printing and typesetting industry.","12.07 AM"));
-        messageModelArrayList.add(new MessageModal("Jimmy Heather6", "DLorem Ipsum is simply dummy text of the printing and typesetting industry.","12.07 AM"));
-
-        // initializing our adapter class.
-        adapter = new MessageAdapter(messageModelArrayList, getContext());
-
-        // adding layout manager to our recycler view.
-        LinearLayoutManager manager = new LinearLayoutManager(getContext());
-        recyclerView.setHasFixedSize(true);
-
-        // setting layout manager
-        // to our recycler view.
-        recyclerView.setLayoutManager(manager);
-
-        // setting adapter to
-        // our recycler view.
-        recyclerView.setAdapter(adapter);
+        chatRoomsRef.get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    messageModelArrayList.clear(); // Clear the list before adding chat rooms
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                         chatRoomName = document.getId();
+                        messageModelArrayList.add(new MessageModal(chatRoomName)); // Create MessageModal for chat room
+                    }
+                    adapter.notifyDataSetChanged(); // Notify the adapter of the data change
+                })
+                .addOnFailureListener(e -> {
+                    // Handle errors here
+                    Log.e("Firestore", "Failed to fetch chat rooms: " + e.getMessage());
+                });
     }
 
-    private void navigateToDesiredFragment() {
-        // Create an instance of the fragment you want to navigate to
-        profile_call profile_call = new profile_call(); // Replace with your fragment name
+    // Implement the onItemClick method of the ItemClickListener
+    @Override
+    public void onItemClick(int position) {
 
-        // Get the FragmentManager
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        openChatRoomFragment(messageModelArrayList.get(position).getRoomName());
+    }
+    private void openChatRoomFragment(String chatRoomId) {
+        // Create an instance of the chatRoom fragment
+        chatRoom chatRoomFragment = new chatRoom();
+        // Pass an argument indicating that the sender is the admin
+        Bundle args = new Bundle();
+        // Pass an argument indicating that the sender is the admin
+        args.putBoolean("isAdmin", true);
 
-        // Start a FragmentTransaction
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        // Pass the chat room ID to the chatRoom fragment
+        args.putString("chatRoomId", chatRoomId);
 
-        // Replace the current fragment with the desired fragment
-        transaction.replace(R.id.f1, profile_call); // Replace "R.id.f1" with your FrameLayout ID
+        // Set the arguments Bundle on the chatRoomFragment
+        chatRoomFragment.setArguments(args);
 
-        // Add the transaction to the back stack (optional)
+        // Replace the current fragment with the chatRoom fragment
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.flFragment, chatRoomFragment);
         transaction.addToBackStack(null);
-
-        // Commit the transaction
         transaction.commit();
     }
 }

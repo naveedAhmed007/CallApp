@@ -111,19 +111,20 @@
 
     <!-- New Container with White Background and Border Radius -->
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/input_container_bg"
         android:orientation="vertical"
-        android:paddingTop="36dp"
-        android:paddingBottom="36dp"
         android:paddingLeft="20dp"
+        android:paddingTop="36dp"
         android:paddingRight="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/headerContainer"
-        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="36dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerContainer"
         app:layout_constraintVertical_chainStyle="packed">
 
 
@@ -131,39 +132,38 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
             <!-- Prefix icon -->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/countryCodeDropdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/usa_flag"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="12dp"
                 android:clickable="true"
-                />
+                android:src="@drawable/usa_flag" />
             <!-- TextView to display selected country code -->
             <TextView
                 android:id="@+id/countryCodeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:layout_marginTop="0dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="5dp"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                />
+                android:text="" />
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/passworCountryCodeDropdownExpend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/expend"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="12dp"
-                android:clickable="true"/>
+                android:clickable="true"
+                android:src="@drawable/expend" />
 
             <!-- first_Number -->
             <EditText
@@ -171,27 +171,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="#000"
-                android:hint="Number 1"
-                android:text="03237824555"
-
                 android:background="@null"
-                android:paddingStart="12dp"
-                android:paddingEnd="12dp"
+                android:hint="Number 1"
                 android:inputType="number"
+
+                android:paddingStart="12dp"
                 android:paddingTop="12dp"
+                android:paddingEnd="12dp"
                 android:paddingBottom="12dp"
-                />
+                android:text="03237824555"
+                android:textColor="#000" />
 
             <!-- Postfix icon -->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/contact_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/contact_list_icon"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="12dp"
-                />
+                android:src="@drawable/contact_list_icon" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -199,74 +197,70 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#9C9C9C"
             android:layout_marginBottom="24dp"
-            />
+            android:background="#9C9C9C" />
 
 
         <!-- Password Input -->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
             <!-- Prefix icon -->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/passwordCountryCodeDropdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/canada"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="12dp"
                 android:clickable="true"
-                />
+                android:src="@drawable/canada" />
             <!-- TextView to display selected country code for password input -->
             <TextView
                 android:id="@+id/passwordCountryCodeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:layout_marginTop="0dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="5dp"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
-                />
+                android:text="" />
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/passwordCountryCodeDropdownExpend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/expend"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="12dp"
-                android:clickable="true"/>
+                android:clickable="true"
+                android:src="@drawable/expend" />
             <!-- Password Input -->
             <EditText
+                android:id="@+id/second_number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Number 2"
-                android:textColor="#000"
-                android:paddingStart="12dp"
                 android:background="@null"
-                android:paddingEnd="12dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
+                android:hint="Number 2"
                 android:inputType="number"
+                android:paddingStart="12dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="12dp"
                 android:text="03040143713"
-                android:id="@+id/second_number"
-                />
+                android:textColor="#000" />
 
             <!-- Postfix icon -->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/contact_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/contact_list_icon"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="12dp"
-                />
+                android:src="@drawable/contact_list_icon" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -274,27 +268,54 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#9C9C9C"
             android:layout_marginBottom="18dp"
-            />
+            android:background="#9C9C9C" />
 
         <!-- Login Button -->
         <Button
             android:id="@+id/call_button"
             android:layout_width="wrap_content"
             android:layout_height="43dp"
-            android:text="Send Call"
-            app:backgroundTint="@null"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
             android:background="@drawable/call_button_background"
+            android:fontFamily="@font/inter"
+            android:text="Send Call"
             android:textColor="#FFFFFF"
             android:textSize="14dp"
             android:textStyle="bold"
-            android:fontFamily="@font/inter"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center"/>
+            app:backgroundTint="@null" />
 
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/toast_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:padding="10dp"
+        android:paddingEnd="60dp"
+        android:text="Lorem Ipsum dolar slit Amit cnseqdly"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.268" />
+
+    <ImageButton
+        android:id="@+id/cancel_toast"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/flag_transparent"
+        android:src="@drawable/baseline_cancel_24"
+        app:layout_constraintBottom_toBottomOf="@+id/toast_text"
+        app:layout_constraintEnd_toEndOf="@+id/toast_text"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/toast_text"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintTop_toTopOf="@+id/toast_text" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

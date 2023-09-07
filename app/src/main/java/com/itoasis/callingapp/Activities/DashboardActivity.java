@@ -140,6 +140,8 @@ initVariables();
                 intent.putExtra("key", "addUser");
                 // start the Intent
                 startActivity(intent);
+                Toast.makeText(DashboardActivity.this, Singleton.getInstance().getUserEmail(), Toast.LENGTH_SHORT).show();
+
 
             }
         });

@@ -16,59 +16,62 @@ import java.util.ArrayList;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
-    // creating a variable for array list and context.
-    private ArrayList<MessageModal> MessageModalArrayList;
+    private ArrayList<MessageModal> messageModalArrayList;
+    private Context context;
 
-    // creating a constructor for our variables.
-    public MessageAdapter(ArrayList<MessageModal> MessageModalArrayList, Context context) {
-        this.MessageModalArrayList = MessageModalArrayList;
+    private ItemClickListener itemClickListener;
+
+    public MessageAdapter(ArrayList<MessageModal> messageModalArrayList, Context context, ItemClickListener listener) {
+        this.messageModalArrayList = messageModalArrayList;
+        this.context = context;
+        this.itemClickListener = listener;
     }
 
-    // method for filtering our recyclerview items.
     public void filterList(ArrayList<MessageModal> filterlist) {
-        // below line is to add our filtered
-        // list in our course array list.
-        MessageModalArrayList = filterlist;
-        // below line is to notify our adapter
-        // as change in recycler view data.
+        messageModalArrayList = filterlist;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public MessageAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // below line is to inflate our layout.
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
-        // setting data to our views of recycler view.
-        MessageModal model = MessageModalArrayList.get(position);
-        holder.nameChat.setText(model.getName());
-        holder.notificationTV.setText(model.getMessage());
-        holder.time.setText(model.getTime());
-    }
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        MessageModal model = messageModalArrayList.get(holder.getAdapterPosition());
+        holder.nameChat.setText(model.getRoomName());
 
+        // Set an OnClickListener on the item view
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Trigger the onItemClick method of the ItemClickListener
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(holder.getAdapterPosition());
+                }
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {
-        // returning the size of array list.
-        return MessageModalArrayList.size();
+        return messageModalArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // creating variables for our views.
         private final TextView nameChat;
-        private final TextView notificationTV;
-        private final TextView time;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // initializing our views with their ids.
             nameChat = itemView.findViewById(R.id.NameChat);
-            notificationTV = itemView.findViewById(R.id.notificationTV);
-            time = itemView.findViewById(R.id.timeText);
         }
+    }
+
+    // Define an interface for item click events
+    public interface ItemClickListener {
+        void onItemClick(int position);
     }
 }

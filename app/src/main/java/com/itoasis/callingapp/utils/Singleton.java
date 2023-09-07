@@ -3,10 +3,14 @@ package com.itoasis.callingapp.utils;
 public class Singleton {
 
     private static Singleton instance;
+    String userName;
+    private String userEmail; // User's email
 
     private int counter,activityCall,answeredCall,counterreceivedcalls;
     private String phoneNumber; // New member variable to store phoneNumber
-    private String callScreenFrom; // New member variable to store phoneNumber
+    private String callScreenFrom,phoneNumberr,credits; // New member variable to store phoneNumber
+
+
     private boolean listener; // New member variable to store phoneNumber
  // New member variable to store the user's name
     private char firstChar;
@@ -14,13 +18,14 @@ public class Singleton {
     private Singleton() {
         counter = 0;
         phoneNumber = ""; // Initialize phoneNumber as an empty string
-
+        phoneNumberr="";
+        credits="";
         activityCall=0;
         answeredCall=0;
         callScreenFrom="";
         counterreceivedcalls=0;
         listener=false;
-        userName = ""; // Initialize userName as an empty string
+       userName = ""; // Initialize userName as an empty string
 
     }
 
@@ -82,7 +87,8 @@ public class Singleton {
     public synchronized void setUserName(String userName) {
         this.userName = userName;
     }
-
+    public  synchronized  void setPhoneNumberr(String phoneNumberr){this.phoneNumberr=phoneNumberr;}
+    public synchronized  String getPhoneNumberr(){return phoneNumberr;}
     public synchronized String getUserName() {
         return userName;
     }
@@ -102,6 +108,14 @@ public class Singleton {
         counterreceivedcalls=0;
 
     }
+    // Getter and setter for user email
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
     public synchronized int getCounterCalls() {
         return counterreceivedcalls;
     }
@@ -119,6 +133,7 @@ public class Singleton {
         listener=false;
 
     }
+
 
 
 
