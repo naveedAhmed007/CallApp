@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView passwordErrorTextView;
 
     private FirebaseAuth mAuth;
+    Singleton singleton=Singleton.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

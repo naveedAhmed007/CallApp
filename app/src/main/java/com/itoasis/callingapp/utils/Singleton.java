@@ -6,7 +6,7 @@ import java.util.Set;
 public class Singleton {
 
     private static Singleton instance;
-    String userName;
+
     private String userEmail; // User's email
 
     private int counter,activityCall,answeredCall,counterreceivedcalls;
@@ -15,7 +15,7 @@ public class Singleton {
     private String callScreenFrom,callerNames,documentId; // New member variable to store phoneNumber
 
     private String phoneNumber; // New member variable to store phoneNumber
-    private String callScreenFrom,phoneNumberr,credits; // New member variable to store phoneNumber
+    private String phoneNumberr,credits; // New member variable to store phoneNumber
 
 
 

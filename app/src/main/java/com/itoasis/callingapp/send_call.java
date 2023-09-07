@@ -124,14 +124,14 @@ public class send_call extends AppCompatActivity {
                             // Assuming "name" is the field in Firestore where the user's name is stored
                             DocumentSnapshot document = snapshot.getDocuments().get(0); // Assuming there's only one result
                             userName = document.getString("name");
-                            updateUIWithUserName(userName);
+                         updateUIWithUserName(userName);
                             credits=document.getString("credits");
                             phoneNumberr=document.getString("phoneNumber");
                             Toast.makeText(send_call.this, credits, Toast.LENGTH_SHORT).show();
                             // Store the user's name in Singleton
                             Singleton.getInstance().setUserName(userName);
-                            Singleton.getInstance().setPhoneNumber(phoneNumberr);
-                            Singleton.getInstance().setPhoneNumber(credits);
+                            Singleton.getInstance().setPhoneNumber1(phoneNumberr);
+                            Singleton.getInstance().setPhoneNumber1(credits);
                             Singleton.getInstance().setChar(userName.charAt(0));
 
                         } else {
