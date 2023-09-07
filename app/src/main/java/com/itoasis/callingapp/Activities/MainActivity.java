@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             // User is signed in, you can reload or update the UI as needed
             reload();
         }else {
-
+//            Toast.makeText(this, "Nnja", Toast.LENGTH_SHORT).show();
         }
     }
     @Override
@@ -187,10 +187,14 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (userEmail != null && userEmail.equals("admin@test.com")) {
                                     // If the email matches, open DashboardActivity
-                                    Intent intent = new Intent(MainActivity.this, DashboardActivity.class);
-                                    // Set the user email in the Singleton class
+                                    Intent intent = new Intent(getApplicationContext(), AdminBottomNavigation.class);
+
+                                    intent.putExtra("key", "home");
                                     Singleton.getInstance().setUserEmail(userEmail);
+                                    singleton.setCallScreenFrom("admin");                                    // start the Intent
+                                
                                     startActivity(intent);
+
                                 } else {
                                     // If the email does not match, open send_call
                                     Intent intent = new Intent(MainActivity.this, send_call.class);

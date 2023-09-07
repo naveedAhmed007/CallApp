@@ -1,5 +1,6 @@
 package com.itoasis.callingapp.services;
 
+
 import static com.itoasis.callingapp.call_screen.muteBtnName;
 import static com.itoasis.callingapp.call_screen.speakerBtnName;
 import static com.itoasis.callingapp.utils.NotificationHelper.*;
@@ -96,6 +97,7 @@ public class CallService extends InCallService {
             Intent intent = new Intent(this, call_screen.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+
 
             Toast.makeText(this, "Dialing to " + call.getDetails().getHandle().getSchemeSpecificPart(), Toast.LENGTH_SHORT).show();
         }

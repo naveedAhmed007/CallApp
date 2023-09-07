@@ -19,6 +19,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.itoasis.callingapp.Fragments.ClientHome;
 import com.itoasis.callingapp.Fragments.History;
 import com.itoasis.callingapp.Fragments.Home;
 import com.itoasis.callingapp.Fragments.Message;
@@ -54,7 +55,11 @@ public class send_call extends AppCompatActivity {
         bottomNavigationView.setBackground(null);
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         getSupportActionBar().hide();
-        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new profile_call()).commit();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new ClientHome()).commit();
+
+        // getSupportFragmentManager().beginTransaction().replace(R.id.f1, new profile_call()).commit();
+
         // Retrieve the user's email from the Intent extras
         userEmail = getIntent().getStringExtra("user_email");
         Toast.makeText(this, userEmail, Toast.LENGTH_SHORT).show();
@@ -68,7 +73,7 @@ public class send_call extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.f1, new Home()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.f1, new ClientHome()).commit();
             }
         });
 
@@ -80,7 +85,7 @@ public class send_call extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.profile:
 
-                        selectedFragment = new Home();
+                        selectedFragment = new ClientHome();
                         singleton.setCallScreenFrom("client");
                         break;
                     case R.id.placeholder:
