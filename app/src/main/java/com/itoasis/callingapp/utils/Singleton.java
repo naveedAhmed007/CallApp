@@ -32,8 +32,8 @@ public class Singleton {
 
 
         phoneNumber = ""; // Initialize phoneNumber as an empty string
-        phoneNumberr="";
-        credits="";
+        //phoneNumberr="";
+        //credits="";
 
         activityCall=0;
         answeredCall=0;
@@ -113,6 +113,11 @@ public class Singleton {
     }
     public  synchronized  void setPhoneNumberr(String phoneNumberr){this.phoneNumberr=phoneNumberr;}
     public synchronized  String getPhoneNumberr(){return phoneNumberr;}
+
+
+    public  synchronized  void setCredits(String credits){this.credits=credits;}
+    public synchronized  String getCredits(){return credits;}
+
     public synchronized String getUserName() {
         return userName;
     }
