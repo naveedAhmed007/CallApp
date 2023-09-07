@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +31,7 @@ public class send_call extends AppCompatActivity {
     FrameLayout frameLayout;
     Fragment selectedFragment;
     Singleton singleton;
+    TextView credit_view,phoneNumber_view;
     private com.google.android.material.floatingactionbutton.FloatingActionButton fab;
     BottomNavigationView bottomNavigationView;
     private String userEmail; // User's email
@@ -43,7 +45,8 @@ public class send_call extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bottom_navigation);
-
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        TextView creditView = findViewById(R.id.credits);
         singleton=Singleton.getInstance();
         fab=findViewById(R.id.fab);
         frameLayout=findViewById(R.id.f1);
@@ -122,11 +125,11 @@ public class send_call extends AppCompatActivity {
                             updateUIWithUserName(userName);
                             credits=document.getString("credits");
                             phoneNumberr=document.getString("phoneNumber");
-                            Toast.makeText(send_call.this, credits, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(send_call.this, phoneNumberr, Toast.LENGTH_SHORT).show();
                             // Store the user's name in Singleton
                             Singleton.getInstance().setUserName(userName);
-                            Singleton.getInstance().setPhoneNumber(phoneNumberr);
-                            Singleton.getInstance().setPhoneNumber(credits);
+                            Singleton.getInstance().setPhoneNumberr(phoneNumberr);
+                            Singleton.getInstance().setCredits(credits);
                             Singleton.getInstance().setChar(userName.charAt(0));
 
                         } else {

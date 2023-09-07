@@ -23,8 +23,9 @@ public class profile_call extends Fragment {
         notification = v.findViewById(R.id.postfixIcon);
         String userName = Singleton.getInstance().getUserName();
         char Fristchar =Singleton.getInstance().getChar();
+        credits= Singleton.getInstance().getCredits();
         phoneNUmber=Singleton.getInstance().getPhoneNumberr();
-        //Toast.makeText(requireContext(), , Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), phoneNUmber, Toast.LENGTH_SHORT).show();
         // Set the user's name in your TextView
         TextView userNameTextView = v.findViewById(R.id.User_Name);
         TextView firstChar= v.findViewById(R.id.name_profle_alphabet);
