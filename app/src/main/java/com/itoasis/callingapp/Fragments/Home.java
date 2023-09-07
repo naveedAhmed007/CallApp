@@ -364,6 +364,42 @@ public class Home extends Fragment {
         return callerName;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Query query =  usersCollection.whereEqualTo("isCallBusy", true).limit(1);
+
+        // Execute the query
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                    // Handle each document here
+                    String documentId = documentSnapshot.getId();
+                    Map<String, Object> data = documentSnapshot.getData();
+
+                    usersCollection.document(documentId).update("isCallBusy", false)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Document updated successfully
+//                                    Toast.makeText(YourActivity.this, "isCallBusy set to false", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle any errors that occurred during the update
+//                                    Toast.makeText(YourActivity.this, "Failed to update isCallBusy", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                }
+            }
+        });
 
 
+
+    }
 }

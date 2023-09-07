@@ -51,7 +51,9 @@ import com.itoasis.callingapp.utils.OutgoingCallReceiver;
 import com.itoasis.callingapp.utils.Singleton;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class call_screen extends AppCompatActivity {
     AirplaneModeChangeReceiver airplaneModeChangeReceiver = new AirplaneModeChangeReceiver();
@@ -269,8 +271,11 @@ public class call_screen extends AppCompatActivity {
 
                     String documentId = documentSnapshot.getId();
                     if (documentId != "") {
+                        Map<String, Object> updates = new HashMap<>();
+                        updates.put("length", "1");
+                        updates.put("isCallBusy", true);
                         db.collection("numbers").document(documentId)
-                                .update("length", "1")
+                                .update(updates)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {

@@ -9,10 +9,11 @@ public class Singleton {
 
     private int counter,activityCall,answeredCall,counterreceivedcalls;
     private String phoneNumber2,userName,phoneNumber1; // New member variable to store phoneNumber
-    private String callScreenFrom,callerNames; // New member variable to store phoneNumber
+    private String callScreenFrom,callerNames,documentId; // New member variable to store phoneNumber
     private boolean listener; // New member variable to store phoneNumber
  // New member variable to store the user's name
     private char firstChar;
+    boolean isCallActive;
     private byte fsNumberslength;
 
     private Singleton() {
@@ -147,6 +148,21 @@ public class Singleton {
         return fsNumberslength;
     }
 
+
+    public synchronized void setCallActive(boolean isCallActive) {
+        this.isCallActive=isCallActive;
+    }
+    public synchronized boolean getCallActive() {
+        return isCallActive;
+    }
+
+
+    public synchronized void setDocumentId(String id) {
+        this.documentId=id;
+    }
+    public synchronized String getDocumentId() {
+        return documentId;
+    }
 
 
 }

@@ -35,8 +35,6 @@ public class MainActivity2 extends AppCompatActivity {
 
 
 
-        Intent serviceIntent = new Intent(this, FirestoreMonitoringService.class);
-        startService(serviceIntent);
 
         requestDefaultDialerRole();
         if (getSupportActionBar() != null) {

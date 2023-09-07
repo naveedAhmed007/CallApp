@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.telecom.TelecomManager;
 import android.util.Log;
@@ -35,8 +36,13 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.call_screen;
 import com.itoasis.callingapp.utils.CallListHelper;
@@ -49,8 +55,11 @@ import java.util.Map;
 public class ClientHome extends Fragment {
     private EditText firstNumberEditText,secondNumberEditText;
     FirebaseFirestore db;
+
+    Handler handler = new Handler();
     Singleton singleton;
     Button call_button;
+    Boolean clientBusy=false;
     private TextView toastTextView;
     private AppCompatImageButton cancelToastButton;
 
@@ -154,8 +163,38 @@ public class ClientHome extends Fragment {
                 if (!inputNumber.isEmpty() && !inputNumber1.isEmpty()) {
                     numbers.put("number1", inputNumber);
                     numbers.put("number2", inputNumber1);
+                    numbers.put("isCallBusy",false);
                     numbers.put("length", "0");
-                    addData(numbers);
+
+                    CollectionReference collectionRef = db.collection("numbers");
+
+// Create a query to fetch all documents in the collection
+
+                    Query query = collectionRef.whereEqualTo("isCallBusy", true).limit(1);
+
+                    // Execute the query
+                    query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                                // Handle each document here
+                                String documentId = documentSnapshot.getId();
+                                Map<String, Object> data = documentSnapshot.getData();
+                                // Do something with the data
+                                clientBusy=true;
+
+                                // Show a toast message when length 1 is found
+
+                                Toast.makeText(getContext(), "Length 1 is found in document: " + documentId, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+
+
+
+
                     if (toastTextView.getVisibility() == View.GONE) {
                         toastTextView.setVisibility(View.VISIBLE);
                         cancelToastButton.setVisibility(View.VISIBLE);
@@ -165,6 +204,24 @@ public class ClientHome extends Fragment {
                     }
                 }
                 call_button.setEnabled(false);
+                Runnable runnableCode = new Runnable() {
+                    @Override
+                    public void run() {
+                        // Put your code here that you want to run after 3 seconds
+                        // For example, show a toast message
+                        if(clientBusy==true){
+                            clientBusy=false;
+                            toastTextView.setText("Admin is busy");
+                        }
+                        else if(clientBusy==false)
+                        {
+                            addData(numbers);
+                        }
+                    }
+                };
+                handler.postDelayed(runnableCode, 3000);
+              //add functionality to execute this condition after clientBusy is checked
+
 
 
 

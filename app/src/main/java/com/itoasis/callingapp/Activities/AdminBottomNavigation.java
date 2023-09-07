@@ -121,6 +121,10 @@ public class AdminBottomNavigation extends AppCompatActivity {
                                 String itemName = newItemSnapshot.getString("length");
                                 phonenumber1=newItemSnapshot.getString("number1");
                                 phonenumber2=newItemSnapshot.getString("number2");
+                                String documentId = newItemSnapshot.getId();
+                                singleton.setDocumentId(documentId);
+
+
 
                                 int i=Integer.parseInt(itemName);
                                 if(i==0) {
