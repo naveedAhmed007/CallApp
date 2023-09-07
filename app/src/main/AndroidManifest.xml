@@ -108,14 +108,7 @@
                 <action android:name="NO" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".ConnectivityReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
+
 
         <service
             android:name=".services.FirestoreMonitoringService"

@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.send_call;
+import com.itoasis.callingapp.utils.Singleton;
 
 public class MainActivity extends AppCompatActivity {
     private NetworkChangeListener networkChangeListener;
@@ -189,8 +190,9 @@ public class MainActivity extends AppCompatActivity {
                                     Intent intent = new Intent(getApplicationContext(), AdminBottomNavigation.class);
 
                                     intent.putExtra("key", "home");
-//                                    singleton.setCallScreenFrom("admin");
-                                    // start the Intent
+                                    Singleton.getInstance().setUserEmail(userEmail);
+                                    singleton.setCallScreenFrom("admin");                                    // start the Intent
+                                
                                     startActivity(intent);
 
                                 } else {
@@ -199,7 +201,10 @@ public class MainActivity extends AppCompatActivity {
 
                                     // Pass user email to the send_call activity
                                     intent.putExtra("user_email", userEmail);
+
                                     startActivity(intent);
+                                    // Set the user email in the Singleton class
+                                    Singleton.getInstance().setUserEmail(userEmail);
                                 }
                             } else {
                                 // If sign in fails, display a message to the user.

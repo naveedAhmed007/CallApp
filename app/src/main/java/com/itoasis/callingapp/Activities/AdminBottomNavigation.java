@@ -161,13 +161,6 @@ public class AdminBottomNavigation extends AppCompatActivity {
                 break;
         }
 
-
-
-
-
-
-
-
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -175,7 +168,7 @@ public class AdminBottomNavigation extends AppCompatActivity {
                     setCurrentFragment(new Home());
                     break;
                 case R.id.chat:
-                    setCurrentFragment(new Payment());
+                    setCurrentFragment(new Message());
                     break;
 
                 case R.id.set_prices:

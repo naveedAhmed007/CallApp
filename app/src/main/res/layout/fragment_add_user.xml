@@ -137,7 +137,41 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/editText"
         app:layout_constraintTop_toBottomOf="@+id/customActionBar"
-        app:layout_constraintVertical_bias="0.662" />
+        app:layout_constraintVertical_bias="0.388" />
+
+    <TextView
+        android:id="@+id/numberHeadingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number"
+        android:textColor="#747474"
+        android:textSize="14dp"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintBottom_toTopOf="@+id/numberEditText"
+        app:layout_constraintEnd_toEndOf="@+id/numberEditText"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/numberEditText"
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+
+    <EditText
+        android:id="@+id/numberEditText"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:background="@drawable/add_user_fields"
+        android:hint="                                             "
+        android:imeOptions="actionDone"
+
+        android:inputType="number"
+        android:padding="5dp"
+        android:textSize="16dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/editText"
+        app:layout_constraintEnd_toEndOf="@+id/nameEditText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/nameEditText"
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText"
+        app:layout_constraintVertical_bias="0.532" />
 
     <TextView
         android:id="@+id/EmailHeadingLabel"
@@ -166,10 +200,10 @@
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/customActionBar"
-        app:layout_constraintVertical_bias="0.341"
+        app:layout_constraintVertical_bias="0.353"
         app:layout_constraintWidth_percent="0.9" />
 
     <ImageView
@@ -207,10 +241,10 @@
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/customView"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/customView"
         app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:layout_constraintVertical_bias="0.659"
+        app:layout_constraintVertical_bias="0.535"
         app:layout_constraintWidth_percent="0.9" />
 
     <TextView
@@ -405,7 +439,7 @@
         app:ccp_textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/customView"
         app:layout_constraintEnd_toEndOf="@+id/customView"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/customView"
         app:layout_constraintTop_toTopOf="@+id/customView"
         app:layout_constraintVertical_bias="0.0"

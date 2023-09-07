@@ -101,15 +101,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
 
-
-
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customView"
-        app:layout_constraintStart_toStartOf="parent"
-
+        app:layout_constraintVertical_bias="0"
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/customView" />
 
 
 
