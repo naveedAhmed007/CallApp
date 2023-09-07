@@ -165,7 +165,7 @@ public class AdminBottomNavigation extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.details:
-                    setCurrentFragment(new Home());
+                    setCurrentFragment(new UserDetails());
                     break;
                 case R.id.chat:
                     setCurrentFragment(new Message());

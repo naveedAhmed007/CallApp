@@ -56,7 +56,7 @@ public class send_call extends AppCompatActivity {
         bottomNavigationView.getMenu().getItem(2).setEnabled(false);
         getSupportActionBar().hide();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new ClientHome()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.f1, new profile_call()).commit();
 
         // getSupportFragmentManager().beginTransaction().replace(R.id.f1, new profile_call()).commit();
 
@@ -85,7 +85,7 @@ public class send_call extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.profile:
 
-                        selectedFragment = new ClientHome();
+                        selectedFragment = new profile_call();
                         singleton.setCallScreenFrom("client");
                         break;
                     case R.id.placeholder:
@@ -127,10 +127,10 @@ public class send_call extends AppCompatActivity {
                             // Assuming "name" is the field in Firestore where the user's name is stored
                             DocumentSnapshot document = snapshot.getDocuments().get(0); // Assuming there's only one result
                             userName = document.getString("name");
-                            updateUIWithUserName(userName);
+
                             credits=document.getString("credits");
                             phoneNumberr=document.getString("phoneNumber");
-                            Toast.makeText(send_call.this, phoneNumberr, Toast.LENGTH_SHORT).show();
+                            updateUIWithUserName(userName,phoneNumberr,credits);
                             // Store the user's name in Singleton
                             Singleton.getInstance().setUserName(userName);
                             Singleton.getInstance().setPhoneNumberr(phoneNumberr);
@@ -151,13 +151,16 @@ public class send_call extends AppCompatActivity {
         }
     }
 
-    private void updateUIWithUserName(String userName) {
+    private void updateUIWithUserName(String userName,String phoneNumber,String creditss) {
         if (userName != null) {
             // Update your UI elements, e.g., a TextView to display the user's name
             // For example, if you have a TextView with the id "User_Name":
             TextView userNameTextView = findViewById(R.id.User_Name);
+            TextView userNumber = findViewById(R.id.phoneNumber);
+            TextView userCredits= findViewById(R.id.credits);
+            userNumber.setText(phoneNumber);
             userNameTextView.setText(userName);
-
+            userCredits.setText(creditss + " / 240");
             char firstChar = userName.charAt(0);
             TextView nameProfileAlphabet = findViewById(R.id.name_profle_alphabet);
             nameProfileAlphabet.setText(String.valueOf(firstChar));

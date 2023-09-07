@@ -11,11 +11,11 @@ public class Singleton {
 
     private int counter,activityCall,answeredCall,counterreceivedcalls;
 
-    private String phoneNumber2,userName,phoneNumber1; // New member variable to store phoneNumber
+    private String phoneNumber2,phoneNumber1; // New member variable to store phoneNumber
     private String callScreenFrom,callerNames,documentId; // New member variable to store phoneNumber
 
     private String phoneNumber; // New member variable to store phoneNumber
-    private String callScreenFrom,phoneNumberr,credits; // New member variable to store phoneNumber
+    private String phoneNumberr,credits; // New member variable to store phoneNumber
 
 
 
@@ -69,7 +69,7 @@ public class Singleton {
         return callScreenFrom;
     }
 
-    public synchronized void setCallScreenFrom(String callScreenFrom) {
+    public  synchronized void setCallScreenFrom(String callScreenFrom) {
         this.callScreenFrom = callScreenFrom;
     }
 

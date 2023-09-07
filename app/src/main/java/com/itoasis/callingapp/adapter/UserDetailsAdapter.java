@@ -1,5 +1,6 @@
 package com.itoasis.callingapp.adapter;
 
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 
 public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.ViewHolder> {
 
-    private ArrayList<UserDetailsModal> UserDetailsModalArrayList;
+    private static ArrayList<UserDetailsModal> UserDetailsModalArrayList;
     Context context;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference userDetailsCollection = db.collection("users");
@@ -93,7 +94,7 @@ public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView name, id, creditstv;
-        private final ImageButton edit, delete;
+        private final ImageButton edit, delete,chat;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,9 +103,20 @@ public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.
             edit = itemView.findViewById(R.id.imageButtonEdit);
             creditstv = itemView.findViewById(R.id.creditstv);
             delete = itemView.findViewById(R.id.imageButtonDelete);
-        }
-    }
+            chat =itemView.findViewById(R.id.imageButtonChat);
 
+// Add an OnClickListener for the "Chat" button here
+        chat.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // Get the user's ID from the model
+            String userId = UserDetailsModalArrayList.get(getAdapterPosition()).getUserId();
+
+            // Display the user's ID (you can customize this action, e.g., start a chat activity)
+            Toast.makeText(itemView.getContext(), "Chat with User ID: " + userId, Toast.LENGTH_SHORT).show();
+        }
+    });
+}}
     private void showDeleteConfirmationDialog(String userId, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirm Deletion");

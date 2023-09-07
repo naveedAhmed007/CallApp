@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private View passwordSeparator;
     private TextView passwordErrorTextView;
+    Singleton singleton;
 
     private FirebaseAuth mAuth;
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         setContentView(R.layout.activity_main);
+        singleton=Singleton.getInstance();
 
 
         // Initialize the NetworkChangeListener

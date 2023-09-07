@@ -1,80 +1,57 @@
 package com.itoasis.callingapp.Fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.adapter.SetPricesAdapter;
-import com.itoasis.callingapp.modal.HistoryModal;
 import com.itoasis.callingapp.modal.SetPricesModal;
-
 import java.util.ArrayList;
-
 
 public class setPrices extends Fragment {
 
     private RecyclerView recycler;
     private EditText searchEditText;
-
-    // variable for our adapter
-    // class and array list
     private SetPricesAdapter adapter;
     private ArrayList<SetPricesModal> SetPricesModalArrayList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_set_prices, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_set_prices, container, false);
         recycler = v.findViewById(R.id.recycler);
         searchEditText = v.findViewById(R.id.search_edit_text);
+
         buildRecyclerView();
         setupSearch();
+        fetchDataFromFirestore(); // Call this to load data from Firestore
 
         return v;
     }
+
     private void buildRecyclerView() {
-
-        // below line we are creating a new array list
-        SetPricesModalArrayList = new ArrayList<SetPricesModal>();
-
-        // below line is to add data to our array list.
-        SetPricesModalArrayList.add(new SetPricesModal("DSA1", "$2.00","$2.00"));
-        SetPricesModalArrayList.add(new SetPricesModal("DSA2", "$2.00","$2.00"));
-        SetPricesModalArrayList.add(new SetPricesModal("DSA3", "$2.00","$2.00"));
-        SetPricesModalArrayList.add(new SetPricesModal("DSA4", "$2.00","$2.00"));
-        SetPricesModalArrayList.add(new SetPricesModal("DSA5", "$2.00","$2.00"));
-        SetPricesModalArrayList.add(new SetPricesModal("DSA6", "$2.00","$2.00"));
-
-        // initializing our adapter class.
+        SetPricesModalArrayList = new ArrayList<>();
         adapter = new SetPricesAdapter(SetPricesModalArrayList, getContext());
-
-        // adding layout manager to our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         recycler.setHasFixedSize(true);
-
-        // setting layout manager
-        // to our recycler view.
         recycler.setLayoutManager(manager);
-
-        // setting adapter to
-        // our recycler view.
         recycler.setAdapter(adapter);
     }
 
@@ -105,5 +82,36 @@ public class setPrices extends Fragment {
         }
 
         adapter.filterList(filteredList);
+    }
+
+    private void fetchDataFromFirestore() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Replace "setPrices" with the actual name of your Firestore collection
+        db.collection("setPrices")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            SetPricesModalArrayList.clear(); // Clear the existing data
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String countryName = document.getString("countryName");
+                                String hourlyRate = document.getString("Hourly_Rate");
+                                String decHourlyRate = document.getString("Decreasing_Hourly_Rate");
+
+                                SetPricesModal item = new SetPricesModal(countryName, hourlyRate, decHourlyRate);
+                                SetPricesModalArrayList.add(item);
+                            }
+
+                            // Notify the adapter that the data has changed
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            // Handle errors here
+                            // You can display a toast message or handle the error in another way
+                        }
+                    }
+                });
     }
 }

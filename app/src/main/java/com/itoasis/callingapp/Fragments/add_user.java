@@ -46,7 +46,7 @@ public class add_user extends Fragment {
     View addUser;
     TextView nameError, emailError, passwordError, creditError, countryError;
     CountryCodePicker countryCodePicker;
-
+    String RemainingCredits="";
     private String userId;
 
     private FirebaseAuth mAuth; // Firebase Authentication
@@ -135,7 +135,7 @@ public class add_user extends Fragment {
                             editUserData(userId, userName, email, password, selectedCountryCode, credits,phoneNumber);
                         } else {
                             // Create mode: Add a new user
-                            uploadUserData(userName, email, password, selectedCountryCode, credits,phoneNumber);
+                            uploadUserData(userName, email, password, selectedCountryCode, credits,phoneNumber, RemainingCredits);
                         }
                     }
                 }
@@ -177,7 +177,7 @@ public class add_user extends Fragment {
                 && !credits.isEmpty();
     }
 
-    private void uploadUserData(String userName, String email, String password, String selectedCountryCode, String credits,String phoneNumber) {
+    private void uploadUserData(String userName, String email, String password, String selectedCountryCode, String credits,String phoneNumber, String remainingCredits) {
         // Create a Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -199,7 +199,12 @@ public class add_user extends Fragment {
                             user.put("countryCode", selectedCountryCode);
                             user.put("credits", credits);
                             user.put("phoneNumber", phoneNumber);
+                            user.put("remainingCredit",remainingCredits);
                             // Upload the user data to Firestore
+                            // Create a chat room for the new user
+                            String chatRoomId = email + "_admin@test.com"; // Adjust the chat room ID format as needed
+                            createChatRoom(chatRoomId);
+
                             db.collection("users")
                                     .document(uid) // Use the UID as the document ID in Firestore
                                     .set(user)
@@ -230,6 +235,28 @@ public class add_user extends Fragment {
                     }
                 });
     }
+    private void createChatRoom(String chatRoomName) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference chatRoomsRef = db.collection("chatRooms");
+
+        // Create a new document with the chat room name
+        chatRoomsRef.document(chatRoomName).set(new HashMap<>())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Chat room created successfully
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle errors here
+                        Log.e("Firestore", "Failed to create chat room: " + e.getMessage());
+                        Toast.makeText(requireContext(), "Failed to create chat room", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private void loadUserDataForEditing(String userEmail) {
         // Query Firestore to find the user with the provided email
         db.collection("users")
