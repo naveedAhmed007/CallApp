@@ -41,9 +41,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        MessageModal model = messageModalArrayList.get(holder.getAdapterPosition());
-        holder.nameChat.setText(model.getRoomName());
-
+        MessageModal message = messageModalArrayList.get(position);
+        holder.nameChat.setText(message.getRoomName());
+        holder.idChat.setText(message.getChatRoomName()); // Set chat room name
         // Set an OnClickListener on the item view
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,11 +62,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView nameChat;
+        private final TextView nameChat,idChat;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameChat = itemView.findViewById(R.id.NameChat);
+            idChat=itemView.findViewById(R.id.ChatRoomName);
         }
     }
 

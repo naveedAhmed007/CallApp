@@ -38,7 +38,6 @@ public class Message extends Fragment implements MessageAdapter.ItemClickListene
     private RecyclerView recyclerView;
     private EditText searchEditText;
     private MessageAdapter adapter;
-
     String particularUserName;
     private ArrayList<MessageModal> messageModelArrayList;
 
@@ -87,7 +86,6 @@ public class Message extends Fragment implements MessageAdapter.ItemClickListene
         }
         adapter.filterList(filteredList);
     }
-
     private void fetchChatRoomNames() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference chatRoomsRef = db.collection("chatRooms");
@@ -105,7 +103,7 @@ public class Message extends Fragment implements MessageAdapter.ItemClickListene
                             String clientEmail = chatRoomName.substring(0, indexOfUnderscore);
 
                             // Now, query the "users" collection to get the user's name based on the email
-                            queryUserForName(clientEmail);
+                            queryUserForName(clientEmail, chatRoomName); // Pass chatRoomName as an argument
                         } else {
                             // Handle the case where '_' is not found in the string
                             System.out.println("Underscore '_' not found in the string.");
@@ -118,7 +116,7 @@ public class Message extends Fragment implements MessageAdapter.ItemClickListene
                 });
     }
 
-    private void queryUserForName(String userEmail) {
+    private void queryUserForName(String userEmail, String chatRoomName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference userDetailsCollection = db.collection("users");
 
@@ -126,10 +124,10 @@ public class Message extends Fragment implements MessageAdapter.ItemClickListene
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                         particularUserName = document.getString("name");
+                        String particularUserName = document.getString("name");
 
-                        // Create a MessageModal for the chat room with the user's name
-                        messageModelArrayList.add(new MessageModal(particularUserName));
+                        // Create a MessageModal for the chat room with the user's name and chat room name
+                        messageModelArrayList.add(new MessageModal(particularUserName, chatRoomName));
                         adapter.notifyDataSetChanged(); // Notify the adapter of the data change
                     }
                 })
@@ -142,8 +140,13 @@ public class Message extends Fragment implements MessageAdapter.ItemClickListene
     // Implement the onItemClick method of the ItemClickListener
     @Override
     public void onItemClick(int position) {
+        if (position >= 0 && position < messageModelArrayList.size()) {
+            MessageModal clickedItem = messageModelArrayList.get(position);
+            String chatRoomName = clickedItem.getChatRoomName();
+            String userName = clickedItem.getRoomName();
 
-        openChatRoomFragment(messageModelArrayList.get(position).getRoomName(),particularUserName);
+            openChatRoomFragment(chatRoomName, userName);
+        }
     }
     private void openChatRoomFragment(String chatRoomId,String userName) {
         // Create an instance of the chatRoom fragment

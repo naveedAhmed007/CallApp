@@ -96,6 +96,15 @@ public class chatRoom extends Fragment {
             TextView personHeadingText =view.findViewById(R.id.PersonHeadingText);
             personHeadingText.setText(userName);
         }
+
+        // Set up the RecyclerView with a LinearLayoutManager and the adapter
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+        // Scroll to the last item in the RecyclerView
+        scrollToLastItem(); // Add this line to scroll to the last item
+
         // Add a click listener to the "Send" button
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,9 +121,6 @@ public class chatRoom extends Fragment {
                         // Set the sender as admin for testing
                         sender = "admin@test.com";
 
-                        // Find the TextView with the id 'PersonHeadingText' and set the user's name
-                        TextView personHeadingText = v.findViewById(R.id.PersonHeadingText);
-                        personHeadingText.setText("vv");
                     } else {
                         // Set the sender as the client's email for testing
                         sender = clientEmail;
@@ -138,10 +144,7 @@ public class chatRoom extends Fragment {
 
         loadAllPreviousChatMessages();
 
-        // Set up the RecyclerView with a LinearLayoutManager and the adapter
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+
 
 //        // Load chat messages for this chat room
 //        loadChatMessages();
@@ -242,7 +245,11 @@ public class chatRoom extends Fragment {
     }
 
 
-
+    private void scrollToLastItem() {
+        if (adapter.getItemCount() > 0) {
+            recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+        }
+    }
     private void createChatRoom(String chatRoomName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference chatRoomsRef = db.collection("chatRooms");
