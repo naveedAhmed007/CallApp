@@ -42,7 +42,7 @@
             />
         <!-- Heading -->
         <TextView
-            android:id="@+id/headingText"
+            android:id="@+id/PersonHeadingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter"

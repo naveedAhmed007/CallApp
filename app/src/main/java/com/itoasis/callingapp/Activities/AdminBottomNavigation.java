@@ -148,10 +148,7 @@ public class AdminBottomNavigation extends AppCompatActivity {
         Intent intent = getIntent();
         String str = intent.getStringExtra("key");
         switch(str){
-            case "addUser":
-                setCurrentFragment(new add_user());
 
-                break;
             case "home":
                 setCurrentFragment(new Home());
 

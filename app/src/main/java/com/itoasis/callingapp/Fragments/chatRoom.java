@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -86,7 +87,14 @@ public class chatRoom extends Fragment {
         editTextMessage = view.findViewById(R.id.message_editText);
         ImageView buttonSend = view.findViewById(R.id.send_message);
         recyclerView = view.findViewById(R.id.recyclerViewChat); // Initialize recyclerView here
+        Bundle args = getArguments();
+        if (args != null) {
+            String userName = args.getString("userName");
 
+            // Find the TextView with the id 'PersonHeadingText' and set the user's name
+            TextView personHeadingText =view.findViewById(R.id.PersonHeadingText);
+            personHeadingText.setText(userName);
+        }
         // Add a click listener to the "Send" button
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,9 +110,14 @@ public class chatRoom extends Fragment {
                     if (args != null && args.getBoolean("isAdmin", false)) {
                         // Set the sender as admin for testing
                         sender = "admin@test.com";
+
+                        // Find the TextView with the id 'PersonHeadingText' and set the user's name
+                        TextView personHeadingText = v.findViewById(R.id.PersonHeadingText);
+                        personHeadingText.setText("vv");
                     } else {
                         // Set the sender as the client's email for testing
                         sender = clientEmail;
+
                     }
 
 
@@ -148,6 +161,7 @@ public class chatRoom extends Fragment {
         if (args != null && args.getBoolean("isAdmin", false)) {
             // Set the sender as admin
             sender = "admin@test.com";
+
         } else {
             // Set the sender as the client's email
             sender = clientEmail;

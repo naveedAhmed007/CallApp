@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +27,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.Fragments.add_user;
+import com.itoasis.callingapp.Fragments.chatRoom;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.modal.UserDetailsModal;
 
@@ -94,7 +96,7 @@ public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView name, id, creditstv;
-        private final ImageButton edit, delete,chat;
+        private final ImageButton edit, delete, chat;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -103,21 +105,41 @@ public class UserDetailsAdapter extends RecyclerView.Adapter<UserDetailsAdapter.
             edit = itemView.findViewById(R.id.imageButtonEdit);
             creditstv = itemView.findViewById(R.id.creditstv);
             delete = itemView.findViewById(R.id.imageButtonDelete);
-            chat =itemView.findViewById(R.id.imageButtonChat);
+            chat = itemView.findViewById(R.id.imageButtonChat);
+            // Add an OnClickListener for the "Chat" button here
+            chat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Get the user's email from the model
+                    String userEmail = UserDetailsModalArrayList.get(getAdapterPosition()).getUserId();
 
-// Add an OnClickListener for the "Chat" button here
-        chat.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // Get the user's ID from the model
-            String userId = UserDetailsModalArrayList.get(getAdapterPosition()).getUserId();
-
-            // Display the user's ID (you can customize this action, e.g., start a chat activity)
-            Toast.makeText(itemView.getContext(), "Chat with User ID: " + userId, Toast.LENGTH_SHORT).show();
+                    // Call a method to open the chatRoom fragment with the client's email
+                    openChatRoomFragment(userEmail);
+                }
+            });
         }
-    });
-}}
-    private void showDeleteConfirmationDialog(String userId, int position) {
+
+        private void openChatRoomFragment(String userEmail) {
+            // Combine the client's email and admin's email to create the chat room ID
+            String chatRoomId = userEmail + "_admin@test.com"; // Modify the admin's email as needed
+
+            // You can also pass additional data if required
+            Bundle args = new Bundle();
+            args.putString("chatRoomId", chatRoomId);
+
+            // Create an instance of the chatRoom fragment
+            chatRoom chatRoomFragment = new chatRoom();
+            chatRoomFragment.setArguments(args);
+
+            // Replace the current fragment with the chatRoom fragment
+            FragmentManager fragmentManager = ((AppCompatActivity) itemView.getContext()).getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.flFragment, chatRoomFragment);
+            fragmentTransaction.addToBackStack(null); // Optional: Add to back stack for navigation
+            fragmentTransaction.commit();
+        }
+    }
+        private void showDeleteConfirmationDialog(String userId, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Confirm Deletion");
         builder.setMessage("Are you sure you want to delete this user?");
