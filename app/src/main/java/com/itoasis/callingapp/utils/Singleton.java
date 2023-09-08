@@ -15,7 +15,7 @@ public class Singleton {
     private String callScreenFrom,callerNames,documentId; // New member variable to store phoneNumber
 
     private String phoneNumber; // New member variable to store phoneNumber
-    private String phoneNumberr,credits; // New member variable to store phoneNumber
+    private String phoneNumberr,credits,userName; // New member variable to store phoneNumber
 
 
 

@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 public class chatRoom extends Fragment {
+
     private EditText editTextMessage;
     private RecyclerView recyclerView; // Declare recyclerView here
     private ChatAdapter adapter;
@@ -240,92 +241,6 @@ public class chatRoom extends Fragment {
         });
     }
 
-    private void loadChatMessages() {
-        // Get a reference to the chat room's messages collection
-        String chatRoomPath = "chatRooms/" + clientEmail;
-        // Initial Data Loading
-        db.collection(chatRoomPath + "/messages")
-                .orderBy("timestamp")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot querySnapshot) {
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            // Extract data from Firestore document
-                            String messageText = document.getString("text");
-                            String sender = document.getString("sender");
-                            long timestamp = document.getLong("timestamp");
-
-                            // Create a ChatMessage object
-                            ChatMessage message = new ChatMessage(messageText, sender, timestamp);
-
-                            // Check the "sender" field to determine the sender
-                            if (sender != null) {
-                                if (sender.equals(clientEmail)) {
-                                    // Message sent by the client
-                                    message.setSender(clientEmail);
-                                } else if (sender.equals("admin@test.com")) {
-                                    // Message sent by the admin
-                                    message.setSender("admin@test.com");
-                                } else {
-                                    // Handle other cases if needed
-                                }
-                            }
-
-                            // Add the message to your list
-                            chatMessages.add(message);
-                        }
-
-                        // Notify the adapter that the data set has changed
-                        adapter.notifyDataSetChanged();
-                        //   adapter.scrollToLastItem(); // Scroll to the last item
-                    }
-                });
-
-        // Real-time Updates
-        db.collection(chatRoomPath + "/messages")
-                .orderBy("timestamp")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot querySnapshot, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            // Handle the error
-                            return;
-                        }
-
-                        // Handle real-time updates here
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            // Extract data from Firestore document
-                            String messageText = document.getString("text");
-                            String sender = document.getString("sender");
-                            long timestamp = document.getLong("timestamp");
-
-                            // Create a ChatMessage object
-                            ChatMessage message = new ChatMessage(messageText, sender, timestamp);
-
-                            // Check the "sender" field to determine the sender
-                            if (sender != null) {
-                                if (sender.equals(clientEmail)) {
-                                    // Message sent by the client
-                                    message.setSender(clientEmail);
-                                } else if (sender.equals("admin@test.com")) {
-                                    // Message sent by the admin
-                                    message.setSender("admin@test.com");
-                                } else {
-                                    // Handle other cases if needed
-                                }
-                            }
-
-                            // Add the message to your list
-                            chatMessages.add(message);
-                        }
-
-                        // Notify the adapter that the data set has changed
-                        adapter.notifyDataSetChanged();
-                        // adapter.scrollToLastItem(); // Scroll to the last item
-                    }
-                });
-    }
 
 
     private void createChatRoom(String chatRoomName) {
