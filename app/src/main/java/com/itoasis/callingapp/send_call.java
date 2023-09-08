@@ -127,16 +127,12 @@ public class send_call extends AppCompatActivity {
                             DocumentSnapshot document = snapshot.getDocuments().get(0); // Assuming there's only one result
                             userName = document.getString("name");
 
-                         updateUIWithUserName(userName);
+
                             credits=document.getString("credits");
                             phoneNumberr=document.getString("phoneNumber");
                             updateUIWithUserName(userName,phoneNumberr,credits);
 
-                            Toast.makeText(send_call.this, credits, Toast.LENGTH_SHORT).show();
 
-
-                            credits=document.getString("credits");
-                            phoneNumberr=document.getString("phoneNumber");
                             // Store the user's name in Singleton
                             Singleton.getInstance().setUserName(userName);
                             Singleton.getInstance().setPhoneNumber(phoneNumberr);
