@@ -10,11 +10,14 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,23 +48,28 @@ import com.itoasis.callingapp.utils.AirplaneModeChangeReceiver;
 import com.itoasis.callingapp.utils.CallListHelper;
 import com.itoasis.callingapp.utils.CallManager;
 import com.itoasis.callingapp.utils.ContactsHelper;
+import com.itoasis.callingapp.utils.MyDatabaseHelper;
 import com.itoasis.callingapp.utils.MyPhoneStateListener;
 import com.itoasis.callingapp.utils.NotificationHelper;
 import com.itoasis.callingapp.utils.OutgoingCallReceiver;
 import com.itoasis.callingapp.utils.Singleton;
 
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class call_screen extends AppCompatActivity {
-    AirplaneModeChangeReceiver airplaneModeChangeReceiver = new AirplaneModeChangeReceiver();
     private static final int CALL_STATE_OFFHOOK_CHECK_DELAY = 30000; // 25 seconds
 
 
     private Handler handler = new Handler(Looper.getMainLooper());
     FirebaseFirestore db;
+    MyDatabaseHelper dbHelper;
+    SQLiteDatabase sqDb;
     TextView counterTV,callerNumber1,callerNumber2,callerNames;
     public static String PHONE_NUMBER, CALLER_NAME;
     Singleton singleTon= Singleton.getInstance();
@@ -80,6 +88,17 @@ public class call_screen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calling_screen);
+
+        dbHelper = new MyDatabaseHelper(call_screen.this);
+        sqDb=dbHelper.getWritableDatabase();
+
+
+
+
+
+
+
+
 
         callerNumber1=findViewById(R.id.textView4);
         callerNumber2=findViewById(R.id.textView5);
@@ -191,6 +210,7 @@ public class call_screen extends AppCompatActivity {
 
                     }
                     if(singleTon.getActivityCall()==2){
+
                         Log.d("TAG000000000000000000000000000000000", String.valueOf(CallListHelper.callList.size()));
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -204,7 +224,32 @@ public class call_screen extends AppCompatActivity {
 
                         if(singleTon.getListener()==true ){
 
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                            String currentTime = dateFormat.format(Calendar.getInstance().getTime());
+
+                            ContentValues values = new ContentValues();
+                            values.put("name", currentTime);
+                            values.put("email", singleTon.getClientEmailForTime());
+
+
+                            sqDb.insert("MyTable", null, values);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             stopCountdown();
+
                                                         singleTon.resetListener();
                             singleTon.resetActivityCall();
                             singleTon.resetAnswerCall();

@@ -7,7 +7,7 @@ public class Singleton {
 
     private static Singleton instance;
 
-    private String userEmail; // User's email
+    private String userEmail,clientEmailForTime; // User's email
 
     private int counter,activityCall,answeredCall,counterreceivedcalls;
 
@@ -198,6 +198,11 @@ public class Singleton {
         return documentId;
     }
 
-
+    public synchronized void setClientEmailForTime(String clientEmail) {
+        this.clientEmailForTime=clientEmail;
+    }
+    public synchronized String getClientEmailForTime() {
+        return clientEmailForTime;
+    }
 
 }

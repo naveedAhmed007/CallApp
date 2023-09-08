@@ -9,6 +9,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -49,7 +50,10 @@ import com.itoasis.callingapp.utils.CallListHelper;
 import com.itoasis.callingapp.utils.CallManager;
 import com.itoasis.callingapp.utils.Singleton;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class ClientHome extends Fragment {
@@ -66,6 +70,7 @@ public class ClientHome extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
 
         db= FirebaseFirestore.getInstance();
@@ -164,6 +169,7 @@ public class ClientHome extends Fragment {
                     numbers.put("number1", inputNumber);
                     numbers.put("number2", inputNumber1);
                     numbers.put("isCallBusy",false);
+                    numbers.put("email",singleton.getUserEmail());
                     numbers.put("length", "0");
 
                     CollectionReference collectionRef = db.collection("numbers");
@@ -177,17 +183,29 @@ public class ClientHome extends Fragment {
 
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                            loop:for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                                 // Handle each document here
                                 String documentId = documentSnapshot.getId();
                                 Map<String, Object> data = documentSnapshot.getData();
                                 // Do something with the data
                                 clientBusy=true;
+                                Toast.makeText(getContext(), "client is busy: " + documentId, Toast.LENGTH_SHORT).show();
+                                break loop;
 
                                 // Show a toast message when length 1 is found
 
-                                Toast.makeText(getContext(), "Length 1 is found in document: " + documentId, Toast.LENGTH_SHORT).show();
+
                             }
+                            if(clientBusy==true){
+                                clientBusy=false;
+                                toastTextView.setText("Dialer is busy try again later...");
+                            }
+                            else if(clientBusy==false)
+                            {
+                                toastTextView.setText("Call initializing...");
+                                addData(numbers);
+                            }
+
                         }
                     });
 
@@ -198,29 +216,15 @@ public class ClientHome extends Fragment {
                     if (toastTextView.getVisibility() == View.GONE) {
                         toastTextView.setVisibility(View.VISIBLE);
                         cancelToastButton.setVisibility(View.VISIBLE);
-                     } else {
+                     }
+                    else {
                         toastTextView.setVisibility(View.GONE);
                         cancelToastButton.setVisibility(View.GONE);
                     }
                 }
                 call_button.setEnabled(false);
-                Runnable runnableCode = new Runnable() {
-                    @Override
-                    public void run() {
-                        // Put your code here that you want to run after 3 seconds
-                        // For example, show a toast message
-                        if(clientBusy==true){
-                            clientBusy=false;
-                            toastTextView.setText("Admin is busy");
-                        }
-                        else if(clientBusy==false)
-                        {
-                            addData(numbers);
-                        }
-                    }
-                };
-                handler.postDelayed(runnableCode, 3000);
-              //add functionality to execute this condition after clientBusy is checked
+
+
 
 
 

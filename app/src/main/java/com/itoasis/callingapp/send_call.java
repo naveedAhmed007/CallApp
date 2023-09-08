@@ -40,6 +40,8 @@ public class send_call extends AppCompatActivity {
     private FirebaseFirestore db;
     private ListenerRegistration userDataListener;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +126,7 @@ public class send_call extends AppCompatActivity {
                             // Assuming "name" is the field in Firestore where the user's name is stored
                             DocumentSnapshot document = snapshot.getDocuments().get(0); // Assuming there's only one result
                             userName = document.getString("name");
-                         updateUIWithUserName(userName);
+//                         updateUIWithUserName(userName);
                             credits=document.getString("credits");
                             phoneNumberr=document.getString("phoneNumber");
                             Toast.makeText(send_call.this, credits, Toast.LENGTH_SHORT).show();
