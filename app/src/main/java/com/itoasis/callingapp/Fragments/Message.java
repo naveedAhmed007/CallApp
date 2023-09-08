@@ -38,6 +38,8 @@ public class Message extends Fragment implements MessageAdapter.ItemClickListene
     private RecyclerView recyclerView;
     private EditText searchEditText;
     private MessageAdapter adapter;
+
+    String particularUserName;
     private ArrayList<MessageModal> messageModelArrayList;
 
     @Override
@@ -94,10 +96,21 @@ public class Message extends Fragment implements MessageAdapter.ItemClickListene
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     messageModelArrayList.clear(); // Clear the list before adding chat rooms
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                         chatRoomName = document.getId();
-                        messageModelArrayList.add(new MessageModal(chatRoomName)); // Create MessageModal for chat room
+                        String chatRoomName = document.getId();
+
+                        int indexOfUnderscore = chatRoomName.indexOf('_');
+
+                        if (indexOfUnderscore != -1) {
+                            // Extract the substring before '_'
+                            String clientEmail = chatRoomName.substring(0, indexOfUnderscore);
+
+                            // Now, query the "users" collection to get the user's name based on the email
+                            queryUserForName(clientEmail);
+                        } else {
+                            // Handle the case where '_' is not found in the string
+                            System.out.println("Underscore '_' not found in the string.");
+                        }
                     }
-                    adapter.notifyDataSetChanged(); // Notify the adapter of the data change
                 })
                 .addOnFailureListener(e -> {
                     // Handle errors here
@@ -105,20 +118,41 @@ public class Message extends Fragment implements MessageAdapter.ItemClickListene
                 });
     }
 
+    private void queryUserForName(String userEmail) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CollectionReference userDetailsCollection = db.collection("users");
+
+        userDetailsCollection.whereEqualTo("email", userEmail)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                         particularUserName = document.getString("name");
+
+                        // Create a MessageModal for the chat room with the user's name
+                        messageModelArrayList.add(new MessageModal(particularUserName));
+                        adapter.notifyDataSetChanged(); // Notify the adapter of the data change
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle errors here
+                    Log.e("Firestore", "Failed to fetch user data: " + e.getMessage());
+                });
+    }
+
     // Implement the onItemClick method of the ItemClickListener
     @Override
     public void onItemClick(int position) {
 
-        openChatRoomFragment(messageModelArrayList.get(position).getRoomName());
+        openChatRoomFragment(messageModelArrayList.get(position).getRoomName(),particularUserName);
     }
-    private void openChatRoomFragment(String chatRoomId) {
+    private void openChatRoomFragment(String chatRoomId,String userName) {
         // Create an instance of the chatRoom fragment
         chatRoom chatRoomFragment = new chatRoom();
         // Pass an argument indicating that the sender is the admin
         Bundle args = new Bundle();
         // Pass an argument indicating that the sender is the admin
         args.putBoolean("isAdmin", true);
-
+        args.putString("userName", userName);
         // Pass the chat room ID to the chatRoom fragment
         args.putString("chatRoomId", chatRoomId);
 

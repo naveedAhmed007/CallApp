@@ -148,10 +148,7 @@ public class AdminBottomNavigation extends AppCompatActivity {
         Intent intent = getIntent();
         String str = intent.getStringExtra("key");
         switch(str){
-            case "addUser":
-                setCurrentFragment(new add_user());
 
-                break;
             case "home":
                 setCurrentFragment(new Home());
 
@@ -165,7 +162,7 @@ public class AdminBottomNavigation extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.details:
-                    setCurrentFragment(new Home());
+                    setCurrentFragment(new UserDetails());
                     break;
                 case R.id.chat:
                     setCurrentFragment(new Message());
