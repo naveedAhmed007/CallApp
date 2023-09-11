@@ -19,6 +19,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "name TEXT," + "email TEXT);";
 
+    private static final String CREATE_TABLE1 =
+            "CREATE TABLE MyTable1 (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "count INTEGER);";
 
     public MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,6 +32,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
+        db.execSQL(CREATE_TABLE1);
 
 
 
@@ -36,6 +41,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+"MyTable");
+        db.execSQL("DROP TABLE IF EXISTS "+"MyTable1");
 
         onCreate(db);
 
