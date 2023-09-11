@@ -32,8 +32,8 @@ public class Singleton {
 
 
         phoneNumber = ""; // Initialize phoneNumber as an empty string
-        //phoneNumberr="";
-        //credits="";
+        phoneNumberr="";
+        credits="";
 
         activityCall=0;
         answeredCall=0;

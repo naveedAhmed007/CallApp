@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +12,10 @@ import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.modal.ChatMessage;
 import com.itoasis.callingapp.utils.Singleton;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int SENDER_VIEW = 1;
@@ -21,12 +23,14 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private RecyclerView recyclerView;
     private String clientEmail;
     private List<ChatMessage> chatMessages;
+    private SimpleDateFormat dateFormat;
 
     // Constructor that takes a List<ChatMessage> as a parameter
     public ChatAdapter(List<ChatMessage> chatMessages, String clientEmail, RecyclerView recyclerView) {
         this.chatMessages = chatMessages;
         this.clientEmail = clientEmail;
         this.recyclerView = recyclerView;
+        this.dateFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
     }
 
     @NonNull
@@ -51,12 +55,13 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder.getItemViewType() == SENDER_VIEW) {
             SenderViewHolder senderViewHolder = (SenderViewHolder) holder;
             senderViewHolder.senderMessageText.setText(chatMessage.getMessage());
+            senderViewHolder.senderMessageTime.setText(formatTimestamp(chatMessage.getTimestamp()));
         } else {
             ReceiverViewHolder receiverViewHolder = (ReceiverViewHolder) holder;
             receiverViewHolder.receiverMessageText.setText(chatMessage.getMessage());
+            receiverViewHolder.receiverMessageTime.setText(formatTimestamp(chatMessage.getTimestamp()));
         }
     }
-
 
     @Override
     public int getItemCount() {
@@ -75,33 +80,32 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-
-    // Add this method to your adapter class
-    public void addNewMessage(ChatMessage newMessage) {
-        // Add the new message to your list of messages (e.g., chatMessages)
-        chatMessages.add(newMessage);
-
-        // Notify the adapter that the data set has changed
-        notifyDataSetChanged();
+    // Add this method to format the timestamp
+    private String formatTimestamp(long timestamp) {
+        return dateFormat.format(new Date(timestamp));
     }
 
     // ViewHolder for sender's chat message
     private static class SenderViewHolder extends RecyclerView.ViewHolder {
         TextView senderMessageText;
+        TextView senderMessageTime;
 
         SenderViewHolder(View itemView) {
             super(itemView);
             senderMessageText = itemView.findViewById(R.id.sender_message_text);
+            senderMessageTime = itemView.findViewById(R.id.sender_message_time);
         }
     }
 
     // ViewHolder for receiver's chat message
     private static class ReceiverViewHolder extends RecyclerView.ViewHolder {
         TextView receiverMessageText;
+        TextView receiverMessageTime;
 
         ReceiverViewHolder(View itemView) {
             super(itemView);
             receiverMessageText = itemView.findViewById(R.id.receiver_message_text);
+            receiverMessageTime = itemView.findViewById(R.id.reciever_message_time);
         }
     }
 }

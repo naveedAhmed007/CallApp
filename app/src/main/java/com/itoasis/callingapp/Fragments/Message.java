@@ -34,11 +34,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Message extends Fragment implements MessageAdapter.ItemClickListener {
-    private String chatRoomName;
+
     private RecyclerView recyclerView;
     private EditText searchEditText;
     private MessageAdapter adapter;
-    String particularUserName;
+
     private ArrayList<MessageModal> messageModelArrayList;
 
     @Override
@@ -52,11 +52,11 @@ public class Message extends Fragment implements MessageAdapter.ItemClickListene
         recyclerView = v.findViewById(R.id.recycler);
         searchEditText = v.findViewById(R.id.search_edit_text);
         messageModelArrayList = new ArrayList<>();
-        adapter = new MessageAdapter(messageModelArrayList, getContext(), this); // Pass 'this' as the ItemClickListener
+        adapter = new MessageAdapter(messageModelArrayList, getContext(), this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         setupSearch();
-        fetchChatRoomNames(); // Load chat room names from Firestore
+        fetchChatRoomNames();
         return v;
     }
 

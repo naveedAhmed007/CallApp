@@ -136,7 +136,9 @@ public class chatRoom extends Fragment {
 
                     // Create a new ChatMessage with the actual sender and add it to the adapter
                     ChatMessage newMessage = new ChatMessage(messageText, sender, System.currentTimeMillis());
-                    adapter.addNewMessage(newMessage);
+                    chatMessages.add(newMessage); // Add the new message to the list
+                    editTextMessage.setText(""); // Clear the message input field
+                    adapter.notifyItemInserted((chatMessages.size() - 1)); // Notify the adapter about the new item
                 }
 
             }

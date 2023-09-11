@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -81,26 +82,38 @@ public class send_call extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
                 switch (item.getItemId()) {
                     case R.id.profile:
 
                         selectedFragment = new profile_call();
                         singleton.setCallScreenFrom("client");
+                        fab.setVisibility(View.VISIBLE);
+                        bottomAppBar.setFabCradleMargin(30);
                         break;
                     case R.id.placeholder:
-                        
 
+                        fab.setVisibility(View.VISIBLE);
                         selectedFragment = new profile_call();
+
 
                         break;
                     case R.id.chat:
                         selectedFragment = new chatRoom();
+                        fab.setVisibility(View.GONE);
+                        bottomAppBar.setFabCradleMargin(-60);
+
+
                         break;
                     case R.id.history:
                         selectedFragment = new History();
+                        fab.setVisibility(View.VISIBLE);
+                        bottomAppBar.setFabCradleMargin(30);
                         break;
                     case R.id.Payment:
                         selectedFragment = new Payment();
+                        fab.setVisibility(View.VISIBLE);
+                        bottomAppBar.setFabCradleMargin(30);
                         break;
                     default:
                         return false;
@@ -135,8 +148,8 @@ public class send_call extends AppCompatActivity {
 
                             // Store the user's name in Singleton
                             Singleton.getInstance().setUserName(userName);
-                            Singleton.getInstance().setPhoneNumber(phoneNumberr);
-                            Singleton.getInstance().setPhoneNumber(credits);
+                            Singleton.getInstance().setPhoneNumberr(phoneNumberr);
+                            Singleton.getInstance().setCredits(credits);
                             Singleton.getInstance().setChar(userName.charAt(0));
 
                         } else {
