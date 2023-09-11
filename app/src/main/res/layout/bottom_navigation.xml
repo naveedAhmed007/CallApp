@@ -20,8 +20,8 @@
         android:layout_gravity="bottom"
         app:fabCradleMargin="10dp"
         android:background="@color/black"
-        app:fabCradleRoundedCornerRadius="10dp"
-        app:fabCradleVerticalOffset="10dp">
+        app:fabCradleRoundedCornerRadius="35dp"
+        app:fabCradleVerticalOffset="8dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:paddingStart="70dp"
     android:paddingEnd="10dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="15dp"
     android:layout_height="wrap_content">
 
 
@@ -19,7 +19,8 @@
         android:layout_alignParentRight="true"
         app:layout_constraintHorizontal_bias="1"
         android:background="@drawable/sender_chat_bg"
-        android:padding="8dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
         android:text=" Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum"
         android:textColor="@android:color/black"
         android:textSize="16sp"
@@ -34,13 +35,14 @@
         android:layout_below="@+id/sender_message_text"
         android:layout_alignEnd="@+id/sender_message_text"
         android:layout_alignRight="@+id/sender_message_text"
-        android:layout_marginTop="7dp"
         android:text="12:23AM"
         android:textColor="@android:color/black"
         android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/sender_message_text"
-        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sender_message_text" />
+        app:layout_constraintTop_toBottomOf="@+id/sender_message_text"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

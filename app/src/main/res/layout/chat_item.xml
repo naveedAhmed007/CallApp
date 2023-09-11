@@ -53,6 +53,23 @@
             app:layout_constraintVertical_bias="0.275" />
 
         <TextView
+            android:id="@+id/ChatRoomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:text="John Heather"
+            android:textColor="@color/black"
+            android:textSize="1dp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/notificationTV"
+            app:layout_constraintEnd_toStartOf="@+id/timeText"
+            app:layout_constraintHorizontal_bias="0.8"
+            app:layout_constraintStart_toStartOf="@+id/notificationTV"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.275" />
+
+        <TextView
             android:id="@+id/notificationTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
