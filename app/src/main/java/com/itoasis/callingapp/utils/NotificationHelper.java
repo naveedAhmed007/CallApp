@@ -256,4 +256,49 @@ public class NotificationHelper extends NotificationListenerService {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.cancel(notificationId);
     }
+
+
+
+
+
+    public static void createMergeCallNotification(Context context, String mergedCallInfo) {
+        String CHANNEL_ID = "Hidden_Pirates_Phone_App_Merge";
+
+        NotificationChannel channel = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            channel = new NotificationChannel(CHANNEL_ID, "Merge Call Notification", NotificationManager.IMPORTANCE_DEFAULT);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+        }
+
+        NotificationManager manager = context.getSystemService(NotificationManager.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            manager.createNotificationChannel(channel);
+        }
+
+        Intent mergeCallIntent = new Intent(context, call_screen.class); // Replace YourMergeCallActivity with the actual activity for merge calls
+        mergeCallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        PendingIntent mergeCallPendingIntent = PendingIntent.getActivity(context, 0, mergeCallIntent, PendingIntent.FLAG_MUTABLE);
+
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID);
+        builder.setOngoing(true);
+        builder.setPriority(Notification.PRIORITY_DEFAULT);
+        builder.setContentIntent(mergeCallPendingIntent);
+        builder.setFullScreenIntent(mergeCallPendingIntent, true);
+        builder.setSmallIcon(R.drawable.pen_icon);
+        builder.setContentTitle("Merged Call");
+        builder.setContentText(mergedCallInfo); // You can set the merged call info here
+        builder.setCategory(Notification.CATEGORY_CALL);
+        builder.setChannelId(CHANNEL_ID);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+
+
+
+
+
+
 }

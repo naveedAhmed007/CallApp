@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
     Singleton singleton;
 
     private FirebaseAuth mAuth;
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

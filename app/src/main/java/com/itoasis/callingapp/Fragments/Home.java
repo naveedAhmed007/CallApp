@@ -66,27 +66,29 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Home extends Fragment {
-    private EditText firstNumberEditText,secondNumberEditText;
+    private EditText firstNumberEditText, secondNumberEditText;
     FirebaseFirestore firestore;
     Button button;
+    MyDatabaseHelper dbHelper;
+    SQLiteDatabase db;
 
     // Reference to the "users" collection
     CollectionReference usersCollection;
-    String phonenumber1,phonenumber2;
+    String phonenumber1, phonenumber2;
     Singleton singleton;
+
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
-
-        singleton=Singleton.getInstance();
+        singleton = Singleton.getInstance();
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        firstNumberEditText= rootView.findViewById(R.id.first_Number);
-        secondNumberEditText= rootView.findViewById(R.id.second_number);
-        button=rootView.findViewById(R.id.button);
+        firstNumberEditText = rootView.findViewById(R.id.first_Number);
+        secondNumberEditText = rootView.findViewById(R.id.second_number);
+        button = rootView.findViewById(R.id.button);
 
         // Find the ImageView for the postfix icon inside the rootView
         AppCompatImageView postfixIcon = rootView.findViewById(R.id.contact_one);
@@ -149,45 +151,42 @@ public class Home extends Fragment {
             @Override
             public void onClick(View v) {
 
-                String inputNumber1=secondNumberEditText.getText().toString().trim();
-                String inputNumber=firstNumberEditText.getText().toString().trim();
+                String inputNumber1 = secondNumberEditText.getText().toString().trim();
+                String inputNumber = firstNumberEditText.getText().toString().trim();
                 String callerName = retrieveCallerName(inputNumber);
 
                 String callerName1 = retrieveCallerName(inputNumber1);
-                String x=callerName+" "+callerName1;
+                String x = callerName + " " + callerName1;
                 singleton.setCallerName(x);
-                    if (!inputNumber.isEmpty() && !inputNumber1.isEmpty()) {
-                        singleton.setPhoneNumber2(inputNumber1);
-                        singleton.setPhoneNumber1(inputNumber);
-                        @SuppressLint("ServiceCast") TelecomManager telecomManager = (TelecomManager) getContext().getSystemService(Context.TELECOM_SERVICE);
-                        Uri uri = Uri.fromParts("tel", inputNumber, null);
-                        Bundle extras = new Bundle();
-                        extras.putBoolean(TelecomManager.EXTRA_START_CALL_WITH_SPEAKERPHONE, false);
+                if (!inputNumber.isEmpty() && !inputNumber1.isEmpty()) {
+                    singleton.setPhoneNumber2(inputNumber1);
+                    singleton.setPhoneNumber1(inputNumber);
+                    @SuppressLint("ServiceCast") TelecomManager telecomManager = (TelecomManager) getContext().getSystemService(Context.TELECOM_SERVICE);
+                    Uri uri = Uri.fromParts("tel", inputNumber, null);
+                    Bundle extras = new Bundle();
+                    extras.putBoolean(TelecomManager.EXTRA_START_CALL_WITH_SPEAKERPHONE, false);
 
-                        if (ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(getContext().getApplicationContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
 
-                            if (telecomManager.getDefaultDialerPackage().equals(getContext().getApplicationContext().getPackageName())) {
-                                telecomManager.placeCall(uri, extras);
-                            } else {
-                                Uri phoneNumber = Uri.parse("tel:" + inputNumber);
-                                Intent callIntent = new Intent(Intent.ACTION_CALL, phoneNumber);
-                                callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(callIntent);
-                            }
+                        if (telecomManager.getDefaultDialerPackage().equals(getContext().getApplicationContext().getPackageName())) {
+                            telecomManager.placeCall(uri, extras);
                         } else {
-                            Toast.makeText(getContext().getApplicationContext(), "Please allow permission", Toast.LENGTH_SHORT).show();
+                            Uri phoneNumber = Uri.parse("tel:" + inputNumber);
+                            Intent callIntent = new Intent(Intent.ACTION_CALL, phoneNumber);
+                            callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(callIntent);
                         }
+                    } else {
+                        Toast.makeText(getContext().getApplicationContext(), "Please allow permission", Toast.LENGTH_SHORT).show();
                     }
-
-
-
+                }
 
 
             }
         });
 
-        firestore= FirebaseFirestore.getInstance();
-        usersCollection=firestore.collection("numbers");
+        firestore = FirebaseFirestore.getInstance();
+        usersCollection = firestore.collection("numbers");
         usersCollection.orderBy("length", Query.Direction.ASCENDING).limit(1)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -203,23 +202,19 @@ public class Home extends Fragment {
                                 DocumentSnapshot newItemSnapshot = dc.getDocument();
                                 // Extract necessary data and show a toast
                                 String itemName = newItemSnapshot.getString("length");
-                                phonenumber1=newItemSnapshot.getString("number1");
-                                phonenumber2=newItemSnapshot.getString("number2");
-                                String email=newItemSnapshot.getString("email");
+                                phonenumber1 = newItemSnapshot.getString("number1");
+                                phonenumber2 = newItemSnapshot.getString("number2");
+                                String email = newItemSnapshot.getString("email");
                                 singleton.setClientEmailForTime(email);
 
 
-
-                                int i=Integer.parseInt(itemName);
-                                if(i==0) {
+                                int i = Integer.parseInt(itemName);
+                                if (i == 0) {
 
 //                                  button.performClick();
 
 
-
                                 }
-
-
 
 
                             }
@@ -245,27 +240,19 @@ public class Home extends Fragment {
 
                 if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
 
-                    if (telecomManager.getDefaultDialerPackage().equals(getContext().getPackageName())){
+                    if (telecomManager.getDefaultDialerPackage().equals(getContext().getPackageName())) {
                         telecomManager.placeCall(uri, extras);
-                    }
-                    else{
+                    } else {
                         Uri phoneNumber = Uri.parse("tel:" + phonenumber1);
                         Intent callIntent = new Intent(Intent.ACTION_CALL, phoneNumber);
                         callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(callIntent);
                     }
-                }
-                else{
+                } else {
                     Toast.makeText(getContext(), "Please allow permission", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
-
-
-
-
 
 
         return rootView;
@@ -341,7 +328,7 @@ public class Home extends Fragment {
     }
 
 
-    public void addData(Map<String, Object> numbers){
+    public void addData(Map<String, Object> numbers) {
         firestore.collection("numbers")
                 .add(numbers)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -358,6 +345,7 @@ public class Home extends Fragment {
                     }
                 });
     }
+
     @SuppressLint("Range")
     private String retrieveCallerName(String phoneNumber) {
         ContentResolver contentResolver = getContext().getContentResolver();
@@ -384,168 +372,176 @@ public class Home extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        dbHelper = new MyDatabaseHelper(getContext());
+        db = dbHelper.getReadableDatabase();
 
-        Query query =  usersCollection.whereEqualTo("isCallBusy", true).limit(1);
 
-        // Execute the query
-        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        int count = getColumnValue();
+        incrementCount();
+        Log.d("TAGCount============================", String.valueOf(count));
+      if(count==2){
 
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                    // Handle each document here
-                    String documentId = documentSnapshot.getId();
-                    Map<String, Object> data = documentSnapshot.getData();
+          db.delete("MyTable1", null, null);
 
-                    usersCollection.document(documentId).update("isCallBusy", false)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    // Document updated successfully
+          Query query = usersCollection.whereEqualTo("isCallBusy", true).limit(1);
+
+          // Execute the query
+          query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+
+              @Override
+              public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                  for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                      // Handle each document here
+                      String documentId = documentSnapshot.getId();
+                      Map<String, Object> data = documentSnapshot.getData();
+
+                      usersCollection.document(documentId).update("isCallBusy", false)
+                              .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                  @Override
+                                  public void onSuccess(Void aVoid) {
+                                      // Document updated successfully
 //                                    Toast.makeText(YourActivity.this, "isCallBusy set to false", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Handle any errors that occurred during the update
+                                  }
+                              })
+                              .addOnFailureListener(new OnFailureListener() {
+                                  @Override
+                                  public void onFailure(@NonNull Exception e) {
+                                      // Handle any errors that occurred during the update
 //                                    Toast.makeText(YourActivity.this, "Failed to update isCallBusy", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                                  }
+                              });
 
-                }
-            }
-        });
+                  }
+              }
+          });
 
-        MyDatabaseHelper dbHelper = new MyDatabaseHelper(getContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
 // Check if the table exists
-        boolean tableExists = false;
-        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='MyTable'", null);
-        if (cursor != null) {
-            tableExists = cursor.getCount() > 0;
-            cursor.close();
-        }
+          boolean tableExists = false;
+          Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='MyTable'", null);
+          if (cursor != null) {
+              tableExists = cursor.getCount() > 0;
+              cursor.close();
+          }
 
-        if (tableExists) {
-            String[] projection = {"id", "name","email"};
+          if (tableExists) {
+              String[] projection = {"id", "name", "email"};
 
-            cursor = db.query(
-                    "MyTable",
-                    projection,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    "1"  // LIMIT 1 to retrieve only the first row
-            );
+              cursor = db.query(
+                      "MyTable",
+                      projection,
+                      null,
+                      null,
+                      null,
+                      null,
+                      null,
+                      "1"  // LIMIT 1 to retrieve only the first row
+              );
 
-            if (cursor.moveToFirst()) {
-                int id = cursor.getInt(cursor.getColumnIndex("id"));
-                String name = cursor.getString(cursor.getColumnIndex("name"));
-                String email = cursor.getString(cursor.getColumnIndex("email"));
-
-
-                try {
-                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+              if (cursor.moveToFirst()) {
+                  int id = cursor.getInt(cursor.getColumnIndex("id"));
+                  String name = cursor.getString(cursor.getColumnIndex("name"));
+                  String email = cursor.getString(cursor.getColumnIndex("email"));
 
 
-                    String currentTime = timeFormat.format(Calendar.getInstance().getTime());
-
-                    // Parse the start and end times as Date objects
-                    Date startTime = timeFormat.parse(name);
-                    Date endTime = timeFormat.parse(currentTime);
-
-                    // Calculate the time difference in milliseconds
-                    long timeDifferenceMillis = endTime.getTime() - startTime.getTime();
-
-                    // Convert the time difference from milliseconds to minutes
-                    long timeDifferenceMinutes = (timeDifferenceMillis / (60 * 1000))%60;
-                    long totalSeconds = (int) (timeDifferenceMillis / 1000);
-                    long minutes = totalSeconds / 60; // Calculate the minutes
-                    long seconds = totalSeconds % 60;
+                  try {
+                      SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
 
-                    String time=minutes+" minutes &" +seconds+" seconds";
+                      String currentTime = timeFormat.format(Calendar.getInstance().getTime());
+
+                      // Parse the start and end times as Date objects
+                      Date startTime = timeFormat.parse(name);
+                      Date endTime = timeFormat.parse(currentTime);
+
+                      // Calculate the time difference in milliseconds
+                      long timeDifferenceMillis = endTime.getTime() - startTime.getTime();
+
+                      // Convert the time difference from milliseconds to minutes
+                      long timeDifferenceMinutes = (timeDifferenceMillis / (60 * 1000)) % 60;
+                      long totalSeconds = (int) (timeDifferenceMillis / 1000);
+                      long minutes = totalSeconds / 60; // Calculate the minutes
+                      long seconds = totalSeconds % 60;
 
 
-                    // Create a reference to the "users" collection
-                    CollectionReference usersRef = firestore.collection("users");
+                      String time = minutes + " minutes &" + seconds + " seconds";
+
+
+                      // Create a reference to the "users" collection
+                      CollectionReference usersRef = firestore.collection("users");
 
 // Create a query to find documents where the "email" field matches the provided email
-                    Query query1 = usersRef.whereEqualTo("email",email);
+                      Query query1 = usersRef.whereEqualTo("email", email);
 
 // Execute the query
-                    query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    // Access the data in the document
-                                    String documentId = document.getId();
+                      query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                          @Override
+                          public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                              if (task.isSuccessful()) {
+                                  for (QueryDocumentSnapshot document : task.getResult()) {
+                                      // Access the data in the document
+                                      String documentId = document.getId();
 
 
+                                      Map<String, Object> updates = new HashMap<>();
+                                      updates.put("remainingCredit", time);
 
-                                    Map<String, Object> updates = new HashMap<>();
-                                    updates.put("remainingCredit", time);
+                                      // Update the document with the new name
+                                      usersRef.document(documentId).update(updates)
+                                              .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                  @Override
+                                                  public void onSuccess(Void aVoid) {
+                                                      Log.d("Firestore", "Document updated successfully.");
+                                                  }
+                                              })
+                                              .addOnFailureListener(new OnFailureListener() {
+                                                  @Override
+                                                  public void onFailure(@NonNull Exception e) {
+                                                      Log.e("Firestore", "Error updating document: " + e.getMessage());
+                                                  }
+                                              });
 
-                                    // Update the document with the new name
-                                    usersRef.document(documentId).update(updates)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d("Firestore", "Document updated successfully.");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.e("Firestore", "Error updating document: " + e.getMessage());
-                                                }
-                                            });
-
-                                }
-                            } else {
-                                Log.d("Firestore", "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-
+                                  }
+                              } else {
+                                  Log.d("Firestore", "Error getting documents: ", task.getException());
+                              }
+                          }
+                      });
 
 
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                  } catch (ParseException e) {
+                      e.printStackTrace();
+                  }
 
 
-                // Display the retrieved data
-                Log.d("Data====================================", "ID: " + id + ", Name: " + name + ", Email: " + email);
+                  // Display the retrieved data
+                  Log.d("Data====================================", "ID: " + id + ", Name: " + name + ", Email: " + email);
 
-                // Delete the retrieved record
-                String selection = "id=?";
-                String[] selectionArgs = {String.valueOf(id)};
-                db.delete("MyTable", selection, selectionArgs);
-            } else {
-                // No records found
-                Log.d("Data", "No records found.");
-            }
+                  // Delete the retrieved record
 
-            cursor.close();
-        } else {
-            // Table doesn't exist
-            Log.d("Data", "Table 'MyTable' does not exist.");
-        }
+              } else {
+                  // No records found
+                  Log.d("Data", "No records found.");
+              }
+
+              cursor.close();
+          } else {
+              // Table doesn't exist
+              Log.d("Data", "Table 'MyTable' does not exist.");
+          }
 
 
-        db.close();
+          db.close();
+      }
+
+
 
 
 
     }
-    public void getDatafromTable(){
-        byte value=2;
+
+    public void getDatafromTable() {
+        byte value = 2;
         MyDatabaseHelper dbHelper = new MyDatabaseHelper(getContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -577,14 +573,11 @@ public class Home extends Fragment {
 
                 // Display the retrieved data
                 Log.d("Data1===============================", "ID: " + id + ", Name: " + name);
-                if(name!=null){
+                if (name != null) {
                     Toast.makeText(getContext(), name, Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getContext(), "no name found", Toast.LENGTH_SHORT).show();
                 }
-
 
 
                 // Delete the retrieved record
@@ -606,6 +599,67 @@ public class Home extends Fragment {
     }
 
 
+    @SuppressLint("Range")
+    private int getColumnValue() {
+        int id=0;
+        SQLiteDatabase db1 = dbHelper.getWritableDatabase();
+        boolean tableExists = false;
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='MyTable1'", null);
+        if (cursor != null) {
+            tableExists = cursor.getCount() > 0;
+            cursor.close();
+        }
 
+        if (tableExists) {
+            String[] projection = {"count"};
+
+            cursor = db.query(
+                    "MyTable1",
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    "1"  // LIMIT 1 to retrieve only the first row
+            );
+
+            if (cursor.moveToFirst()) {
+                id = cursor.getInt(cursor.getColumnIndex("count"));
+
+
+
+
+
+
+            } else {
+                // No records found
+
+                ContentValues values = new ContentValues();
+                values.put("count", 1);
+
+
+
+                db1.insert("MyTable1", null, values);
+
+            }
+
+            cursor.close();
+        } else {
+            // Table doesn't exist
+            Log.d("Data", "Table 'MyTable1' does not exist.");
+        }
+
+
+
+        return id;
+    }
+    public void incrementCount() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String query="UPDATE MyTable1 SET count = count + 1";
+        db.execSQL(query);
+
+    }
 
 }

@@ -9,6 +9,8 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,10 +22,12 @@ import android.content.res.ColorStateList;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.telecom.Call;
 import android.telecom.TelecomManager;
@@ -44,6 +48,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.R;
+import com.itoasis.callingapp.receivers.PingAlarmReceiver;
 import com.itoasis.callingapp.utils.AirplaneModeChangeReceiver;
 import com.itoasis.callingapp.utils.CallListHelper;
 import com.itoasis.callingapp.utils.CallManager;
@@ -70,9 +75,9 @@ public class call_screen extends AppCompatActivity {
     FirebaseFirestore db;
     MyDatabaseHelper dbHelper;
     SQLiteDatabase sqDb;
-    TextView counterTV,callerNumber1,callerNumber2,callerNames;
+    TextView counterTV, callerNumber1, callerNumber2, callerNames;
     public static String PHONE_NUMBER, CALLER_NAME;
-    Singleton singleTon= Singleton.getInstance();
+    Singleton singleTon = Singleton.getInstance();
     public static String speakerBtnName = "Speaker On", muteBtnName = "Mute";
 
     // Reference to the "users" collection
@@ -84,30 +89,35 @@ public class call_screen extends AppCompatActivity {
     ImageButton imageButton2;
     private TelephonyManager telephonyManager;
     private MyPhoneStateListener phoneStateListener;
+
+
+    AlarmManager alarmManager;
+
+    // Create an Intent for your BroadcastReceiver
+    Intent intent;
+
+    // Create a PendingIntent to be triggered when the alarm fires
+    PendingIntent pendingIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calling_screen);
 
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        intent = new Intent(getApplicationContext(), PingAlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
         dbHelper = new MyDatabaseHelper(call_screen.this);
-        sqDb=dbHelper.getWritableDatabase();
+        sqDb = dbHelper.getWritableDatabase();
 
 
-
-
-
-
-
-
-
-        callerNumber1=findViewById(R.id.textView4);
-        callerNumber2=findViewById(R.id.textView5);
-        callerNames=findViewById(R.id.textView3);
+        callerNumber1 = findViewById(R.id.textView4);
+        callerNumber2 = findViewById(R.id.textView5);
+        callerNames = findViewById(R.id.textView3);
         callerNumber1.setText(singleTon.getPhoneNumber1());
         callerNumber2.setText(singleTon.getPhoneNumber2());
         callerNames.setText(singleTon.getCallerName());
-
-
 
 
         if (getSupportActionBar() != null) {
@@ -116,31 +126,24 @@ public class call_screen extends AppCompatActivity {
         }// Replace with the correct layout name
 
         imageButton2 = findViewById(R.id.imageButton2);
-        counterTV=findViewById(R.id.textView2);
-        if(singleTon.getActivityCall()==2){
+        counterTV = findViewById(R.id.textView2);
+        if (singleTon.getActivityCall() == 2) {
             startCountup();
 
-                        }
-
-
-
+        }
 
 
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(singleTon.getActivityCall()==1) {
+                if (singleTon.getActivityCall() == 1) {
                     CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                     singleTon.resetActivityCall();
                     singleTon.resetAnswerCall();
 
 
-
-
-
-                }
-                else{
+                } else {
                     CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2));
                     CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                     singleTon.resetActivityCall();
@@ -158,17 +161,13 @@ public class call_screen extends AppCompatActivity {
             public void onReceive(Context arg0, Intent intent) {
 
 
-
                 String action = intent.getAction();
-
-
 
 
                 if (action.equals("call_ended")) {
                     finishAndRemoveTask();
 //                    CallManager.hangUpCall(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
-                }
-                else if (action.equals("call_answered")) {
+                } else if (action.equals("call_answered")) {
 
                     getLastDocumentId();
                     singleTon.incrementAnsweredCall();
@@ -177,12 +176,11 @@ public class call_screen extends AppCompatActivity {
 //                    inProgressCallRLView.setVisibility(View.VISIBLE);
 //                    incomingRLView.setVisibility(View.GONE);
 
-                    if (CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().hasProperty(Call.Details.PROPERTY_CONFERENCE)){
+                    if (CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).getDetails().hasProperty(Call.Details.PROPERTY_CONFERENCE)) {
 //                        PHONE_NUMBER = "Conference";
 //                        CALLER_NAME = "Conference";
-                    }
-                    else{
-                        PHONE_NUMBER = CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS -1).getDetails().getHandle().getSchemeSpecificPart();
+                    } else {
+                        PHONE_NUMBER = CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).getDetails().getHandle().getSchemeSpecificPart();
                         CALLER_NAME = ContactsHelper.getContactNameByPhoneNumber(PHONE_NUMBER, call_screen.this);
                     }
 
@@ -193,10 +191,7 @@ public class call_screen extends AppCompatActivity {
 //                    ------------------------------------------------------------------------------
 
 
-
-
-
-                    if(singleTon.getActivityCall()==1){
+                    if (singleTon.getActivityCall() == 1) {
 
 
                         placeCall(singleTon.getPhoneNumber2());
@@ -205,11 +200,8 @@ public class call_screen extends AppCompatActivity {
                         startActivity(intent1);
 
 
-
-
-
                     }
-                    if(singleTon.getActivityCall()==2){
+                    if (singleTon.getActivityCall() == 2) {
 
                         Log.d("TAG000000000000000000000000000000000", String.valueOf(CallListHelper.callList.size()));
                         handler.postDelayed(new Runnable() {
@@ -219,62 +211,49 @@ public class call_screen extends AppCompatActivity {
                                 setupPhoneStateListener();
 
 
+                                if (singleTon.getListener() == true) {
 
 
-
-                        if(singleTon.getListener()==true ){
-
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-                            String currentTime = dateFormat.format(Calendar.getInstance().getTime());
-
-                            ContentValues values = new ContentValues();
-                            values.put("name", currentTime);
-                            values.put("email", singleTon.getClientEmailForTime());
+// Set the alarm to trigger after 30 seconds, even if the app is in the background
+                                    long alarmTime = SystemClock.elapsedRealtime() + 30 * 1000;
+                                    alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, alarmTime, pendingIntent);
 
 
-                            sqDb.insert("MyTable", null, values);
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                                    String currentTime = dateFormat.format(Calendar.getInstance().getTime());
+
+                                    ContentValues values = new ContentValues();
+                                    values.put("name", currentTime);
+                                    values.put("email", singleTon.getClientEmailForTime());
 
 
+                                    sqDb.insert("MyTable", null, values);
 
 
+                                    stopCountdown();
+
+                                    singleTon.resetListener();
+                                    singleTon.resetActivityCall();
+                                    singleTon.resetAnswerCall();
+                                    CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2).conference(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
+                                    CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).mergeConference();
+                                    muteMicrophone(getApplicationContext());
+                                    holdCall(getApplicationContext());
+                                    NotificationHelper.cancelNotification(getApplicationContext(), NotificationHelper.NOTIFICATION_ID);
 
 
+                                    //add functionality to hold dialer Call
 
 
+                                    android.os.Process.killProcess(android.os.Process.myPid());
+                                    System.exit(1);
 
-
-
-
-
-
-
-                            stopCountdown();
-
-                                                        singleTon.resetListener();
-                            singleTon.resetActivityCall();
-                            singleTon.resetAnswerCall();
-                            CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2).conference(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
-                            CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).mergeConference();
-                            muteMicrophone(getApplicationContext());
-                            holdCall(getApplicationContext());
-                            NotificationHelper.cancelNotification(getApplicationContext(), NotificationHelper.NOTIFICATION_ID);
-
-
-                            //add functionality to hold dialer Call
-
-
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                            System.exit(1);
-
-                        }
+                                }
                             }
                         }, CALL_STATE_OFFHOOK_CHECK_DELAY);
 
 
                     }
-
-
-
 
 
                 }
@@ -289,16 +268,11 @@ public class call_screen extends AppCompatActivity {
         registerReceiver(broadcastReceiver, filter);
 
 
-
-
-
-
-
     }
 
     private void getLastDocumentId() {
         db = FirebaseFirestore.getInstance();
-        usersCollection=db.collection("numbers");
+        usersCollection = db.collection("numbers");
         // Build a query to search for the email
         Query query = usersCollection.whereEqualTo("length", "0")
                 .orderBy("length", Query.Direction.ASCENDING) // Replace "someField" with the appropriate field to order by
@@ -352,6 +326,7 @@ public class call_screen extends AppCompatActivity {
             }
         });
     }
+
     private void placeCall(String phoneNumber) {
 
         @SuppressLint("ServiceCast")
@@ -443,6 +418,7 @@ public class call_screen extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -471,6 +447,7 @@ public class call_screen extends AppCompatActivity {
         counterTV.setText("Countdown: Stopped");
         isCountdownRunning = false;
     }
+
     private void setupPhoneStateListener() {
         TelephonyManager telephonyManager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
         OutgoingCallReceiver outgoingCallReceiver = new OutgoingCallReceiver();
@@ -495,12 +472,12 @@ public class call_screen extends AppCompatActivity {
             }
         }, PhoneStateListener.LISTEN_CALL_STATE);
     }
+
     public static void muteMicrophone(Context context) {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         audioManager.setMode(AudioManager.MODE_IN_CALL);
         audioManager.setMicrophoneMute(true);
         audioManager.setSpeakerphoneOn(true);
-
 
 
     }
@@ -532,7 +509,25 @@ public class call_screen extends AppCompatActivity {
         }
     }
 
+    public void endIncomingCall(View view) {
+        TelecomManager telecomManager = (TelecomManager) getSystemService(TELECOM_SERVICE);
 
+        if (telecomManager != null) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ANSWER_PHONE_CALLS) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                telecomManager.endCall();
+            }
+        }
+    }
 
     }
 

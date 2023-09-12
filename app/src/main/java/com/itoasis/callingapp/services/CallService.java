@@ -30,6 +30,7 @@ public class CallService extends InCallService {
     @Override
     public void onCallAdded(Call call) {
         super.onCallAdded(call);
+        Log.d("call====================================", String.valueOf(call));
 
 
         if (call.getDetails().hasProperty(Call.Details.PROPERTY_CONFERENCE)){
@@ -70,6 +71,7 @@ public class CallService extends InCallService {
         }
 
         CallListHelper.callList.add(call);
+        Log.d("call===============================================================", String.valueOf(call));
         CallManager.inCallService = this;
         CallManager.NUMBER_OF_CALLS = CallListHelper.callList.size();
 
