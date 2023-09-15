@@ -15,7 +15,7 @@ public class Singleton {
     private String callScreenFrom,callerNames,documentId; // New member variable to store phoneNumber
 
     private String phoneNumber; // New member variable to store phoneNumber
-    private String phoneNumberr,credits,userName; // New member variable to store phoneNumber
+    private String phoneNumberr,credits,userName,type=""; // New member variable to store phoneNumber
 
 
 
@@ -29,6 +29,7 @@ public class Singleton {
         counter = 0;
         phoneNumber2 = ""; // Initialize phoneNumber as an empty string
         phoneNumber1="";
+        type="";
 
 
         phoneNumber = ""; // Initialize phoneNumber as an empty string
@@ -205,4 +206,12 @@ public class Singleton {
         return clientEmailForTime;
     }
 
+    public synchronized void setType(String type) {
+        this.type=type;
+    }
+    public synchronized String getType() {
+        return type;
+    }
+
 }
+

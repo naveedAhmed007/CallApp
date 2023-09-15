@@ -135,7 +135,7 @@ public class add_user extends Fragment {
                             editUserData(userId, userName, email, password, selectedCountryCode, credits,phoneNumber);
                         } else {
                             // Create mode: Add a new user
-                            uploadUserData(userName, email, password, selectedCountryCode, credits,phoneNumber, RemainingCredits);
+                            uploadUserData(userName, email, password, selectedCountryCode, credits,phoneNumber, credits);
                         }
                     }
                 }
@@ -199,7 +199,8 @@ public class add_user extends Fragment {
                             user.put("countryCode", selectedCountryCode);
                             user.put("credits", credits);
                             user.put("phoneNumber", phoneNumber);
-                            user.put("remainingCredit",remainingCredits);
+
+                            user.put("remainingCredit",Integer.parseInt(credits)*60000);
                             // Upload the user data to Firestore
                             // Create a chat room for the new user
                             String chatRoomId = email + "_admin@test.com"; // Adjust the chat room ID format as needed

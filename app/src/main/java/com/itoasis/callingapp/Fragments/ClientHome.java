@@ -1,5 +1,6 @@
 package com.itoasis.callingapp.Fragments;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
@@ -66,6 +67,8 @@ public class ClientHome extends Fragment {
     Boolean clientBusy=false;
     private TextView toastTextView;
     private AppCompatImageButton cancelToastButton;
+    private static final int CONTACT_PICKER_RESULT_1 = 1001;
+    private static final int CONTACT_PICKER_RESULT_2 = 1002;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,17 +87,24 @@ public class ClientHome extends Fragment {
         cancelToastButton = rootView.findViewById(R.id.cancel_toast);
 
         // Find the ImageView for the postfix icon inside the rootView
-        AppCompatImageView postfixIcon = rootView.findViewById(R.id.contact_one);
+        AppCompatImageView contact1 = rootView.findViewById(R.id.contact_one);
+        AppCompatImageView contact2 = rootView.findViewById(R.id.contact_one);
 
         // Set a click listener for the postfix icon
-        postfixIcon.setOnClickListener(new View.OnClickListener() {
+        contact1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Open the contacts app
-                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(intent, 1); // You can use any request code you prefer
+               openContactPicker(CONTACT_PICKER_RESULT_1);
             }
         });
+        contact2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openContactPicker(CONTACT_PICKER_RESULT_2);
+            }
+        });
+
 
         final TextView countryCodeTextView = rootView.findViewById(R.id.countryCodeTextView);
         ImageView countryCodeDropdown = rootView.findViewById(R.id.countryCodeDropdown);
@@ -243,23 +253,7 @@ public class ClientHome extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == getActivity().RESULT_OK) {
-            if (requestCode == 1) {
-                // Handle contact selection for contact one button
-                // You can use the data Intent to retrieve the selected contact details
-
-                // Assuming you want to retrieve the contact's phone number
-                String phoneNumber = retrievePhoneNumber(data);
-
-                // Set the retrieved phone number in the EditText field
-                firstNumberEditText.setText(phoneNumber);
-            }
-        }
-    }
 
     // Helper method to retrieve the selected contact's phone number
     @SuppressLint("Range")
@@ -352,6 +346,37 @@ public class ClientHome extends Fragment {
         }
 
         return callerName;
+    }
+
+    private void openContactPicker(int requestCode) {
+        Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+        startActivityForResult(contactPickerIntent, requestCode);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CONTACT_PICKER_RESULT_1 || requestCode == CONTACT_PICKER_RESULT_2) {
+                Uri contactUri = data.getData();
+                Cursor cursor = getActivity().getContentResolver().query(contactUri, null, null, null, null);
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    int nameColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                    String contactName = cursor.getString(nameColumnIndex);
+
+                    if (requestCode == CONTACT_PICKER_RESULT_1) {
+                        firstNumberEditText.setText(contactName);
+                    } else if (requestCode == CONTACT_PICKER_RESULT_2) {
+                        secondNumberEditText.setText(contactName);
+                    }
+
+                    cursor.close();
+                }
+
+            }
+        }
     }
 
 

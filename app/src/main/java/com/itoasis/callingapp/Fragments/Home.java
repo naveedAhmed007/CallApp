@@ -1,5 +1,6 @@
 package com.itoasis.callingapp.Fragments;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 import android.Manifest;
@@ -52,6 +53,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.call_screen;
+import com.itoasis.callingapp.receivers.PingAlarmReceiver;
 import com.itoasis.callingapp.utils.CallListHelper;
 import com.itoasis.callingapp.utils.CallManager;
 import com.itoasis.callingapp.utils.MyDatabaseHelper;
@@ -71,7 +73,8 @@ public class Home extends Fragment {
     Button button;
     MyDatabaseHelper dbHelper;
     SQLiteDatabase db;
-
+    private static final int CONTACT_PICKER_RESULT_1 = 1001;
+    private static final int CONTACT_PICKER_RESULT_2 = 1002;
     // Reference to the "users" collection
     CollectionReference usersCollection;
     String phonenumber1, phonenumber2;
@@ -91,15 +94,22 @@ public class Home extends Fragment {
         button = rootView.findViewById(R.id.button);
 
         // Find the ImageView for the postfix icon inside the rootView
-        AppCompatImageView postfixIcon = rootView.findViewById(R.id.contact_one);
+        AppCompatImageView contact1 = rootView.findViewById(R.id.contact_one);
+        AppCompatImageView contact2 = rootView.findViewById(R.id.contact_two);
 
         // Set a click listener for the postfix icon
-        postfixIcon.setOnClickListener(new View.OnClickListener() {
+        contact1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Open the contacts app
-                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(intent, 1); // You can use any request code you prefer
+                // Open the contact picker
+                openContactPicker(CONTACT_PICKER_RESULT_1);
+            }
+        });
+        contact2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openContactPicker(CONTACT_PICKER_RESULT_2);
             }
         });
 
@@ -161,6 +171,8 @@ public class Home extends Fragment {
                 if (!inputNumber.isEmpty() && !inputNumber1.isEmpty()) {
                     singleton.setPhoneNumber2(inputNumber1);
                     singleton.setPhoneNumber1(inputNumber);
+                    singleton.setType("admin");
+
                     @SuppressLint("ServiceCast") TelecomManager telecomManager = (TelecomManager) getContext().getSystemService(Context.TELECOM_SERVICE);
                     Uri uri = Uri.fromParts("tel", inputNumber, null);
                     Bundle extras = new Bundle();
@@ -258,23 +270,6 @@ public class Home extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == getActivity().RESULT_OK) {
-            if (requestCode == 1) {
-                // Handle contact selection for contact one button
-                // You can use the data Intent to retrieve the selected contact details
-
-                // Assuming you want to retrieve the contact's phone number
-                String phoneNumber = retrievePhoneNumber(data);
-
-                // Set the retrieved phone number in the EditText field
-                firstNumberEditText.setText(phoneNumber);
-            }
-        }
-    }
 
     // Helper method to retrieve the selected contact's phone number
     @SuppressLint("Range")
@@ -372,173 +367,173 @@ public class Home extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        getContext().stopService(new Intent(getContext(), PingAlarmReceiver.class));
         dbHelper = new MyDatabaseHelper(getContext());
         db = dbHelper.getReadableDatabase();
 
 
-        int count = getColumnValue();
-        incrementCount();
-        Log.d("TAGCount============================", String.valueOf(count));
-      if(count==2){
+//        int count = getColumnValue();
+//        incrementCount();
 
-          db.delete("MyTable1", null, null);
 
-          Query query = usersCollection.whereEqualTo("isCallBusy", true).limit(1);
+        Query query = usersCollection.whereEqualTo("isCallBusy", true).limit(1);
 
-          // Execute the query
-          query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        // Execute the query
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
 
-              @Override
-              public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                  for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                      // Handle each document here
-                      String documentId = documentSnapshot.getId();
-                      Map<String, Object> data = documentSnapshot.getData();
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                    // Handle each document here
+                    String documentId = documentSnapshot.getId();
+                    Map<String, Object> data = documentSnapshot.getData();
 
-                      usersCollection.document(documentId).update("isCallBusy", false)
-                              .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                  @Override
-                                  public void onSuccess(Void aVoid) {
-                                      // Document updated successfully
+                    usersCollection.document(documentId).update("isCallBusy", false)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    // Document updated successfully
 //                                    Toast.makeText(YourActivity.this, "isCallBusy set to false", Toast.LENGTH_SHORT).show();
-                                  }
-                              })
-                              .addOnFailureListener(new OnFailureListener() {
-                                  @Override
-                                  public void onFailure(@NonNull Exception e) {
-                                      // Handle any errors that occurred during the update
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    // Handle any errors that occurred during the update
 //                                    Toast.makeText(YourActivity.this, "Failed to update isCallBusy", Toast.LENGTH_SHORT).show();
-                                  }
-                              });
+                                }
+                            });
 
-                  }
-              }
-          });
+                }
+            }
+        });
 
 
 // Check if the table exists
-          boolean tableExists = false;
-          Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='MyTable'", null);
-          if (cursor != null) {
-              tableExists = cursor.getCount() > 0;
-              cursor.close();
-          }
+        boolean tableExists = false;
+        Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='MyTable'", null);
+        if (cursor != null) {
+            tableExists = cursor.getCount() > 0;
+            cursor.close();
+        }
 
-          if (tableExists) {
-              String[] projection = {"id", "name", "email"};
+        if (tableExists) {
+            String[] projection = {"id", "name", "email"};
 
-              cursor = db.query(
-                      "MyTable",
-                      projection,
-                      null,
-                      null,
-                      null,
-                      null,
-                      null,
-                      "1"  // LIMIT 1 to retrieve only the first row
-              );
+            cursor = db.query(
+                    "MyTable",
+                    projection,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    "1"  // LIMIT 1 to retrieve only the first row
+            );
 
-              if (cursor.moveToFirst()) {
-                  int id = cursor.getInt(cursor.getColumnIndex("id"));
-                  String name = cursor.getString(cursor.getColumnIndex("name"));
-                  String email = cursor.getString(cursor.getColumnIndex("email"));
+            if (cursor.moveToFirst()) {
+                int id = cursor.getInt(cursor.getColumnIndex("id"));
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                String email = cursor.getString(cursor.getColumnIndex("email"));
 
-
-                  try {
-                      SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+                SQLiteDatabase db1 = dbHelper.getWritableDatabase();
 
 
-                      String currentTime = timeFormat.format(Calendar.getInstance().getTime());
+                // on below line we are calling a method to delete our
+                // course and we are comparing it with our course name.
+                db1.delete("MyTable", "email=?", new String[]{email});
 
-                      // Parse the start and end times as Date objects
-                      Date startTime = timeFormat.parse(name);
-                      Date endTime = timeFormat.parse(currentTime);
-
-                      // Calculate the time difference in milliseconds
-                      long timeDifferenceMillis = endTime.getTime() - startTime.getTime();
-
-                      // Convert the time difference from milliseconds to minutes
-                      long timeDifferenceMinutes = (timeDifferenceMillis / (60 * 1000)) % 60;
-                      long totalSeconds = (int) (timeDifferenceMillis / 1000);
-                      long minutes = totalSeconds / 60; // Calculate the minutes
-                      long seconds = totalSeconds % 60;
+                try {
+                    SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
 
-                      String time = minutes + " minutes &" + seconds + " seconds";
+                    String currentTime = timeFormat.format(Calendar.getInstance().getTime());
+
+                    // Parse the start and end times as Date objects
+                    Date startTime = timeFormat.parse(name);
+                    Date endTime = timeFormat.parse(currentTime);
+
+                    // Calculate the time difference in milliseconds
+                    long timeDifferenceMillis = endTime.getTime() - startTime.getTime();
+
+                    // Convert the time difference from milliseconds to minutes
+                    long timeDifferenceMinutes = (timeDifferenceMillis / (60 * 1000)) % 60;
+                    long totalSeconds = (int) (timeDifferenceMillis / 1000);
+                    long minutes = totalSeconds / 60; // Calculate the minutes
+                    long seconds = totalSeconds % 60;
 
 
-                      // Create a reference to the "users" collection
-                      CollectionReference usersRef = firestore.collection("users");
+                    String time = minutes + " minutes &" + seconds + " seconds";
+
+
+                    // Create a reference to the "users" collection
+                    CollectionReference usersRef = firestore.collection("users");
 
 // Create a query to find documents where the "email" field matches the provided email
-                      Query query1 = usersRef.whereEqualTo("email", email);
+                    Query query1 = usersRef.whereEqualTo("email", email);
 
 // Execute the query
-                      query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                          @Override
-                          public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                              if (task.isSuccessful()) {
-                                  for (QueryDocumentSnapshot document : task.getResult()) {
-                                      // Access the data in the document
-                                      String documentId = document.getId();
+                    query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    // Access the data in the document
+                                    String documentId = document.getId();
+                                    double remainingCredit = document.getDouble("remainingCredit");
+                                    double newCredit = remainingCredit - timeDifferenceMillis;
 
 
-                                      Map<String, Object> updates = new HashMap<>();
-                                      updates.put("remainingCredit", time);
+                                    Map<String, Object> updates = new HashMap<>();
+                                    updates.put("remainingCredit", newCredit);
 
-                                      // Update the document with the new name
-                                      usersRef.document(documentId).update(updates)
-                                              .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                  @Override
-                                                  public void onSuccess(Void aVoid) {
-                                                      Log.d("Firestore", "Document updated successfully.");
-                                                  }
-                                              })
-                                              .addOnFailureListener(new OnFailureListener() {
-                                                  @Override
-                                                  public void onFailure(@NonNull Exception e) {
-                                                      Log.e("Firestore", "Error updating document: " + e.getMessage());
-                                                  }
-                                              });
+                                    // Update the document with the new name
+                                    usersRef.document(documentId).update(updates)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d("Firestore", "Document updated successfully.");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.e("Firestore", "Error updating document: " + e.getMessage());
+                                                }
+                                            });
 
-                                  }
-                              } else {
-                                  Log.d("Firestore", "Error getting documents: ", task.getException());
-                              }
-                          }
-                      });
-
-
-                  } catch (ParseException e) {
-                      e.printStackTrace();
-                  }
+                                }
+                            } else {
+                                Log.d("Firestore", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
 
 
-                  // Display the retrieved data
-                  Log.d("Data====================================", "ID: " + id + ", Name: " + name + ", Email: " + email);
-
-                  // Delete the retrieved record
-
-              } else {
-                  // No records found
-                  Log.d("Data", "No records found.");
-              }
-
-              cursor.close();
-          } else {
-              // Table doesn't exist
-              Log.d("Data", "Table 'MyTable' does not exist.");
-          }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
 
-          db.close();
-      }
+                // Display the retrieved data
+                Log.d("Data====================================", "ID: " + id + ", Name: " + name + ", Email: " + email);
 
 
+            } else {
+                // No records found
+                Log.d("Data", "No records found.");
+            }
+
+            cursor.close();
+        } else {
+            // Table doesn't exist
+            Log.d("Data", "Table 'MyTable' does not exist.");
+        }
 
 
-
+        db.close();
     }
+
 
     public void getDatafromTable() {
         byte value = 2;
@@ -601,7 +596,7 @@ public class Home extends Fragment {
 
     @SuppressLint("Range")
     private int getColumnValue() {
-        int id=0;
+        int id = 0;
         SQLiteDatabase db1 = dbHelper.getWritableDatabase();
         boolean tableExists = false;
         Cursor cursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='MyTable1'", null);
@@ -628,16 +623,11 @@ public class Home extends Fragment {
                 id = cursor.getInt(cursor.getColumnIndex("count"));
 
 
-
-
-
-
             } else {
                 // No records found
 
                 ContentValues values = new ContentValues();
                 values.put("count", 1);
-
 
 
                 db1.insert("MyTable1", null, values);
@@ -651,15 +641,57 @@ public class Home extends Fragment {
         }
 
 
-
         return id;
     }
+
     public void incrementCount() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String query="UPDATE MyTable1 SET count = count + 1";
+        String query = "UPDATE MyTable1 SET count = count + 1";
         db.execSQL(query);
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, you can now access contacts
+            } else {
+                // Permission denied, handle it accordingly
+            }
+        }
+    }
+
+
+    private void openContactPicker(int requestCode) {
+        Intent contactPickerIntent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+        startActivityForResult(contactPickerIntent, requestCode);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CONTACT_PICKER_RESULT_1 || requestCode == CONTACT_PICKER_RESULT_2) {
+                Uri contactUri = data.getData();
+                Cursor cursor = getActivity().getContentResolver().query(contactUri, null, null, null, null);
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    int nameColumnIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                    String contactName = cursor.getString(nameColumnIndex);
+
+                    if (requestCode == CONTACT_PICKER_RESULT_1) {
+                        firstNumberEditText.setText(contactName);
+                    } else if (requestCode == CONTACT_PICKER_RESULT_2) {
+                        secondNumberEditText.setText(contactName);
+                    }
+
+                    cursor.close();
+                }
+
+            }
+        }
+    }
 }

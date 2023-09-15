@@ -40,12 +40,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.itoasis.callingapp.R;
 import com.itoasis.callingapp.receivers.PingAlarmReceiver;
@@ -60,6 +63,7 @@ import com.itoasis.callingapp.utils.OutgoingCallReceiver;
 import com.itoasis.callingapp.utils.Singleton;
 
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -202,8 +206,15 @@ public class call_screen extends AppCompatActivity {
 
                     }
                     if (singleTon.getActivityCall() == 2) {
+                       
+                        if(!singleTon.getType().equals("admin"))
+                            getUsersCredit();
 
-                        Log.d("TAG000000000000000000000000000000000", String.valueOf(CallListHelper.callList.size()));
+
+
+
+
+
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -215,8 +226,6 @@ public class call_screen extends AppCompatActivity {
 
 
 // Set the alarm to trigger after 30 seconds, even if the app is in the background
-                                    long alarmTime = SystemClock.elapsedRealtime() + 30 * 1000;
-                                    alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, alarmTime, pendingIntent);
 
 
                                     SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
@@ -238,7 +247,7 @@ public class call_screen extends AppCompatActivity {
                                     CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 2).conference(CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1));
                                     CallListHelper.callList.get(CallManager.NUMBER_OF_CALLS - 1).mergeConference();
                                     muteMicrophone(getApplicationContext());
-                                    holdCall(getApplicationContext());
+
                                     NotificationHelper.cancelNotification(getApplicationContext(), NotificationHelper.NOTIFICATION_ID);
 
 
@@ -454,24 +463,7 @@ public class call_screen extends AppCompatActivity {
         telephonyManager.listen(outgoingCallReceiver, PhoneStateListener.LISTEN_CALL_STATE);
     }
 
-    public void holdCall(String phoneNumber) {
-        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        telephonyManager.listen(new PhoneStateListener() {
-            @Override
-            public void onCallStateChanged(int state, String incomingNumber) {
-                if (state == TelephonyManager.CALL_STATE_OFFHOOK) {
-                    // Check if the incoming call's number matches the target number
-                    if (phoneNumber.equals(incomingNumber)) {
-                        // Hold the call (You will need a specific library or method for this)
-                        // For a real implementation, you might use TelecomManager.
-                        // Example: TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
-                        // telecomManager.holdCall();
-                        Toast.makeText(getApplicationContext(), "Call on hold", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        }, PhoneStateListener.LISTEN_CALL_STATE);
-    }
+
 
     public static void muteMicrophone(Context context) {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
@@ -483,53 +475,49 @@ public class call_screen extends AppCompatActivity {
     }
 
 
-    public static void holdCall(Context context) {
-        try {
-            // Use reflection to access the TelephonyManager
-            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
-            // Get the getITelephony() method
-            Class<?> telephonyManagerClass = Class.forName(telephonyManager.getClass().getName());
-            Method getITelephonyMethod = telephonyManagerClass.getDeclaredMethod("getITelephony");
 
-            // Allow access to the method
-            getITelephonyMethod.setAccessible(true);
+    private void getUsersCredit() {
+        db = FirebaseFirestore.getInstance();
+        CollectionReference usersRef = db.collection("users");
 
-            // Invoke the getITelephony() method to get the ITelephony object
-            Object iTelephony = getITelephonyMethod.invoke(telephonyManager);
+// Create a query to find documents where the "email" field matches the provided email
+        Query query1 = usersRef.whereEqualTo("email", singleTon.getClientEmailForTime());
 
-            // Check if there's an ongoing call
-            if (iTelephony != null) {
-                // Put the call on hold
-                Method holdCallMethod = iTelephony.getClass().getMethod("holdCall");
-                holdCallMethod.invoke(iTelephony);
+// Execute the query
+        query1.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Access the data in the document
+                        String documentId = document.getId();
+                        double remainingCredit= document.getDouble("remainingCredit");
+                        long alarmTime = SystemClock.elapsedRealtime() + 30000+(long)remainingCredit;
+                        alarmManager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, alarmTime, pendingIntent);
+
+
+
+
+                        // Update the document with the new name
+
+
+                    }
+                } else {
+                    Log.d("Firestore", "Error getting documents: ", task.getException());
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+        });
 
-    public void endIncomingCall(View view) {
-        TelecomManager telecomManager = (TelecomManager) getSystemService(TELECOM_SERVICE);
 
-        if (telecomManager != null) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ANSWER_PHONE_CALLS) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                telecomManager.endCall();
-            }
-        }
     }
 
     }
+
+
+
+
+
 
 
 

@@ -23,8 +23,6 @@ import com.itoasis.callingapp.utils.MyPhoneStateListener;
 import com.itoasis.callingapp.utils.Singleton;
 
 public class MainActivity2 extends AppCompatActivity {
-    private FirebaseFirestore db;
-    private Singleton singleton;
     private static final int DEFAULT_DIALER_REQUEST_ID = 83;
 
     @Override
