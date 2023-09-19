@@ -88,7 +88,7 @@ public class ClientHome extends Fragment {
 
         // Find the ImageView for the postfix icon inside the rootView
         AppCompatImageView contact1 = rootView.findViewById(R.id.contact_one);
-        AppCompatImageView contact2 = rootView.findViewById(R.id.contact_one);
+        AppCompatImageView contact2 = rootView.findViewById(R.id.contact_two);
 
         // Set a click listener for the postfix icon
         contact1.setOnClickListener(new View.OnClickListener() {

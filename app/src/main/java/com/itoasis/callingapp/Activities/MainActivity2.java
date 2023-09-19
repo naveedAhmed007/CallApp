@@ -15,12 +15,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.itoasis.callingapp.R;
-import com.itoasis.callingapp.services.FirestoreMonitoringService;
-import com.itoasis.callingapp.utils.MyPhoneStateListener;
-import com.itoasis.callingapp.utils.Singleton;
 
 public class MainActivity2 extends AppCompatActivity {
     private static final int DEFAULT_DIALER_REQUEST_ID = 83;
